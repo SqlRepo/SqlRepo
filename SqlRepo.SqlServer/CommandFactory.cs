@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SqlRepo.SqlServer
+﻿namespace SqlRepo.SqlServer
 {
     public class CommandFactory : ICommandFactory
     {
@@ -17,31 +15,31 @@ namespace SqlRepo.SqlServer
             this.writablePropertyMatcher = writablePropertyMatcher;
         }
 
-        public IDeleteCommand<TEntity> CreateDelete<TEntity>() where TEntity: class, new()
+        public IDeleteCommand<TEntity> CreateDelete<TEntity>() where TEntity : class, new()
         {
-            return new DeleteCommand<TEntity>(this.commandExecutor, this.entityMapper, new WhereClauseBuilder());
+            return new DeleteCommand<TEntity>(commandExecutor,
+                entityMapper,
+                new WhereClauseBuilder());
         }
 
-        public IInsertCommand<TEntity> CreateInsert<TEntity>() where TEntity: class, new()
+        public IInsertCommand<TEntity> CreateInsert<TEntity>() where TEntity : class, new()
         {
-            return new InsertCommand<TEntity>(this.commandExecutor, this.entityMapper, this.writablePropertyMatcher);
+            return new InsertCommand<TEntity>(commandExecutor,
+                entityMapper,
+                writablePropertyMatcher);
         }
 
-        public ISelectCommand<TEntity> CreateSelect<TEntity>() where TEntity: class, new()
+        public ISelectCommand<TEntity> CreateSelect<TEntity>() where TEntity : class, new()
         {
-            return new SelectCommand<TEntity>(this.commandExecutor,
-                this.entityMapper,
-                new SelectClauseBuilder(),
-                new FromClauseBuilder(),
-                new WhereClauseBuilder(),
-                new OrderByClauseBuilder());
+            return new SelectCommand<TEntity>(commandExecutor,
+                entityMapper);
         }
 
-        public IUpdateCommand<TEntity> CreateUpdate<TEntity>() where TEntity: class, new()
+        public IUpdateCommand<TEntity> CreateUpdate<TEntity>() where TEntity : class, new()
         {
-            return new UpdateCommand<TEntity>(this.commandExecutor,
-                this.entityMapper,
-                this.writablePropertyMatcher,
+            return new UpdateCommand<TEntity>(commandExecutor,
+                entityMapper,
+                writablePropertyMatcher,
                 new WhereClauseBuilder());
         }
     }

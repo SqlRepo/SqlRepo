@@ -1,8 +1,6 @@
-using System;
-
 namespace SqlRepo.SqlServer
 {
-    internal enum OrderByDirection
+    public enum OrderByDirection
     {
         Ascending = 0,
         Descending

@@ -35,14 +35,14 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowErrorIfNoCommandExecutorProvided()
         {
             this.Invoking(
-                e =>
-                e.CreateCommand(null,
-                    this.EntityMapper,
-                    this.WritablePropertyMatcher,
-                    this.SelectClauseBuilder,
-                    this.FromClauseBuilder,
-                    this.WhereClauseBuilder,
-                    ConnectionString))
+                    e =>
+                        e.CreateCommand(null,
+                            this.EntityMapper,
+                            this.WritablePropertyMatcher,
+                            this.SelectClauseBuilder,
+                            this.FromClauseBuilder,
+                            this.WhereClauseBuilder,
+                            ConnectionString))
                 .ShouldThrow<ArgumentException>();
         }
 
@@ -50,14 +50,14 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowErrorIfNoEntityMapperProvided()
         {
             this.Invoking(
-                e =>
-                e.CreateCommand(this.CommandExecutor,
-                    null,
-                    this.WritablePropertyMatcher,
-                    this.SelectClauseBuilder,
-                    this.FromClauseBuilder,
-                    this.WhereClauseBuilder,
-                    ConnectionString))
+                    e =>
+                        e.CreateCommand(this.CommandExecutor,
+                            null,
+                            this.WritablePropertyMatcher,
+                            this.SelectClauseBuilder,
+                            this.FromClauseBuilder,
+                            this.WhereClauseBuilder,
+                            ConnectionString))
                 .ShouldThrow<ArgumentException>();
         }
 
@@ -65,9 +65,17 @@ namespace SqlRepo.SqlServer.Tests
 
         protected void AssumeFromClauseBuilderIsInitialised()
         {
+            this.TableDefinition = new TableDefinition
+            {
+                TableType = typeof(TestEntity),
+                Name = "TestEntity",
+                Schema = "dbo"
+            };
             this.FromClauseBuilder = Substitute.For<IFromClauseBuilder>();
             this.FromClauseBuilder.From<TestEntity>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
                 .ReturnsForAnyArgs(this.FromClauseBuilder);
+            this.FromClauseBuilder.TableDefinition<TestEntity>()
+                .Returns(this.TableDefinition);
         }
 
         protected void AssumeSelectClauseBuilderIsInitialised()
@@ -113,7 +121,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.CommandExecutor = Substitute.For<ICommandExecutor>();
             this.DataReader = Substitute.For<IDataReader>();
-            this.CommandExecutor.ExecuteReader(Arg.Any<string>())
+            this.CommandExecutor.ExecuteReader(Arg.Any<string>(), Arg.Any<string>())
                 .Returns(this.DataReader);
         }
 
@@ -121,10 +129,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.EntityMapper = Substitute.For<IEntityMapper>();
             this.EntityMapper.Map<TestEntity>(Arg.Any<IDataReader>())
-                .Returns(new[]
-                         {
-                             this.Entity
-                         });
+                .Returns(new[] { this.Entity });
         }
 
         private void AssumeWritablePropertyMathcerIsInitialised()
@@ -133,6 +138,8 @@ namespace SqlRepo.SqlServer.Tests
             this.WritablePropertyMatcher.Test(Arg.Any<Type>())
                 .Returns(true);
         }
+
+        public TableDefinition TableDefinition { get; private set; }
 
         protected TCommand Command { get; private set; }
         protected ICommandExecutor CommandExecutor { get; private set; }

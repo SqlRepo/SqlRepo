@@ -10,7 +10,7 @@ using SqlRepo.Testing;
 namespace SqlRepo.SqlServer.Tests
 {
     [TestFixture]
-    public class SelectCommandShould : SqlCommandTestBase<SelectCommand<TestEntity>, IEnumerable<TestEntity>>
+    public class SelectCommandShould : SelectCommandTestBase
     {
         [Test]
         public void BeCleanByDefault()
@@ -20,100 +20,452 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void DefaultSchemaToDbo()
+        public void ProvideCurrentConfigurationOnRequest()
         {
-            this.Command.TableSchema.Should()
-                .Be("dbo");
+            this.Command.Specification.Should()
+                .NotBeNull();
         }
 
         [Test]
-        public void DefaultTableNameToNameOfType()
+        public void GenerateCorrectSqlForDefaultQuery()
         {
-            this.Command.TableName.Should()
-                .Be("TestEntity");
+            const string ExpectedSql = "SELECT *\nFROM [dbo].[TestEntity];";
+            this.Command.Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void SupportUsingSpecificSchema()
+        public void GenerateCorrectSqlForSingleColumnSelect()
         {
-            this.Command.UsingTableSchema(OtherValue);
-            this.Command.TableSchema.Should()
-                .Be(OtherValue);
+            const string ExpectedSql = "SELECT [dbo].[TestEntity].[IntProperty]"
+                                       + "\nFROM [dbo].[TestEntity];";
+            this.Command
+                .Select(e => e.IntProperty)
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void SupportChainingAfterSettingTableSchema()
+        public void GenerateCorrectSqlForSingleColumnSelectWithAlias()
         {
-            this.Command.UsingTableSchema(OtherValue)
-                .Should()
-                .Be(this.Command);
+            const string ExpectedSql = "SELECT [a].[IntProperty]"
+                                       + "\nFROM [dbo].[TestEntity] AS [a];";
+            this.Command
+                .Select(e => e.IntProperty, "a")
+                .From("a")
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void SupportUsingSpecificTableName()
+        public void GenerateCorrectSqlForMultipleColumnSelect()
         {
-            this.Command.UsingTableName(OtherValue);
-            this.Command.TableName.Should()
-                .Be(OtherValue);
+            const string ExpectedSql = "SELECT [dbo].[TestEntity].[IntProperty]"
+                                       + "\n, [dbo].[TestEntity].[StringProperty]"
+                                       + "\nFROM [dbo].[TestEntity];";
+            this.Command
+                .Select(e => e.IntProperty, null, e => e.StringProperty)
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void SupportChainingAfterSettingTableName()
+        public void GenerateCorrectSqlForMultipleColumnSelectWithAlias()
         {
-            this.Command.UsingTableName(OtherValue)
-                .Should()
-                .Be(this.Command);
+            const string ExpectedSql = "SELECT [a].[IntProperty]"
+                                       + "\n, [a].[StringProperty]"
+                                       + "\nFROM [dbo].[TestEntity] AS [a];";
+            this.Command
+                .Select(e => e.IntProperty, "a", e => e.StringProperty)
+                .From("a")
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void UseBuilderOnTop()
+        public void GenerateCorrectSqlForSimpleInnerJoinQuery()
         {
-            this.Command.Top(1);
-            this.SelectClauseBuilder.Received()
-                .Top(1);
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nINNER JOIN [dbo].[InnerEntity]"
+                + "\nON [dbo].[TestEntity].[IntProperty] = [dbo].[InnerEntity].[IntProperty];";
+            this.Command.InnerJoin<InnerEntity>()
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty)
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void AlwaysUseBuilderToGetSelectClause()
+        public void GenerateCorrectSqlForSimpleInnerJoinQueryWithAliasedSelectAllOfLeftTable()
         {
-            this.Command.Sql();
-            this.SelectClauseBuilder.Received()
-                .Sql();
+            const string ExpectedSql = "SELECT [a].*"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nINNER JOIN [dbo].[InnerEntity] AS [b]"
+                + "\nON [a].[IntProperty] = [b].[IntProperty];";
+            this.Command
+                .SelectAll("a")
+                .From("a")
+                .InnerJoin<InnerEntity>("b")
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty, "a", "b")
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void AlwaysUseBuilderToGetFromClause()
+        public void GenerateCorrectSqlForSimpleInnerJoinQueryWithAliasedSelectAllOfRightTable()
         {
-            this.Command.Sql();
-            this.FromClauseBuilder.Received()
-                .Sql();
+            const string ExpectedSql = "SELECT [b].*"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nINNER JOIN [dbo].[InnerEntity] AS [b]"
+                + "\nON [a].[IntProperty] = [b].[IntProperty];";
+            this.Command
+                .SelectAll<InnerEntity>("b")
+                .From("a")
+                .InnerJoin<InnerEntity>("b")
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty, "a", "b")
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void GenerateDefaultFromClauseIfNotInitialised()
+        public void GenerateCorrectSqlForSimpleInnerJoinQueryWithAlias()
         {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.Sql();
-            this.FromClauseBuilder.Received()
-                .From<TestEntity>();
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nINNER JOIN [dbo].[InnerEntity] AS [b]"
+                + "\nON [a].[IntProperty] = [b].[IntProperty];";
+            this.Command
+                .From("a")
+                .InnerJoin<InnerEntity>("b")
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty, "a", "b")
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void UseBuilderToGetWhereClauseIfInitialised()
+        public void GenerateCorrectSqlForSimpleLeftOuterJoinQuery()
         {
-            this.WhereClauseBuilder.IsClean.Returns(false);
-            this.Command.Sql();
-            this.WhereClauseBuilder.Received()
-                .Sql();
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nLEFT OUTER JOIN [dbo].[InnerEntity]"
+                + "\nON [dbo].[TestEntity].[IntProperty] = [dbo].[InnerEntity].[IntProperty];";
+            this.Command.LeftOuterJoin<InnerEntity>()
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty)
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
-        public void UseBuilderToGetOrderBClauseIfInitialised()
+        public void GenerateCorrectSqlForSimpleLeftOuterJoinQueryWithAlias()
         {
-            this.OrderByClauseBuilder.IsClean.Returns(false);
-            this.Command.Sql();
-            this.OrderByClauseBuilder.Received()
-                .Sql();
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nLEFT OUTER JOIN [dbo].[InnerEntity] AS [b]"
+                + "\nON [a].[IntProperty] = [b].[IntProperty];";
+            this.Command
+                .From("a")
+                .LeftOuterJoin<InnerEntity>("b")
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty, "a", "b")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleRightOuterJoinQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nRIGHT OUTER JOIN [dbo].[InnerEntity]"
+                + "\nON [dbo].[TestEntity].[IntProperty] = [dbo].[InnerEntity].[IntProperty];";
+            this.Command.RightOuterJoin<InnerEntity>()
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleRightOuterJoinQueryWithAlias()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nRIGHT OUTER JOIN [dbo].[InnerEntity] AS [b]"
+                + "\nON [a].[IntProperty] = [b].[IntProperty];";
+            this.Command
+                .From("a")
+                .RightOuterJoin<InnerEntity>("b")
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty, "a", "b")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForMultipleInnerJoinQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nINNER JOIN [dbo].[InnerEntity] AS [b]"
+                + "\nON [a].[IntProperty] = [b].[IntProperty]"
+                + "\nINNER JOIN [dbo].[InnerEntity] AS [c]"
+                + "\nON [a].[IntProperty] = [c].[IntProperty];";
+            this.Command
+                .From("a")
+                .InnerJoin<InnerEntity>("b")
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty, "a", "b")
+                .InnerJoin<InnerEntity>("c")
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty, "a", "c")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleWhereQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nWHERE ([dbo].[TestEntity].[IntProperty] = 1);";
+            this.Command
+                .Where(e => e.IntProperty == 1)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleWhereQueryWithAlias()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nWHERE ([a].[IntProperty] = 1);";
+            this.Command
+                .From("a")
+                .Where(e => e.IntProperty == 1, "a")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForWhereAndQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nWHERE ([dbo].[TestEntity].[IntProperty] = 1"
+                + "\nAND [dbo].[TestEntity].[StringProperty] = 'something');";
+            this.Command
+                .Where(e => e.IntProperty == 1)
+                .And(e => e.StringProperty == "something")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForWhereAndNestedQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nWHERE ([dbo].[TestEntity].[IntProperty] = 1"
+                + "\nAND ([dbo].[TestEntity].[StringProperty] = 'something'));";
+            this.Command
+                .Where(e => e.IntProperty == 1)
+                .NestedAnd(e => e.StringProperty == "something")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForWhereOrNestedQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nWHERE ([dbo].[TestEntity].[IntProperty] = 1"
+                + "\nOR ([dbo].[TestEntity].[StringProperty] = 'something'));";
+            this.Command
+                .Where(e => e.IntProperty == 1)
+                .NestedOr(e => e.StringProperty == "something")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForWhereOrQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nWHERE ([dbo].[TestEntity].[IntProperty] = 1"
+                + "\nOR [dbo].[TestEntity].[StringProperty] = 'something');";
+            this.Command
+                .Where(e => e.IntProperty == 1)
+                .Or(e => e.StringProperty == "something")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForWhereInQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nWHERE ([dbo].[TestEntity].[IntProperty] IN (1, 2, 3));";
+            this.Command
+                .WhereIn(e => e.IntProperty, new[] { 1, 2, 3 })
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForWhereBetweenQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nWHERE ([dbo].[TestEntity].[IntProperty] >= 5"
+                + "\nAND [dbo].[TestEntity].[IntProperty] <= 10);";
+            this.Command
+                .WhereBetween(e => e.IntProperty, 5, 10)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleOrderByQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nORDER BY [dbo].[TestEntity].[IntProperty] ASC;";
+            this.Command
+                .OrderBy(e => e.IntProperty)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleOrderByQueryWithAlias()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nORDER BY [a].[IntProperty] ASC;";
+            this.Command
+                .From("a")
+                .OrderBy(e => e.IntProperty, "a")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleOrderByDescendingQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nORDER BY [dbo].[TestEntity].[IntProperty] DESC;";
+            this.Command
+                .OrderByDescending(e => e.IntProperty)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForMultipleOrderByQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nORDER BY [dbo].[TestEntity].[IntProperty] ASC"
+                + "\n, [dbo].[TestEntity].[StringProperty] ASC;";
+            this.Command
+                .OrderBy(e => e.IntProperty, null, e => e.StringProperty)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleGroupByQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nGROUP BY [dbo].[TestEntity].[IntProperty];";
+            this.Command
+                .GroupBy(e => e.IntProperty)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleGroupByQueryWithAlias()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nGROUP BY [a].[IntProperty];";
+            const string Alias = "a";
+            this.Command
+                .From(Alias)
+                .GroupBy(e => e.IntProperty, Alias)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForMultipleGroupByQuery()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nGROUP BY [dbo].[TestEntity].[IntProperty]"
+                + "\n, [dbo].[TestEntity].[StringProperty];";
+            this.Command
+                .GroupBy(e => e.IntProperty, null, e => e.StringProperty)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSingleAggregateColumnSelect()
+        {
+            const string ExpectedSql = "SELECT AVG([dbo].[TestEntity].[IntProperty]) AS [IntProperty]"
+                                       + "\nFROM [dbo].[TestEntity];";
+            this.Command
+                .Avg(e => e.IntProperty)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSingleColumnAggregateWithAlias()
+        {
+            const string ExpectedSql = "SELECT SUM([a].[IntProperty]) AS [IntProperty]"
+                                       + "\nFROM [dbo].[TestEntity] AS [a];";
+            this.Command
+                .Sum(e => e.IntProperty, "a")
+                .From("a")
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+
+        [Test]
+        public void GenerateCorrectSqlForSingleHavingFilter()
+        {
+            const string ExpectedSql = "SELECT [dbo].[TestEntity].[Id]"
+                                       + "\n, AVG([dbo].[TestEntity].[IntProperty]) AS [IntProperty]"
+                                       + "\nFROM [dbo].[TestEntity]"
+                                       + "\nGROUP BY [dbo].[TestEntity].[Id]"
+                                       + "\nHAVING AVG([dbo].[TestEntity].[IntProperty]) > 5;";
+            this.Command
+                .Select(e => e.Id)
+                .Avg(e => e.IntProperty)
+                .GroupBy(e => e.Id)
+                .HavingAvg(e => e.IntProperty > 5)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleQueryWithNoLocks()
+        {
+            const string ExpectedSql = "SELECT *\nFROM [dbo].[TestEntity]\nWITH ( NOLOCK );";
+            this.Command.NoLocks().Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForSimpleQueryWithNoLocksAndAlias()
+        {
+            const string ExpectedSql = "SELECT *\nFROM [dbo].[TestEntity] AS [a]\nWITH ( NOLOCK );";
+            this.Command.From("a").NoLocks().Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForJoinedQueryWithNoLocks()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity]"
+                + "\nWITH ( NOLOCK )"
+                + "\nINNER JOIN [dbo].[InnerEntity]"
+                + "\nWITH ( NOLOCK )"
+                + "\nON [dbo].[TestEntity].[IntProperty] = [dbo].[InnerEntity].[IntProperty];";
+            this.Command
+                .NoLocks()
+                .InnerJoin<InnerEntity>()
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty)
+                .Sql().Should().Be(ExpectedSql);
+        }
+
+        [Test]
+        public void GenerateCorrectSqlForJoinedQueryWithNoLocksAndAliases()
+        {
+            const string ExpectedSql = "SELECT *"
+                + "\nFROM [dbo].[TestEntity] AS [a]"
+                + "\nWITH ( NOLOCK )"
+                + "\nINNER JOIN [dbo].[InnerEntity] AS [b]"
+                + "\nWITH ( NOLOCK )"
+                + "\nON [a].[IntProperty] = [b].[IntProperty];";
+            this.Command
+                .NoLocks()
+                .From("a")
+                .InnerJoin<InnerEntity>("b")
+                .On<InnerEntity>((l, r) => l.IntProperty == r.IntProperty, "a", "b")
+                .Sql().Should().Be(ExpectedSql);
         }
 
         [Test]
@@ -121,7 +473,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.AssumeGoIsRequested();
             this.CommandExecutor.Received()
-                .ExecuteReader(Arg.Any<string>());
+                .ExecuteReader(ConnectionString, Arg.Any<string>());
         }
 
         [Test]
@@ -132,301 +484,9 @@ namespace SqlRepo.SqlServer.Tests
                 .Map<TestEntity>(this.DataReader);
         }
 
-        [Test]
-        public void UseBuilderOnWhere()
-        {
-            Expression<Func<TestEntity, bool>> expression = e => e.Id == 1;
-            this.Command.Where(expression);
-            this.WhereClauseBuilder.Received()
-                .Where(expression);
-        }
-
-        [Test]
-        public void UseBuilderOnWhereIn()
-        {
-            Expression<Func<TestEntity, int>> expression = e => e.Id;
-            var values = new[]
-                         {
-                             1,
-                             2,
-                             3
-                         };
-            this.Command.WhereIn(expression, values);
-            this.WhereClauseBuilder.Received()
-                .WhereIn(expression, values);
-        }
-
-        [Test]
-        public void UseBuilderOnAnd()
-        {
-            Expression<Func<TestEntity, bool>> expression = e => e.Id == 1;
-            this.Command.And(expression);
-            this.WhereClauseBuilder.Received()
-                .And(expression);
-        }
-
-        [Test]
-        public void UseBuilderOnAndIn()
-        {
-            Expression<Func<TestEntity, int>> expression = e => e.Id;
-            var values = new[]
-                         {
-                             1,
-                             2,
-                             3
-                         };
-            this.Command.AndIn(expression, values);
-            this.WhereClauseBuilder.Received()
-                .AndIn(expression, values);
-        }
-
-        [Test]
-        public void UseBuilderOnNestedAnd()
-        {
-            Expression<Func<TestEntity, bool>> expression = e => e.Id == 1;
-            this.Command.NestedAnd(expression);
-            this.WhereClauseBuilder.Received()
-                .NestedAnd(expression);
-        }
-
-        [Test]
-        public void UseBuilderOnOr()
-        {
-            Expression<Func<TestEntity, bool>> expression = e => e.Id == 1;
-            this.Command.Or(expression);
-            this.WhereClauseBuilder.Received()
-                .Or(expression);
-        }
-
-        [Test]
-        public void UseBuilderOnOrIn()
-        {
-            Expression<Func<TestEntity, int>> expression = e => e.Id;
-            var values = new[]
-                         {
-                             1,
-                             2,
-                             3
-                         };
-            this.Command.OrIn(expression, values);
-            this.WhereClauseBuilder.Received()
-                .OrIn(expression, values);
-        }
-
-        [Test]
-        public void UseBuilderOnNestedOr()
-        {
-            Expression<Func<TestEntity, bool>> expression = e => e.Id == 1;
-            this.Command.NestedOr(expression);
-            this.WhereClauseBuilder.Received()
-                .NestedOr(expression);
-        }
-
-        [Test]
-        public void UseBuilderOnSelectAll()
-        {
-            this.Command.SelectAll<TestEntity>();
-            this.SelectClauseBuilder.Received()
-                .SelectAll<TestEntity>();
-        }
-
-        [Test]
-        public void UseBuilderOnInnerJoin()
-        {
-            this.Command.InnerJoin<TestEntity, InnerEntity>();
-            this.FromClauseBuilder.Received()
-                .InnerJoin<TestEntity, InnerEntity>();
-        }
-
-        [Test]
-        public void InitialiseFromClauseIfNotOnInnerJoin()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.InnerJoin<TestEntity, InnerEntity>();
-            this.FromClauseBuilder.Received()
-                .From<TestEntity>();
-        }
-
-        [Test]
-        public void InitialiseFromClauseWithAliasIfNotOnInnerJoin()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.InnerJoin<TestEntity, InnerEntity>("a", "b");
-            this.FromClauseBuilder.Received()
-                .From<TestEntity>("a");
-        }
-
-        [Test]
-        public void PassAliasesToBuilderOnInnerJoin()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.InnerJoin<TestEntity, InnerEntity>("a", "b");
-            this.FromClauseBuilder.Received()
-                .InnerJoin<TestEntity, InnerEntity>("a", "b");
-        }
-
-        [Test]
-        public void UseBuildOnSettingJoinCondition()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.InnerJoin<TestEntity, InnerEntity>();
-            Expression<Func<TestEntity, InnerEntity, bool>> expression = (l, r) => l.Id == r.TestEntityId;
-            this.Command.On(expression);
-            this.FromClauseBuilder.Received()
-                .On(expression);
-        }
-
-        [Test]
-        public void PassAliasesToBuilderOnSettingJoinCondition()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.InnerJoin<TestEntity, InnerEntity>();
-            Expression<Func<TestEntity, InnerEntity, bool>> expression = (l, r) => l.Id == r.TestEntityId;
-            this.Command.On(expression, "a", "b");
-            this.FromClauseBuilder.Received()
-                .On(expression, "a", "b");
-        }
-
-        [Test]
-        public void UseBuilderOnLeftOuterJoin()
-        {
-            this.Command.LeftOuterJoin<TestEntity, InnerEntity>();
-            this.FromClauseBuilder.Received()
-                .LeftOuterJoin<TestEntity, InnerEntity>();
-        }
-
-        [Test]
-        public void InitialiseFromClauseIfNotOnLeftOuterJoin()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.LeftOuterJoin<TestEntity, InnerEntity>();
-            this.FromClauseBuilder.Received()
-                .From<TestEntity>();
-        }
-
-        [Test]
-        public void InitialiseFromClauseWithAliasIfNotOnLeftOuterJoin()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.LeftOuterJoin<TestEntity, InnerEntity>("a", "b");
-            this.FromClauseBuilder.Received()
-                .From<TestEntity>("a");
-        }
-
-        [Test]
-        public void PassAliasesToBuilderOnLeftOuterJoin()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.LeftOuterJoin<TestEntity, InnerEntity>("a", "b");
-            this.FromClauseBuilder.Received()
-                .LeftOuterJoin<TestEntity, InnerEntity>("a", "b");
-        }
-
-        [Test]
-        public void UseBuilderOnRightOuterJoin()
-        {
-            this.Command.RightOuterJoin<TestEntity, InnerEntity>();
-            this.FromClauseBuilder.Received()
-                .RightOuterJoin<TestEntity, InnerEntity>();
-        }
-
-        [Test]
-        public void InitialiseFromClauseIfNotOnRightOuterJoin()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.RightOuterJoin<TestEntity, InnerEntity>();
-            this.FromClauseBuilder.Received()
-                .From<TestEntity>();
-        }
-
-        [Test]
-        public void InitialiseFromClauseWithAliasIfNotOnRightOuterJoin()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.RightOuterJoin<TestEntity, InnerEntity>("a", "b");
-            this.FromClauseBuilder.Received()
-                .From<TestEntity>("a");
-        }
-
-        [Test]
-        public void PassAliasesToBuilderOnRightOuterJoin()
-        {
-            this.FromClauseBuilder.IsClean.Returns(true);
-            this.Command.RightOuterJoin<TestEntity, InnerEntity>("a", "b");
-            this.FromClauseBuilder.Received()
-                .RightOuterJoin<TestEntity, InnerEntity>("a", "b");
-        }
-
-        [Test]
-        public void UseBuilderOnOrderBy()
-        {
-            Expression<Func<TestEntity, object>> expression = e => e.IntProperty;
-            this.Command.OrderBy(expression);
-            this.OrderByClauseBuilder.Received()
-                .By(expression);
-        }
-
-        [Test]
-        public void UseBuilderOnOrderByDescending()
-        {
-            Expression<Func<TestEntity, object>> expression = e => e.IntProperty;
-            this.Command.OrderByDescending(expression);
-            this.OrderByClauseBuilder.Received()
-                .ByDescending(expression);
-        }
-
-        [Test]
-        public void CleanClauseBuilders()
-        {
-            this.Command.FromScratch();
-            this.SelectClauseBuilder.Received()
-                .FromScratch();
-            this.FromClauseBuilder.Received()
-                .FromScratch();
-            this.WhereClauseBuilder.Received()
-                .FromScratch();
-            this.OrderByClauseBuilder.Received()
-                .FromScratch();
-        }
-
-        [Test]
-        public void UseBuilderOnEndNesting()
-        {
-            this.Command.EndNesting();
-            this.WhereClauseBuilder.Received()
-                .EndNesting();
-        }
-
-        protected override SelectCommand<TestEntity> CreateCommand(ICommandExecutor commandExecutor,
-            IEntityMapper entityMapper,
-            IWritablePropertyMatcher writablePropertyMatcher,
-            ISelectClauseBuilder selectClauseBuilder,
-            IFromClauseBuilder fromClauseBuilder,
-            IWhereClauseBuilder whereClauseBuilder,
-            string connectionString)
-        {
-            this.AssumeOrderByClauseBuilderIsInitialised();
-            var command = new SelectCommand<TestEntity>(commandExecutor,
-                entityMapper,
-                selectClauseBuilder,
-                fromClauseBuilder,
-                whereClauseBuilder,
-                this.OrderByClauseBuilder);
-            command.UseConnectionString(connectionString);
-            return command;
-        }
-
         private void AssumeGoIsRequested()
         {
             this.Command.Go();
         }
-
-        private void AssumeOrderByClauseBuilderIsInitialised()
-        {
-            this.OrderByClauseBuilder = Substitute.For<IOrderByClauseBuilder>();
-            this.OrderByClauseBuilder.ReturnsForAll(this.OrderByClauseBuilder);
-        }
-
-        protected IOrderByClauseBuilder OrderByClauseBuilder { get; set; }
     }
 }

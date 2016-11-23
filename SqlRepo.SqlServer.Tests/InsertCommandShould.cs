@@ -254,8 +254,23 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.AssumeTestEntityIsInitialised();
             var expected =
-                "INSERT [dbo].[TestEntity]([DateTimeOffsetProperty], [NullableDateTimeOffsetProperty], [DateTimeProperty], [NullableDateTimeProperty], [DoubleProperty], [IntProperty], [IntProperty2], [StringProperty], [TestEnumProperty], [DecimalProperty], [ByteProperty], [ShortProperty], [SingleProperty], [GuidProperty])\n"
-                + $"VALUES('{this.Entity.DateTimeOffsetProperty.ToString(FormatString.DateTimeOffset)}', '{this.Entity.NullableDateTimeOffsetProperty.Value.ToString(FormatString.DateTimeOffset)}', '{this.Entity.DateTimeProperty.ToString(FormatString.DateTime)}', '{this.Entity.NullableDateTimeProperty.Value.ToString(FormatString.DateTime)}', {this.Entity.DoubleProperty}, {this.Entity.IntProperty}, {this.Entity.IntProperty2}, '{this.Entity.StringProperty}', {(int)this.Entity.TestEnumProperty}, {this.Entity.DecimalProperty}, {this.Entity.ByteProperty}, {this.Entity.ShortProperty}, {this.Entity.SingleProperty}, '{this.Entity.GuidProperty}');";
+                string.Format(
+                    "INSERT [dbo].[TestEntity]([DateTimeOffsetProperty], [NullableDateTimeOffsetProperty], [DateTimeProperty], [NullableDateTimeProperty], [DoubleProperty], [IntProperty], [IntProperty2], [StringProperty], [TestEnumProperty], [DecimalProperty], [ByteProperty], [ShortProperty], [SingleProperty], [GuidProperty])\n"
+                    + "VALUES('{0}', '{1}', '{2}', '{3}', {4}, {5}, {6}, '{7}', {8}, {9}, {10}, {11}, {12}, '{13}');",
+                    this.Entity.DateTimeOffsetProperty.ToString(FormatString.DateTimeOffset),
+                    this.Entity.NullableDateTimeOffsetProperty.Value.ToString(FormatString.DateTimeOffset),
+                    this.Entity.DateTimeProperty.ToString(FormatString.DateTime),
+                    this.Entity.NullableDateTimeProperty.Value.ToString(FormatString.DateTime),
+                    this.Entity.DoubleProperty,
+                    this.Entity.IntProperty,
+                    this.Entity.IntProperty2,
+                    this.Entity.StringProperty,
+                    (int)this.Entity.TestEnumProperty,
+                    this.Entity.DecimalProperty,
+                    this.Entity.ByteProperty,
+                    this.Entity.ShortProperty,
+                    this.Entity.SingleProperty,
+                    this.Entity.GuidProperty);
             this.Command.For(this.Entity)
                 .Sql()
                 .Should()
@@ -319,7 +334,7 @@ namespace SqlRepo.SqlServer.Tests
                 "INSERT [dbo].[TestEntity]([StringProperty])\nVALUES('My Name');\nSELECT *\nFROM [dbo].[TestEntity]\nWHERE [Id] = SCOPE_IDENTITY();";
             this.AssumeGoIsRequested();
             this.CommandExecutor.Received()
-                .ExecuteReader(expected);
+                .ExecuteReader(ConnectionString, expected);
         }
 
         [Test]
@@ -332,7 +347,7 @@ namespace SqlRepo.SqlServer.Tests
 
         public string ExpectedTableSpecification(string schema, string table)
         {
-            return $"INSERT [{schema}].[{table}]";
+            return string.Format("INSERT [{0}].[{1}]", schema, table);
         }
 
         protected override InsertCommand<TestEntity> CreateCommand(ICommandExecutor commandExecutor,

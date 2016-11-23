@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,8 +18,9 @@ namespace SqlRepo.SqlServer
 
         public override string ToString()
         {
-            var nestedGroups = !this.Groups.Any()? string.Empty: string.Format(" {0}", string.Join(" ", this.Groups)); 
-            return string.Format("{0} ({1}{2})", this.GroupType.ToString().ToUpperInvariant(), string.Join(" ", this.Conditions), nestedGroups);
+            var nestedGroups = !this.Groups.Any()? string.Empty: $" {string.Join(" ", this.Groups)}"; 
+            return
+                $"{this.GroupType.ToString() .ToUpperInvariant()} ({string.Join(" ", this.Conditions)}{nestedGroups})";
         }
     }
 }

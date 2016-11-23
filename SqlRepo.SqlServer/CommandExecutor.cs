@@ -7,7 +7,6 @@ namespace SqlRepo.SqlServer
     public class CommandExecutor : ICommandExecutor
     {
         private const int CommandTimeout = 300000;
-        private readonly string connectionString = string.Empty;
         private readonly ISqlLogger logger;
 
         public CommandExecutor(ISqlLogger logger)
@@ -15,13 +14,13 @@ namespace SqlRepo.SqlServer
             this.logger = logger;
         }
 
-        public int ExecuteNonQuery(string sql)
+        public int ExecuteNonQuery(string connectionString, string sql)
         {
-            this.LogQuery(sql);
-            using(var connection = new SqlConnection(this.connectionString))
+            LogQuery(sql);
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                using(var command = connection.CreateCommand())
+                using (var command = connection.CreateCommand())
                 {
                     command.CommandTimeout = CommandTimeout;
                     command.CommandType = CommandType.Text;
@@ -31,12 +30,12 @@ namespace SqlRepo.SqlServer
             }
         }
 
-        public IDataReader ExecuteReader(string sql)
+        public IDataReader ExecuteReader(string connectionString, string sql)
         {
-            this.LogQuery(sql);
-            var connection = new SqlConnection(this.connectionString);
+            LogQuery(sql);
+            var connection = new SqlConnection(connectionString);
             connection.Open();
-            using(var command = connection.CreateCommand())
+            using (var command = connection.CreateCommand())
             {
                 command.CommandTimeout = CommandTimeout;
                 command.CommandType = CommandType.Text;
@@ -45,18 +44,19 @@ namespace SqlRepo.SqlServer
             }
         }
 
-        public IDataReader ExecuteStoredProcedure(string name,
+        public IDataReader ExecuteStoredProcedure(string connectionString,
+            string name,
             params ParameterDefinition[] parametersDefinitions)
         {
-            this.logger.Log($"Executing Procedure: {name}");
-            var connection = new SqlConnection(this.connectionString);
+            logger.Log($"Executing SP: {name}");
+            var connection = new SqlConnection(connectionString);
             connection.Open();
-            using(var command = connection.CreateCommand())
+            using (var command = connection.CreateCommand())
             {
                 command.CommandTimeout = CommandTimeout;
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = name;
-                foreach(var parametersDefinition in parametersDefinitions)
+                foreach (var parametersDefinition in parametersDefinitions)
                 {
                     command.Parameters.AddWithValue(parametersDefinition.Name, parametersDefinition.Value);
                 }
@@ -66,7 +66,7 @@ namespace SqlRepo.SqlServer
 
         private void LogQuery(string sql)
         {
-            this.logger.Log($"Executing SQL:{Environment.NewLine}{sql}");
+            logger.Log($"Executing SQL:{Environment.NewLine}{sql}");
         }
     }
 }

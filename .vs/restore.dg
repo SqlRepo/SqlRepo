@@ -1,4 +1,6 @@
-#:C:\_src\sqlrepo\SqlRepo.Tests\SqlRepo.Tests.xproj
-C:\_src\sqlrepo\SqlRepo.Tests\SqlRepo.Tests.xproj|C:\_src\sqlrepo\SqlRepo\SqlRepo.xproj
-C:\_src\sqlrepo\SqlRepo.Tests\SqlRepo.Tests.xproj|C:\_src\sqlrepo\SqlRepo.Testing\SqlRepo.Testing.xproj
+#:C:\_src\sqlrepo\SqlRepo.SqlServer.Tests\SqlRepo.SqlServer.Tests.xproj
+C:\_src\sqlrepo\SqlRepo.SqlServer.Tests\SqlRepo.SqlServer.Tests.xproj|C:\_src\sqlrepo\SqlRepo.Testing\SqlRepo.Testing.xproj
+C:\_src\sqlrepo\SqlRepo.SqlServer.Tests\SqlRepo.SqlServer.Tests.xproj|C:\_src\sqlrepo\SqlRepo.SqlServer\SqlRepo.SqlServer.xproj
 C:\_src\sqlrepo\SqlRepo.Testing\SqlRepo.Testing.xproj|C:\_src\sqlrepo\SqlRepo.Model\SqlRepo.Model.xproj
+C:\_src\sqlrepo\SqlRepo.SqlServer\SqlRepo.SqlServer.xproj|C:\_src\sqlrepo\SqlRepo\SqlRepo.xproj
+C:\_src\sqlrepo\SqlRepo.SqlServer\SqlRepo.SqlServer.xproj|C:\_src\sqlrepo\SqlRepo.Model\SqlRepo.Model.xproj
