@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "FluentAssertions": "4.17.0",
+    "NETStandard.Library": "1.6.0",
+    "NSubstitute": "2.0.0-rc",
+    "NUnit": "3.5.0",
+    "SqlRepo.SqlServer": "1.0.0-*",
+    "SqlRepo.Testing": "1.0.0-*",
+    "dotnet-test-nunit": "3.4.0-beta-3",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.1"
+    }
+  },
+
+  "testRunner": "nunit",
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50"
+    }
+  }
+}

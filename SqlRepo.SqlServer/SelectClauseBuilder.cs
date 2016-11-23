@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace SqlRepo.SqlServer
 {
@@ -17,28 +18,28 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            foreach(var property in entity.GetType()
-                                          .GetProperties()
-                                          .Where(p => p.CanWrite))
+            foreach (var property in entity.GetType()
+                .GetProperties()
+                .Where(p => p.CanWrite))
             {
-                this.AddColumnSelection<TEntity>(alias, tableName, tableSchema, property.Name);
+                AddColumnSelection<TEntity>(alias, tableName, tableSchema, property.Name);
             }
-            this.IsClean = false;
+            IsClean = false;
             return this;
         }
 
         public ISelectClauseBuilder FromScratch()
         {
-            this.selections.Clear();
-            this.IsClean = true;
+            selections.Clear();
+            IsClean = true;
             return this;
         }
 
         public ISelectClauseBuilder Select<TEntity>(Expression<Func<TEntity, object>> selector,
             params Expression<Func<TEntity, object>>[] additionalSelectors)
         {
-            return this.Select(this.ActiveAlias,
-                this.TableNameFromType<TEntity>(),
+            return Select(ActiveAlias,
+                TableNameFromType<TEntity>(),
                 DefaultSchema,
                 selector,
                 additionalSelectors);
@@ -48,8 +49,8 @@ namespace SqlRepo.SqlServer
             Expression<Func<TEntity, object>> selector,
             params Expression<Func<TEntity, object>>[] additionalSelectors)
         {
-            return this.Select(alias,
-                this.TableNameFromType<TEntity>(),
+            return Select(alias,
+                TableNameFromType<TEntity>(),
                 DefaultSchema,
                 selector,
                 additionalSelectors);
@@ -60,7 +61,7 @@ namespace SqlRepo.SqlServer
             Expression<Func<TEntity, object>> selector,
             params Expression<Func<TEntity, object>>[] additionalSelectors)
         {
-            return this.Select(alias, tableName, DefaultSchema, selector, additionalSelectors);
+            return Select(alias, tableName, DefaultSchema, selector, additionalSelectors);
         }
 
         public ISelectClauseBuilder Select<TEntity>(string alias,
@@ -69,16 +70,16 @@ namespace SqlRepo.SqlServer
             Expression<Func<TEntity, object>> selector,
             params Expression<Func<TEntity, object>>[] additionalSelectors)
         {
-            this.AddColumnSelection<TEntity>(alias, tableName, tableSchema, this.GetMemberName(selector));
-            foreach(var additionalSelector in additionalSelectors)
+            AddColumnSelection<TEntity>(alias, tableName, tableSchema, GetMemberName(selector));
+            foreach (var additionalSelector in additionalSelectors)
             {
-                this.AddColumnSelection<TEntity>(alias,
+                AddColumnSelection<TEntity>(alias,
                     tableName,
                     tableSchema,
-                    this.GetMemberName(additionalSelector));
+                    GetMemberName(additionalSelector));
             }
 
-            this.IsClean = false;
+            IsClean = false;
             return this;
         }
 
@@ -86,33 +87,33 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            this.AddColumnSelection<TEntity>(alias, tableName, tableSchema, "*");
+            AddColumnSelection<TEntity>(alias, tableName, tableSchema, "*");
             return this;
         }
 
         public override string Sql()
         {
-            var selection = string.IsNullOrWhiteSpace(this.ActiveAlias)? "*": $"[{this.ActiveAlias}].*";
-                
-            if(this.selections.Any())
+            var selection = string.IsNullOrWhiteSpace(ActiveAlias) ? "*" : $"[{ActiveAlias}].*";
+
+            if (selections.Any())
             {
-                selection = string.Join(", ", this.selections);
+                selection = string.Join(", ", selections);
             }
 
-             return string.Format(ClauseTemplate,
-                    this.topRows.HasValue ? $"TOP {this.topRows.Value} ": string.Empty,
-                    selection);
+            return string.Format(ClauseTemplate,
+                topRows.HasValue ? $"TOP {topRows.Value} " : string.Empty,
+                selection);
         }
 
         public ISelectClauseBuilder Top(int rows)
         {
-           this.topRows = rows;
+            topRows = rows;
             return this;
         }
 
         public ISelectClauseBuilder UsingAlias(string alias)
         {
-            this.ActiveAlias = alias;
+            ActiveAlias = alias;
             return this;
         }
 
@@ -121,28 +122,28 @@ namespace SqlRepo.SqlServer
             string tableSchema,
             string name)
         {
-            if(string.IsNullOrWhiteSpace(alias))
+            if (string.IsNullOrWhiteSpace(alias))
             {
-                alias = this.ActiveAlias;
+                alias = ActiveAlias;
             }
 
-            if(string.IsNullOrWhiteSpace(tableName))
+            if (string.IsNullOrWhiteSpace(tableName))
             {
-                tableName = this.TableNameFromType<TEntity>();
+                tableName = TableNameFromType<TEntity>();
             }
 
-            if(string.IsNullOrWhiteSpace(tableSchema))
+            if (string.IsNullOrWhiteSpace(tableSchema))
             {
                 tableSchema = DefaultSchema;
             }
 
-            this.selections.Add(new ColumnSelection
-                                {
-                                    Alias = alias,
-                                    Table = tableName,
-                                    Schema = tableSchema,
-                                    Name = name
-                                });
+            selections.Add(new ColumnSelection
+            {
+                Alias = alias,
+                Table = tableName,
+                Schema = tableSchema,
+                Name = name
+            });
         }
     }
 }

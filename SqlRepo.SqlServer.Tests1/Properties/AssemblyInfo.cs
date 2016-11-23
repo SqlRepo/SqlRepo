@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SqlRepo.SqlServer.Autofac")]
+[assembly: AssemblyProduct("SqlRepo.SqlServer.Tests")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e356200b-8442-4a1a-87cc-c59306d4b37f")]
+[assembly: Guid("c8b33819-8ab4-47c7-a2e7-6a4983eac25b")]
