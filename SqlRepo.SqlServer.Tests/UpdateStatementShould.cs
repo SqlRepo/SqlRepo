@@ -25,52 +25,18 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void SupportUsingSpecificSchema()
-        {
-            this.Command.UsingTableSchema(OtherValue);
-            this.Command.TableSchema.Should()
-                .Be(OtherValue);
-        }
-
-        [Test]
-        public void SupportChainingAfterSettingTableSchema()
-        {
-            this.Command.UsingTableSchema(OtherValue)
-                .Should()
-                .Be(this.Command);
-        }
-
-        [Test]
-        public void SupportUsingSpecificTableName()
-        {
-            this.Command.UsingTableName(OtherValue);
-            this.Command.TableName.Should()
-                .Be(OtherValue);
-        }
-
-        [Test]
-        public void SupportChainingAfterSettingTableName()
-        {
-            this.Command.UsingTableName(OtherValue)
-                .Should()
-                .Be(this.Command);
-        }
-
-        [Test]
         public void ProduceCorrectDefaultTableSpecfication()
         {
             this.Command.Set(e => e.IntProperty, 1)
                 .Sql()
                 .Should()
-                .Contain(this.ExpectedTableSpecification(this.Command.TableSchema, this.Command.TableName));
+                .Contain(this.ExpectedTableSpecification("dbo", "TestEntity"));
         }
 
         [Test]
         public void ProduceCorrectNonDefaultTableSpecfication()
         {
-            this.Command.Set(e => e.IntProperty, 1)
-                .UsingTableSchema(OtherValue)
-                .UsingTableName(OtherValue)
+            this.Command.Set(e => e.IntProperty, 1, OtherValue, OtherValue)
                 .Sql()
                 .Should()
                 .Contain(this.ExpectedTableSpecification(OtherValue, OtherValue));
@@ -221,8 +187,7 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void BuildCorrectSetClauseWithMultipleSets()
         {
-            const string expected =
-                "UPDATE [dbo].[TestEntity]\nSET [IntProperty] = 1, [StringProperty] = 'My String'";
+            const string expected = "UPDATE [dbo].[TestEntity]\nSET [IntProperty] = 1, [StringProperty] = 'My String'";
             this.Command.Set(e => e.IntProperty, 1)
                 .Set(e => e.StringProperty, "My String")
                 .Sql()
@@ -296,20 +261,11 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void ResetWhereClauseOnFromScratch()
-        {
-            this.Command.FromScratch();
-            this.WhereClauseBuilder.Received()
-                .FromScratch();
-        }
-
-        [Test]
         public void EmbedWhereClauseFromBuilderInStatement()
         {
             const string whereClause = "WHERE [Id] = 55";
             const string expected =
-                "UPDATE [dbo].[TestEntity]\nSET [IntProperty] = 1, [StringProperty] = 'My String'\n"
-                + whereClause + ";";
+                "UPDATE [dbo].[TestEntity]\nSET [IntProperty] = 1, [StringProperty] = 'My String'\n" + whereClause + ";";
             this.WhereClauseBuilder.Sql()
                 .Returns(whereClause);
             var result = this.Command.Set(e => e.IntProperty, 1)
@@ -326,7 +282,7 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeWhereClauseBuilderReportsClean();
             this.AssumeTestEntityIsInitialised();
             var expected =
-                $"UPDATE [dbo].[TestEntity]\nSET [DateTimeOffsetProperty] = '{this.Entity.DateTimeOffsetProperty.ToString(FormatString.DateTimeOffset)}', [NullableDateTimeOffsetProperty] = '{this.Entity.NullableDateTimeOffsetProperty.Value.ToString(FormatString.DateTimeOffset)}', [DateTimeProperty] = '{this.Entity.DateTimeProperty.ToString(FormatString.DateTime)}', [NullableDateTimeProperty] = '{this.Entity.NullableDateTimeProperty.Value.ToString(FormatString.DateTime)}', [DoubleProperty] = {this.Entity.DoubleProperty}, [IntProperty] = {this.Entity.IntProperty}, [IntProperty2] = {this.Entity.IntProperty2}, [StringProperty] = '{this.Entity.StringProperty}', [TestEnumProperty] = {(int)this.Entity.TestEnumProperty}, [DecimalProperty] = {this.Entity.DecimalProperty}, [ByteProperty] = {this.Entity.ByteProperty}, [ShortProperty] = {this.Entity.ShortProperty}, [SingleProperty] = {this.Entity.SingleProperty}, [GuidProperty] = '{this.Entity.GuidProperty}'\nWHERE [Id] = {this.Entity.Id};";
+                $"UPDATE [dbo].[TestEntity]\nSET [DateTimeOffsetProperty] = '{this.Entity.DateTimeOffsetProperty.ToString(FormatString.DateTimeOffset)}', [NullableDateTimeOffsetProperty] = '{this.Entity.NullableDateTimeOffsetProperty.GetValueOrDefault().ToString(FormatString.DateTimeOffset)}', [DateTimeProperty] = '{this.Entity.DateTimeProperty.ToString(FormatString.DateTime)}', [NullableDateTimeProperty] = '{this.Entity.NullableDateTimeProperty.GetValueOrDefault().ToString(FormatString.DateTime)}', [DoubleProperty] = {this.Entity.DoubleProperty}, [IntProperty] = {this.Entity.IntProperty}, [IntProperty2] = {this.Entity.IntProperty2}, [StringProperty] = '{this.Entity.StringProperty}', [TestEnumProperty] = {(int)this.Entity.TestEnumProperty}, [DecimalProperty] = {this.Entity.DecimalProperty}, [ByteProperty] = {this.Entity.ByteProperty}, [ShortProperty] = {this.Entity.ShortProperty}, [SingleProperty] = {this.Entity.SingleProperty}, [GuidProperty] = '{this.Entity.GuidProperty}'\nWHERE [Id] = {this.Entity.Id};";
             this.Command.For(this.Entity)
                 .Sql()
                 .Should()
@@ -345,7 +301,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.AssumeTestEntityIsInitialised();
             this.AssumeWhereClauseBuilderReportsClean();
-            this.Command.FromScratch()
+            this.Command
                 .For(this.Entity);
             this.Command.Invoking(s => s.Set(e => e.ByteProperty, 1))
                 .ShouldThrow<InvalidOperationException>();
@@ -385,7 +341,7 @@ namespace SqlRepo.SqlServer.Tests
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [StringProperty] = 'My Name';";
             this.AssumeGoIsRequested();
             this.CommandExecutor.Received()
-                .ExecuteNonQuery(expected);
+                .ExecuteNonQuery(ConnectionString, expected);
         }
 
         protected override UpdateCommand<TestEntity> CreateCommand(ICommandExecutor commandExecutor,
@@ -412,7 +368,7 @@ namespace SqlRepo.SqlServer.Tests
 
         private string ExpectedTableSpecification(string schema, string table)
         {
-            return $"UPDATE [{schema}].[{table}]\nSET";
+            return string.Format("UPDATE [{0}].[{1}]\nSET", schema, table);
         }
     }
 }

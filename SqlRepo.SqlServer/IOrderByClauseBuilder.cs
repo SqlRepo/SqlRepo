@@ -11,6 +11,7 @@ namespace SqlRepo.SqlServer
             params Expression<Func<TEntity, object>>[] additionalSelectors);
 
         IOrderByClauseBuilder By<TEntity>(string alias,
+            string tableName,
             Expression<Func<TEntity, object>> selector,
             params Expression<Func<TEntity, object>>[] additionalSelectors);
 

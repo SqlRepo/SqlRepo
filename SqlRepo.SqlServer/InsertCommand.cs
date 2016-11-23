@@ -54,7 +54,7 @@ namespace SqlRepo.SqlServer
             {
                 connectionString = ConnectionString;
             }
-            using (var reader = CommandExecutor.ExecuteReader(Sql()))
+            using (var reader = CommandExecutor.ExecuteReader(connectionString, Sql()))
             {
                 return EntityMapper.Map<TEntity>(reader)
                     .FirstOrDefault();

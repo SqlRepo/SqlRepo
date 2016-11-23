@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 namespace SqlRepo
 {
     public interface IInsertCommand<TEntity> : ISqlCommand<TEntity>
-        where TEntity: class, new()
+        where TEntity : class, new()
     {
         IInsertCommand<TEntity> For(TEntity entity);
         IInsertCommand<TEntity> FromScratch();

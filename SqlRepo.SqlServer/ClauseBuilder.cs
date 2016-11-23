@@ -7,7 +7,7 @@ namespace SqlRepo.SqlServer
 {
     public abstract class ClauseBuilder : IClauseBuilder
     {
-        protected const string DefaultSchema = "dbo";
+        public const string DefaultSchema = "dbo";
 
         protected ClauseBuilder()
         {

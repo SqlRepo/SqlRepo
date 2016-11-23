@@ -23,14 +23,11 @@ namespace SqlRepo.SqlServer
         }
 
         public IOrderByClauseBuilder By<TEntity>(string alias,
+            string tableName,
             Expression<Func<TEntity, object>> selector,
             params Expression<Func<TEntity, object>>[] additionalSelectors)
         {
-            return this.By(alias,
-                this.TableNameFromType<TEntity>(),
-                DefaultSchema,
-                selector,
-                additionalSelectors);
+            return this.By(alias, tableName, DefaultSchema, selector, additionalSelectors);
         }
 
         public IOrderByClauseBuilder By<TEntity>(string alias,

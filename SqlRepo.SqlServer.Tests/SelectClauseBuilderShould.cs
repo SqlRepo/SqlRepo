@@ -30,37 +30,11 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void ReturnToCleanAfterFromScatch()
-        {
-            this.builder.Select<TestEntity>(e => e.IntProperty)
-                .FromScratch();
-            this.builder.IsClean.Should()
-                .BeTrue();
-        }
-
-        [Test]
         public void DefaultToSelectAllIfNoSelectionsOrAlias()
         {
             this.builder.Sql()
                 .Should()
                 .Be("SELECT *");
-        }
-
-        [Test]
-        public void SupportSettingTheActiveAlias()
-        {
-            this.builder.UsingAlias("a")
-                .ActiveAlias.Should()
-                .Be("a");
-        }
-
-        [Test]
-        public void IncludeAliasInDefaultSelectionIfSet()
-        {
-            this.builder.UsingAlias("a")
-                .Sql()
-                .Should()
-                .Be("SELECT [a].*");
         }
 
         [Test]
@@ -78,52 +52,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             const string expected =
                 "SELECT [dbo].[TestEntity].[IntProperty], [dbo].[TestEntity].[IntProperty2]";
-            this.builder.Select<TestEntity>(e => e.IntProperty, e => e.IntProperty2)
-                .Sql()
-                .Should()
-                .Be(expected);
-        }
-
-        [Test]
-        public void ReturnCorrectSqlForSingleSelectionWithSingleAlias()
-        {
-            const string expected = "SELECT [a].[IntProperty]";
-            this.builder.UsingAlias("a")
-                .Select<TestEntity>(e => e.IntProperty)
-                .Sql()
-                .Should()
-                .Be(expected);
-        }
-
-        [Test]
-        public void ReturnCorrectSqlForMultipleSelectionsWithSingleAlias()
-        {
-            const string expected = "SELECT [a].[IntProperty], [a].[IntProperty2]";
-            this.builder.UsingAlias("a")
-                .Select<TestEntity>(e => e.IntProperty, e => e.IntProperty2)
-                .Sql()
-                .Should()
-                .Be(expected);
-        }
-
-        [Test]
-        public void ReturnCorrectSqlForMultipleSelectionsWithDifferentAliases()
-        {
-            const string expected = "SELECT [a].[IntProperty], [b].[StringProperty]";
-            this.builder.UsingAlias("a")
-                .Select<TestEntity>(e => e.IntProperty)
-                .UsingAlias("b")
-                .Select<TestEntity>(e => e.StringProperty)
-                .Sql()
-                .Should()
-                .Be(expected);
-        }
-
-        [Test]
-        public void ReturnCorrectSqlForMultipleSelectionsWithLocalAlias()
-        {
-            const string expected = "SELECT [a].[IntProperty], [a].[StringProperty]";
-            this.builder.Select<TestEntity>("a", e => e.IntProperty, e => e.StringProperty)
+            this.builder.Select<TestEntity>(e => e.IntProperty, additionalSelectors: e => e.IntProperty2)
                 .Sql()
                 .Should()
                 .Be(expected);
@@ -133,9 +62,8 @@ namespace SqlRepo.SqlServer.Tests
         public void ReturnCorrectSqlForMultipleSelectionsWithDifferentLocalAliases()
         {
             const string expected = "SELECT [a].[IntProperty], [b].[StringProperty]";
-            this.builder
-                .Select<TestEntity>("a", e => e.IntProperty)
-                .Select<TestEntity>("b", e => e.StringProperty)
+            this.builder.Select<TestEntity>(e => e.IntProperty, "a")
+                .Select<TestEntity>(e => e.StringProperty, "b")
                 .Sql()
                 .Should()
                 .Be(expected);
@@ -154,38 +82,9 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void ReturnCorrectSqlForExplicitSelectionOfAllColumnsForSingleEntityWithAlias()
-        {
-            const string expected =
-                "SELECT [a].[DateTimeOffsetProperty], [a].[NullableDateTimeOffsetProperty], [a].[DateTimeProperty], [a].[NullableDateTimeProperty], [a].[DoubleProperty], [a].[IntProperty], [a].[IntProperty2], [a].[StringProperty], [a].[TestEnumProperty], [a].[DecimalProperty], [a].[ByteProperty], [a].[ShortProperty], [a].[SingleProperty], [a].[GuidProperty], [a].[Id]";
-            this.AssumeTestEntityIsInitialised();
-            this.builder.UsingAlias("a")
-                .For(this.Entity)
-                .Sql()
-                .Should()
-                .Be(expected);
-        }
-
-        [Test]
-        public void ReturnCorrectSqlForExplicitSelectionOfAllColumnsForMultipleEntitiesWithAliases()
-        {
-            const string expected =
-                "SELECT [a].[DateTimeOffsetProperty], [a].[NullableDateTimeOffsetProperty], [a].[DateTimeProperty], [a].[NullableDateTimeProperty], [a].[DoubleProperty], [a].[IntProperty], [a].[IntProperty2], [a].[StringProperty], [a].[TestEnumProperty], [a].[DecimalProperty], [a].[ByteProperty], [a].[ShortProperty], [a].[SingleProperty], [a].[GuidProperty], [a].[Id], [b].[DateTimeOffsetProperty], [b].[NullableDateTimeOffsetProperty], [b].[DateTimeProperty], [b].[NullableDateTimeProperty], [b].[DoubleProperty], [b].[IntProperty], [b].[IntProperty2], [b].[StringProperty], [b].[TestEnumProperty], [b].[DecimalProperty], [b].[ByteProperty], [b].[ShortProperty], [b].[SingleProperty], [b].[GuidProperty], [b].[Id]";
-            this.AssumeTestEntityIsInitialised();
-            this.builder.UsingAlias("a")
-                .For(this.Entity)
-                .UsingAlias("b")
-                .For(this.Entity)
-                .Sql()
-                .Should()
-                .Be(expected);
-        }
-
-        [Test]
         public void ReturnCorrectSqlForImplicitSelectionOfAllColumnsWithoutAlias()
         {
-            const string expected =
-                "SELECT [dbo].[TestEntity].*";
+            const string expected = "SELECT [dbo].[TestEntity].*";
             this.AssumeTestEntityIsInitialised();
             this.builder.SelectAll<TestEntity>()
                 .Sql()
@@ -196,8 +95,18 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void ReturnCorrectSqlForImplicitSelectionOfAllColumnsWithAlias()
         {
-            const string expected =
-                "SELECT [a].*";
+            const string expected = "SELECT [a].*";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.SelectAll<TestEntity>("a")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForImplicitSelectionOfAllColumnsOfDefaultEntityWithAlias()
+        {
+            const string expected = "SELECT [a].*";
             this.AssumeTestEntityIsInitialised();
             this.builder.SelectAll<TestEntity>("a")
                 .Sql()
@@ -211,6 +120,182 @@ namespace SqlRepo.SqlServer.Tests
             const string expected = "SELECT TOP 1 *";
             this.AssumeTestEntityIsInitialised();
             this.builder.Top(1)
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForAvgWithoutAlias()
+        {
+            const string expected = "SELECT AVG([dbo].[TestEntity].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Avg<TestEntity>(e => e.DoubleProperty)
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForAvgWithAlias()
+        {
+            const string expected = "SELECT AVG([a].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Avg<TestEntity>(e => e.DoubleProperty, "a")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForAvgWithTableAndSchema()
+        {
+            const string expected = "SELECT AVG([schema].[table].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Avg<TestEntity>(e => e.DoubleProperty, tableName: "table", tableSchema: "schema")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForCountWithoutAlias()
+        {
+            const string expected = "SELECT COUNT([dbo].[TestEntity].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Count<TestEntity>(e => e.DoubleProperty)
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForCountWithAlias()
+        {
+            const string expected = "SELECT COUNT([a].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Count<TestEntity>(e => e.DoubleProperty, "a")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForCountWithTableAndSchema()
+        {
+            const string expected = "SELECT COUNT([schema].[table].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Count<TestEntity>(e => e.DoubleProperty, tableName: "table", tableSchema: "schema")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForCountAll()
+        {
+            const string expected = "SELECT COUNT(*)";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.CountAll()
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForMaxWithoutAlias()
+        {
+            const string expected = "SELECT MAX([dbo].[TestEntity].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Max<TestEntity>(e => e.DoubleProperty)
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForMaxWithAlias()
+        {
+            const string expected = "SELECT MAX([a].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Max<TestEntity>(e => e.DoubleProperty, "a")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForMaxWithTableAndSchema()
+        {
+            const string expected = "SELECT MAX([schema].[table].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Max<TestEntity>(e => e.DoubleProperty, tableName: "table", tableSchema: "schema")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForMinWithoutAlias()
+        {
+            const string expected = "SELECT MIN([dbo].[TestEntity].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Min<TestEntity>(e => e.DoubleProperty)
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForMinWithAlias()
+        {
+            const string expected = "SELECT MIN([a].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Min<TestEntity>(e => e.DoubleProperty, "a")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForMinWithTableAndSchema()
+        {
+            const string expected = "SELECT MIN([schema].[table].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Min<TestEntity>(e => e.DoubleProperty, tableName: "table", tableSchema: "schema")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForSumWithoutAlias()
+        {
+            const string expected = "SELECT SUM([dbo].[TestEntity].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Sum<TestEntity>(e => e.DoubleProperty)
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForSumWithAlias()
+        {
+            const string expected = "SELECT SUM([a].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Sum<TestEntity>(e => e.DoubleProperty, "a")
+                .Sql()
+                .Should()
+                .Be(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForSumWithTableAndSchema()
+        {
+            const string expected = "SELECT SUM([schema].[table].[DoubleProperty]) AS [DoubleProperty]";
+            this.AssumeTestEntityIsInitialised();
+            this.builder.Sum<TestEntity>(e => e.DoubleProperty, tableName: "table", tableSchema: "schema")
                 .Sql()
                 .Should()
                 .Be(expected);

@@ -1,5 +1,3 @@
-using System;
-
 namespace SqlRepo.SqlServer
 {
     public static class TableSpecificationType

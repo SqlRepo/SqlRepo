@@ -33,7 +33,7 @@ namespace SqlRepo.SqlServer
                 this.SpecificationType,
                 this.RightSchema,
                 this.RightTable,
-                string.IsNullOrWhiteSpace(this.RightAlias)? string.Empty: $" AS [{this.RightAlias}]",
+                string.IsNullOrWhiteSpace(this.RightAlias) ? string.Empty : $" AS [{this.RightAlias}]",
                 conditions);
         }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
-using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using FluentAssertions;
 using SqlRepo.Testing;
 
 namespace SqlRepo.SqlServer.Tests
@@ -12,88 +12,12 @@ namespace SqlRepo.SqlServer.Tests
         [SetUp]
         public void SetUp()
         {
-            this.AssumeCommandExecutorIsInitialised();
-            this.AssumeEntityMapperIsInitialised();
-            this.AssumeWritableProperyMatcherIsInitialised();
-            this.commandFactory = new CommandFactory(this.commandExecutor,
-                this.entityMapper,
-                this.writablePropertyMatcher);
-        }
-
-        [Test]
-        public void ReturnInsertOnRequest()
-        {
-            var result = this.commandFactory.CreateInsert<TestEntity>();
-            result.Should()
-                  .NotBeNull();
-            result.Should()
-                  .BeAssignableTo<ISqlCommand<TestEntity>>();
-            result.Should()
-                  .BeAssignableTo<InsertCommand<TestEntity>>();
-        }
-
-        [Test]
-        public void NotGenerateExceptionForMissingDependenciesOnRequestForInsert()
-        {
-            this.commandFactory.Invoking(e => e.CreateInsert<TestEntity>())
-                .ShouldNotThrow<ArgumentNullException>();
-        }
-
-        [Test]
-        public void ReturnSelectOnRequest()
-        {
-            var result = this.commandFactory.CreateSelect<TestEntity>();
-            result.Should()
-                  .NotBeNull();
-            result.Should()
-                  .BeAssignableTo<IClauseBuilder>();
-            result.Should()
-                  .BeAssignableTo<SelectCommand<TestEntity>>();
-        }
-
-        [Test]
-        public void NotGenerateExceptionForMissingDependenciesOnRequestForSelect()
-        {
-            this.commandFactory.Invoking(e => e.CreateSelect<TestEntity>())
-                .ShouldNotThrow<ArgumentNullException>();
-        }
-
-        [Test]
-        public void ReturnUpdateOnRequest()
-        {
-            var result = this.commandFactory.CreateUpdate<TestEntity>();
-            result.Should()
-                  .NotBeNull();
-            result.Should()
-                  .BeAssignableTo<ISqlCommand<int>>();
-            result.Should()
-                  .BeAssignableTo<UpdateCommand<TestEntity>>();
-        }
-
-        [Test]
-        public void NotGenerateExceptionForMissingDependenciesOnRequestForUpdate()
-        {
-            this.commandFactory.Invoking(e => e.CreateUpdate<TestEntity>())
-                .ShouldNotThrow<ArgumentNullException>();
-        }
-
-        [Test]
-        public void ReturnDeleteOnRequest()
-        {
-            var result = this.commandFactory.CreateDelete<TestEntity>();
-            result.Should()
-                  .NotBeNull();
-            result.Should()
-                  .BeAssignableTo<ISqlCommand<int>>();
-            result.Should()
-                  .BeAssignableTo<DeleteCommand<TestEntity>>();
-        }
-
-        [Test]
-        public void NotGenerateExceptionForMissingDependenciesOnRequestForDelete()
-        {
-            this.commandFactory.Invoking(e => e.CreateDelete<TestEntity>())
-                .ShouldNotThrow<ArgumentNullException>();
+            AssumeCommandExecutorIsInitialised();
+            AssumeEntityMapperIsInitialised();
+            AssumeWritableProperyMatcherIsInitialised();
+            commandFactory = new CommandFactory(commandExecutor,
+                entityMapper,
+                writablePropertyMatcher);
         }
 
         private ICommandExecutor commandExecutor;
@@ -103,17 +27,93 @@ namespace SqlRepo.SqlServer.Tests
 
         private void AssumeCommandExecutorIsInitialised()
         {
-            this.commandExecutor = Substitute.For<ICommandExecutor>();
+            commandExecutor = Substitute.For<ICommandExecutor>();
         }
 
         private void AssumeEntityMapperIsInitialised()
         {
-            this.entityMapper = Substitute.For<IEntityMapper>();
+            entityMapper = Substitute.For<IEntityMapper>();
         }
 
         private void AssumeWritableProperyMatcherIsInitialised()
         {
-            this.writablePropertyMatcher = Substitute.For<IWritablePropertyMatcher>();
+            writablePropertyMatcher = Substitute.For<IWritablePropertyMatcher>();
+        }
+
+        [Test]
+        public void NotGenerateExceptionForMissingDependenciesOnRequestForDelete()
+        {
+            commandFactory.Invoking(e => e.CreateDelete<TestEntity>())
+                .ShouldNotThrow<ArgumentNullException>();
+        }
+
+        [Test]
+        public void NotGenerateExceptionForMissingDependenciesOnRequestForInsert()
+        {
+            commandFactory.Invoking(e => e.CreateInsert<TestEntity>())
+                .ShouldNotThrow<ArgumentNullException>();
+        }
+
+        [Test]
+        public void NotGenerateExceptionForMissingDependenciesOnRequestForSelect()
+        {
+            commandFactory.Invoking(e => e.CreateSelect<TestEntity>())
+                .ShouldNotThrow<ArgumentNullException>();
+        }
+
+        [Test]
+        public void NotGenerateExceptionForMissingDependenciesOnRequestForUpdate()
+        {
+            commandFactory.Invoking(e => e.CreateUpdate<TestEntity>())
+                .ShouldNotThrow<ArgumentNullException>();
+        }
+
+        [Test]
+        public void ReturnDeleteOnRequest()
+        {
+            var result = commandFactory.CreateDelete<TestEntity>();
+            result.Should()
+                .NotBeNull();
+            result.Should()
+                .BeAssignableTo<ISqlCommand<int>>();
+            result.Should()
+                .BeAssignableTo<DeleteCommand<TestEntity>>();
+        }
+
+        [Test]
+        public void ReturnInsertOnRequest()
+        {
+            var result = commandFactory.CreateInsert<TestEntity>();
+            result.Should()
+                .NotBeNull();
+            result.Should()
+                .BeAssignableTo<ISqlCommand<TestEntity>>();
+            result.Should()
+                .BeAssignableTo<InsertCommand<TestEntity>>();
+        }
+
+        [Test]
+        public void ReturnSelectOnRequest()
+        {
+            var result = commandFactory.CreateSelect<TestEntity>();
+            result.Should()
+                .NotBeNull();
+            result.Should()
+                .BeAssignableTo<IClauseBuilder>();
+            result.Should()
+                .BeAssignableTo<SelectCommand<TestEntity>>();
+        }
+
+        [Test]
+        public void ReturnUpdateOnRequest()
+        {
+            var result = commandFactory.CreateUpdate<TestEntity>();
+            result.Should()
+                .NotBeNull();
+            result.Should()
+                .BeAssignableTo<ISqlCommand<int>>();
+            result.Should()
+                .BeAssignableTo<UpdateCommand<TestEntity>>();
         }
     }
 }

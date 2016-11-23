@@ -5,39 +5,48 @@ namespace SqlRepo.SqlServer
 {
     public interface ISelectClauseBuilder : IClauseBuilder
     {
-        string ActiveAlias { get; }
+        ISelectClauseBuilder Avg<TEntity>(Expression<Func<TEntity, object>> selector,
+            string alias = null,
+            string tableName = null,
+            string tableSchema = null);
+
+        ISelectClauseBuilder Count<TEntity>(Expression<Func<TEntity, object>> selector,
+            string alias = null,
+            string tableName = null,
+            string tableSchema = null);
+
+        ISelectClauseBuilder CountAll();
 
         ISelectClauseBuilder For<TEntity>(TEntity entity,
             string alias = null,
             string tableName = null,
             string tableSchema = null);
 
-        ISelectClauseBuilder FromScratch();
+        ISelectClauseBuilder Max<TEntity>(Expression<Func<TEntity, object>> selector,
+            string alias = null,
+            string tableName = null,
+            string tableSchema = null);
+
+        ISelectClauseBuilder Min<TEntity>(Expression<Func<TEntity, object>> selector,
+            string alias = null,
+            string tableName = null,
+            string tableSchema = null);
 
         ISelectClauseBuilder Select<TEntity>(Expression<Func<TEntity, object>> selector,
-            params Expression<Func<TEntity, object>>[] additionalSelectors);
-
-        ISelectClauseBuilder Select<TEntity>(string alias,
-            Expression<Func<TEntity, object>> selector,
-            params Expression<Func<TEntity, object>>[] additionalSelectors);
-
-        ISelectClauseBuilder Select<TEntity>(string alias,
-            string tableName,
-            Expression<Func<TEntity, object>> selector,
-            params Expression<Func<TEntity, object>>[] additionalSelectors);
-
-        ISelectClauseBuilder Select<TEntity>(string alias,
-            string tableName,
-            string tableSchema,
-            Expression<Func<TEntity, object>> selector,
+            string alias = null,
+            string tableName = null,
+            string tableSchema = null,
             params Expression<Func<TEntity, object>>[] additionalSelectors);
 
         ISelectClauseBuilder SelectAll<TEntity>(string alias = null,
             string tableName = null,
             string tableSchema = null);
 
-        ISelectClauseBuilder Top(int rows);
+        ISelectClauseBuilder Sum<TEntity>(Expression<Func<TEntity, object>> selector,
+            string alias = null,
+            string tableName = null,
+            string tableSchema = null);
 
-        ISelectClauseBuilder UsingAlias(string alias);
+        ISelectClauseBuilder Top(int rows);
     }
 }

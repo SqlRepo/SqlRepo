@@ -1,5 +1,3 @@
-using System;
-
 namespace SqlRepo.SqlServer
 {
     internal class OrderBySpecification

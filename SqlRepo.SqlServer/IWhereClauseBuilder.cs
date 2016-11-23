@@ -5,8 +5,6 @@ namespace SqlRepo.SqlServer
 {
     public interface IWhereClauseBuilder : IClauseBuilder
     {
-        string ActiveAlias { get; }
-
         IWhereClauseBuilder And<TEntity>(Expression<Func<TEntity, bool>> expression,
             string alias = null,
             string tableName = null,
@@ -19,7 +17,6 @@ namespace SqlRepo.SqlServer
             string tableSchema = null);
 
         IWhereClauseBuilder EndNesting();
-        IWhereClauseBuilder FromScratch();
 
         IWhereClauseBuilder NestedAnd<TEntity>(Expression<Func<TEntity, bool>> expression,
             string alias = null,
@@ -42,8 +39,6 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null);
 
-        IWhereClauseBuilder UsingAlias(string alias);
-
         IWhereClauseBuilder Where<TEntity>(Expression<Func<TEntity, bool>> expression,
             string alias = null,
             string tableName = null,
@@ -51,6 +46,27 @@ namespace SqlRepo.SqlServer
 
         IWhereClauseBuilder WhereIn<TEntity, TMember>(Expression<Func<TEntity, TMember>> selector,
             TMember[] values,
+            string alias = null,
+            string tableName = null,
+            string tableSchema = null);
+
+        IWhereClauseBuilder WhereBetween<TEntity, TMember>(Expression<Func<TEntity, TMember>> selector,
+            TMember start,
+            TMember end,
+            string alias = null,
+            string tableName = null,
+            string tableSchema = null);
+
+        IWhereClauseBuilder AndBetween<TEntity, TMember>(Expression<Func<TEntity, TMember>> selector,
+            TMember start,
+            TMember end,
+            string alias = null,
+            string tableName = null,
+            string tableSchema = null);
+
+        IWhereClauseBuilder OrBetween<TEntity, TMember>(Expression<Func<TEntity, TMember>> selector,
+            TMember start,
+            TMember end,
             string alias = null,
             string tableName = null,
             string tableSchema = null);
