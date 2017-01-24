@@ -5,7 +5,6 @@
     "Microsoft.CSharp": "4.3.0",
     "NETStandard.Library": "1.6.0",
     "SqlRepo": "1.0.0-*",
-    "SqlRepo.Model": "1.0.0-*",
     "System.Data.Common": "4.1.0",
     "System.Data.SqlClient": "4.1.0",
     "System.Reflection.TypeExtensions": "4.1.0"
