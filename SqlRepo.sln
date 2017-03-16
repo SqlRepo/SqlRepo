@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SqlRepo", "SqlRepo\SqlRepo.xproj", "{9773F144-2310-4B6F-9702-CF67BDBB165E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo", "SqlRepo\SqlRepo.csproj", "{9773F144-2310-4B6F-9702-CF67BDBB165E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SqlRepo.SqlServer", "SqlRepo.SqlServer\SqlRepo.SqlServer.xproj", "{26D0A1C0-0CD6-4074-B4B6-053E669A7B49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer", "SqlRepo.SqlServer\SqlRepo.SqlServer.csproj", "{26D0A1C0-0CD6-4074-B4B6-053E669A7B49}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SqlRepo.SqlServer.Autofac", "SqlRepo.SqlServer.Autofac\SqlRepo.SqlServer.Autofac.xproj", "{E356200B-8442-4A1A-87CC-C59306D4B37F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.Autofac", "SqlRepo.SqlServer.Autofac\SqlRepo.SqlServer.Autofac.csproj", "{E356200B-8442-4A1A-87CC-C59306D4B37F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SqlRepo.Testing", "SqlRepo.Testing\SqlRepo.Testing.xproj", "{085D05D7-1D3F-4F20-B51D-05271FBB96F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Testing", "SqlRepo.Testing\SqlRepo.Testing.csproj", "{085D05D7-1D3F-4F20-B51D-05271FBB96F7}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SqlRepo.Tests", "SqlRepo.Tests\SqlRepo.Tests.xproj", "{BB4C1BC8-CEB5-4722-BDE7-B730FB048C71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Tests", "SqlRepo.Tests\SqlRepo.Tests.csproj", "{BB4C1BC8-CEB5-4722-BDE7-B730FB048C71}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SqlRepo.SqlServer.Tests", "SqlRepo.SqlServer.Tests\SqlRepo.SqlServer.Tests.xproj", "{201582B4-5F26-4BBC-B202-F121E38CB4C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.Tests", "SqlRepo.SqlServer.Tests\SqlRepo.SqlServer.Tests.csproj", "{201582B4-5F26-4BBC-B202-F121E38CB4C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
