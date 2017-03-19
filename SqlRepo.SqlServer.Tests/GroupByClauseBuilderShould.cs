@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace SqlRepo.SqlServer.Tests
 {
     [TestFixture]
-    public class GroupByClauseBuilderShould : SelectCommandTestBase
+    public class GroupByClauseBuilderShould
     {
         [SetUp]
         public void SetUp()
