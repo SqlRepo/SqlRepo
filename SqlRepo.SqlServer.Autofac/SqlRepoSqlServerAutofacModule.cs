@@ -3,7 +3,7 @@ using Autofac;
 
 namespace SqlRepo.SqlServer.Autofac
 {
-    public class DataAutofacModule : Module
+    public class SqlRepoSqlServerAutofacModule : Module
     {
         protected override void Load(ContainerBuilder containerBuilder)
         {
