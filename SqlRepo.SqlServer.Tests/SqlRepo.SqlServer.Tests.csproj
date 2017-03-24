@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <AssemblyName>SqlRepo.SqlServer.Tests</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>SqlRepo.SqlServer.Tests</PackageId>

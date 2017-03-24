@@ -1,12 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.1</VersionPrefix>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <VersionPrefix>1.0.8</VersionPrefix>
+    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
     <AssemblyName>SqlRepo</AssemblyName>
     <PackageId>SqlRepo</PackageId>
-    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -14,13 +12,13 @@
     <Description>SQL Repo core components and interfaces.  Supports implementation of SQL command builders that are made available within an implementation of the Repository pattern.</Description>
     <PackageProjectUrl>http://github.com/testpossessed/sqlrepo</PackageProjectUrl>
     <PackageTags>sql, repository, builder</PackageTags>
-    <Version>1.0.2</Version>
+    <Version>1.0.8</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PreBuildEvent>del   /S /Q  "$(ProjectDir)"*.nupkg</PreBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" Condition="'$(TargetFramework)' == 'netstandard1.6'" />
   </ItemGroup>
 
   <Target Name="PostcompileScript" AfterTargets="Build">
