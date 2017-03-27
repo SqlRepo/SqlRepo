@@ -22,6 +22,18 @@ namespace SqlRepo.SqlServer
                              ? $"[{this.Schema}].[{this.TableName}]"
                              : $"[{this.Alias}]";
 
+            if (this.Right == "NULL")
+            {
+                if (this.Operator == "=")
+                {
+                    this.Operator = "IS";
+                }
+                else if (this.Operator == "<>")
+                {
+                    this.Operator = "IS NOT";
+                }
+            }
+
             return $"{prefix}{identifierPrefix}.[{this.Left}] {this.Operator} {this.Right}";
         }
     }
