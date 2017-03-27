@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.8</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;net452</TargetFrameworks>
     <AssemblyName>SqlRepo.SqlServer.Autofac</AssemblyName>
     <PackageId>SqlRepo.SqlServer.Autofac</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -22,12 +22,15 @@
     <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.4.0" />
   </ItemGroup>
-
-  <Target Name="PostcompileScript" AfterTargets="Build">
-    <Exec Command="dotnet pack --no-build --configuration $(Configuration)" />
-  </Target>
 
 </Project>

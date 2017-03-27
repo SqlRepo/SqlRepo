@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.8</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
     <AssemblyName>SqlRepo</AssemblyName>
     <PackageId>SqlRepo</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -17,12 +17,15 @@
     <PreBuildEvent>del   /S /Q  "$(ProjectDir)"*.nupkg</PreBuildEvent>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" Condition="'$(TargetFramework)' == 'netstandard1.6'" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452'">
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
   </ItemGroup>
-
-  <Target Name="PostcompileScript" AfterTargets="Build">
-    <Exec Command="dotnet pack --no-build --configuration $(Configuration)" />
-  </Target>
-
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
+  </ItemGroup>
+  
 </Project>
