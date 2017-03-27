@@ -11,7 +11,7 @@
     <Description>Provides an Autofac module to simplify the registration of components in IoC</Description>
     <PackageProjectUrl>http://github.com/testpossessed/sqlrepo</PackageProjectUrl>
     <PackageTags>sql, repository, builder, autofac, ioc, dependency injection</PackageTags>
-    <Version>1.0.10</Version>
+    <Version>1.0.11</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PreBuildEvent>del   /S /Q  "$(ProjectDir)"*.nupkg</PreBuildEvent>
   </PropertyGroup>
