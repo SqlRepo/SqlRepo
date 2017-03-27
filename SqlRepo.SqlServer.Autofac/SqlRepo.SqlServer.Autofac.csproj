@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.8</VersionPrefix>
     <TargetFrameworks>netstandard1.3;net452</TargetFrameworks>
     <AssemblyName>SqlRepo.SqlServer.Autofac</AssemblyName>
     <PackageId>SqlRepo.SqlServer.Autofac</PackageId>
@@ -12,7 +11,7 @@
     <Description>Provides an Autofac module to simplify the registration of components in IoC</Description>
     <PackageProjectUrl>http://github.com/testpossessed/sqlrepo</PackageProjectUrl>
     <PackageTags>sql, repository, builder, autofac, ioc, dependency injection</PackageTags>
-    <Version>1.0.8</Version>
+    <Version>1.0.10</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PreBuildEvent>del   /S /Q  "$(ProjectDir)"*.nupkg</PreBuildEvent>
   </PropertyGroup>
