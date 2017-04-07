@@ -11,7 +11,7 @@
     <Description>Implementation of SqlRepo for Microsoft SQL Server.  Implements expression based T-SQL Command builders within an implementation of the Repository pattern</Description>
     <PackageProjectUrl>http://github.com/testpossessed/sqlrepo</PackageProjectUrl>
     <PackageTags>sql, repository, builder</PackageTags>
-    <Version>1.0.11</Version>
+    <Version>1.0.12</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PreBuildEvent>del   /S /Q  "$(ProjectDir)"*.nupkg</PreBuildEvent>
   </PropertyGroup>
