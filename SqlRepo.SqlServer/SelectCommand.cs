@@ -575,8 +575,8 @@ namespace SqlRepo.SqlServer
             FinalizeColumnSpecifications();
             FinalizeJoinConditions();
             FinalizeWhereConditions(Specification.Filters);
-            FinalizeOrderings();
             FinalizeGroupings();
+            FinalizeOrderings();
             FinalizeHavings();
             return Specification.ToString();
         }
