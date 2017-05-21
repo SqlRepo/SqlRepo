@@ -113,7 +113,8 @@ namespace SqlRepo.SqlServer
             Specification.Columns.Add(new ColumnSpecification
             {
                 Identifier = "*",
-                Aggregation = Aggregation.Count
+                Aggregation = Aggregation.Count,
+                EntityType = typeof(TEntity)
             });
             return this;
         }
@@ -158,7 +159,6 @@ namespace SqlRepo.SqlServer
                 return EntityMapper.Map<TEntity>(reader);
             }
         }
-
         public ISelectCommand<TEntity> GroupBy<T>(Expression<Func<T, object>> selector,
             string @alias = null,
             params Expression<Func<T, object>>[] additionalSelectors)
@@ -550,7 +550,7 @@ namespace SqlRepo.SqlServer
         {
             return Select<TEntity>(selector, @alias, additionalSelectors);
         }
-
+        
         public ISelectCommand<TEntity> Select<T>(Expression<Func<T, object>> selector,
             string @alias = null,
             params Expression<Func<T, object>>[] additionalSelectors)
@@ -558,7 +558,7 @@ namespace SqlRepo.SqlServer
             AddColumnSelection(selector, @alias, additionalSelectors);
             return this;
         }
-
+        
         public ISelectCommand<TEntity> SelectAll(string @alias = null)
         {
             return SelectAll<TEntity>(alias);
@@ -575,8 +575,8 @@ namespace SqlRepo.SqlServer
             FinalizeColumnSpecifications();
             FinalizeJoinConditions();
             FinalizeWhereConditions(Specification.Filters);
-            FinalizeOrderings();
             FinalizeGroupings();
+            FinalizeOrderings();
             FinalizeHavings();
             return Specification.ToString();
         }

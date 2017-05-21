@@ -41,8 +41,8 @@ namespace SqlRepo.SqlServer
                 selectClause,
                 fromClause,
                 whereClause,
-                orderByClause,
                 groupByClause,
+                orderByClause,
                 havingClause);
         }
 

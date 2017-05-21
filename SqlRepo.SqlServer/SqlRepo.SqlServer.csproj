@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.8</VersionPrefix>
-    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <TargetFrameworks>net452;netstandard1.3</TargetFrameworks>
     <AssemblyName>SqlRepo.SqlServer</AssemblyName>
     <PackageId>SqlRepo.SqlServer</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -12,7 +11,7 @@
     <Description>Implementation of SqlRepo for Microsoft SQL Server.  Implements expression based T-SQL Command builders within an implementation of the Repository pattern</Description>
     <PackageProjectUrl>http://github.com/testpossessed/sqlrepo</PackageProjectUrl>
     <PackageTags>sql, repository, builder</PackageTags>
-    <Version>1.0.8</Version>
+    <Version>1.0.14</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PreBuildEvent>del   /S /Q  "$(ProjectDir)"*.nupkg</PreBuildEvent>
   </PropertyGroup>
@@ -21,19 +20,22 @@
     <ProjectReference Include="..\SqlRepo\SqlRepo.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.3.0" Condition="'$(TargetFramework)' == 'netstandard1.6'" />
-    <PackageReference Include="System.Data.Common" Version="4.3.0" Condition="'$(TargetFramework)' == 'netstandard1.6'" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.3.0" Condition="'$(TargetFramework)' == 'netstandard1.6'" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" Condition="'$(TargetFramework)' == 'netstandard1.6'" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <PackageReference Include="Microsoft.CSharp" Version="4.3.0" />
+    <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-
-  <Target Name="PostcompileScript" AfterTargets="Build">
-    <Exec Command="dotnet pack --no-build --configuration $(Configuration)" />
-  </Target>
-
+  
 </Project>
