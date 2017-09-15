@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace SqlRepo.SqlServer
 {
     public class DeleteCommand<TEntity> : SqlCommand<TEntity, int>, IDeleteCommand<TEntity>
-        where TEntity : class, new()
+        where TEntity: class, new()
     {
         private const string StatementTemplate = "DELETE [{0}].[{1}]{2};";
         private readonly IWhereClauseBuilder whereClauseBuilder;
@@ -20,97 +21,106 @@ namespace SqlRepo.SqlServer
 
         public IDeleteCommand<TEntity> And(Expression<Func<TEntity, bool>> expression)
         {
-            whereClauseBuilder.And(expression);
+            this.whereClauseBuilder.And(expression);
             return this;
         }
 
         public IDeleteCommand<TEntity> For(TEntity entity)
         {
-            if (!whereClauseBuilder.IsClean)
+            if(!this.whereClauseBuilder.IsClean)
             {
                 throw new InvalidOperationException(
                     "For cannot be used once Where has been used, please use FromScratch to reset the statement before using Where.");
             }
 
-            IsClean = false;
+            this.IsClean = false;
             this.entity = entity;
             return this;
         }
 
         public override int Go(string connectionString = null)
         {
+            if(string.IsNullOrWhiteSpace(connectionString))
+            {
+                connectionString = this.ConnectionString;
+            }
+            return this.CommandExecutor.ExecuteNonQuery(connectionString, this.Sql());
+        }
+
+        public override async Task<int> GoAsync(string connectionString = null)
+        {
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                connectionString = ConnectionString;
+                connectionString = this.ConnectionString;
             }
-            return CommandExecutor.ExecuteNonQuery(connectionString, Sql());
+            return await this.CommandExecutor.ExecuteNonQueryAsync(connectionString, this.Sql());
         }
 
         public IDeleteCommand<TEntity> NestedAnd(Expression<Func<TEntity, bool>> expression)
         {
-            whereClauseBuilder.NestedAnd(expression);
+            this.whereClauseBuilder.NestedAnd(expression);
             return this;
         }
 
         public IDeleteCommand<TEntity> NestedOr(Expression<Func<TEntity, bool>> expression)
         {
-            whereClauseBuilder.NestedOr(expression);
+            this.whereClauseBuilder.NestedOr(expression);
             return this;
         }
 
         public IDeleteCommand<TEntity> Or(Expression<Func<TEntity, bool>> expression)
         {
-            whereClauseBuilder.Or(expression);
+            this.whereClauseBuilder.Or(expression);
             return this;
         }
 
         public override string Sql()
         {
-            return string.Format(StatementTemplate, TableSchema, TableName, GetWhereClause());
+            return string.Format(StatementTemplate, this.TableSchema, this.TableName, this.GetWhereClause());
+        }
+
+        public IDeleteCommand<TEntity> UsingTableName(string tableName)
+        {
+            this.TableName = tableName;
+            return this;
+        }
+
+        public IDeleteCommand<TEntity> UsingTableSchema(string tableSchema)
+        {
+            this.TableSchema = tableSchema;
+            return this;
         }
 
         public IDeleteCommand<TEntity> Where(Expression<Func<TEntity, bool>> expression)
         {
-            if (entity != null)
+            if(this.entity != null)
             {
                 throw new InvalidOperationException(
                     "Where cannot be used once For has been used, please use FromScratch to reset the statement before using Where.");
             }
 
-            IsClean = false;
-            whereClauseBuilder.Where(expression);
+            this.IsClean = false;
+            this.whereClauseBuilder.Where(expression);
             return this;
         }
 
         public IDeleteCommand<TEntity> WhereIn<T, TMember>(Expression<Func<T, TMember>> selector,
             TMember[] values)
         {
-            whereClauseBuilder.WhereIn(selector, values);
-            return this;
-        }
-
-        public IDeleteCommand<TEntity> UsingTableName(string tableName)
-        {
-            TableName = tableName;
-            return this;
-        }
-
-        public IDeleteCommand<TEntity> UsingTableSchema(string tableSchema)
-        {
-            TableSchema = tableSchema;
+            this.whereClauseBuilder.WhereIn(selector, values);
             return this;
         }
 
         private string GetWhereClause()
         {
-            if (entity != null)
+            if(this.entity != null)
             {
-                var identity = GetIdByConvention(entity);
+                var identity = this.GetIdByConvention(this.entity);
                 return $"\nWHERE [{identity.Name}] = {identity.Value}";
             }
 
-            var result = whereClauseBuilder.Sql();
-            return string.IsNullOrWhiteSpace(result) ? string.Empty : $"\n{result}";
+            var result = this.whereClauseBuilder.Sql();
+            return string.IsNullOrWhiteSpace(result)? string.Empty: $"\n{result}";
         }
     }
 }

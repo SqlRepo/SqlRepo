@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
@@ -338,6 +339,16 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
+        public async Task ExecuteQueryOnGoAsync()
+        {
+            const string expected =
+                "INSERT [dbo].[TestEntity]([StringProperty])\nVALUES('My Name');\nSELECT *\nFROM [dbo].[TestEntity]\nWHERE [Id] = SCOPE_IDENTITY();";
+            await this.AssumeGoAsyncIsRequested();
+            await this.CommandExecutor.Received()
+                .ExecuteReaderAsync(ConnectionString, expected);
+        }
+
+        [Test]
         public void MapResultFromExecution()
         {
             this.AssumeGoIsRequested();
@@ -347,7 +358,7 @@ namespace SqlRepo.SqlServer.Tests
 
         public string ExpectedTableSpecification(string schema, string table)
         {
-            return string.Format("INSERT [{0}].[{1}]", schema, table);
+            return $"INSERT [{schema}].[{table}]";
         }
 
         protected override InsertCommand<TestEntity> CreateCommand(ICommandExecutor commandExecutor,
@@ -358,11 +369,16 @@ namespace SqlRepo.SqlServer.Tests
             IWhereClauseBuilder whereClauseBuilder,
             string connectionString)
         {
-            var command = new InsertCommand<TestEntity>(commandExecutor,
-                entityMapper,
-                writablePropertyMatcher);
+            var command =
+                new InsertCommand<TestEntity>(commandExecutor, entityMapper, writablePropertyMatcher);
             command.UseConnectionString(connectionString);
             return command;
+        }
+
+        private async Task AssumeGoAsyncIsRequested()
+        {
+            await this.Command.With(e => e.StringProperty, "My Name")
+                      .GoAsync();
         }
 
         private void AssumeGoIsRequested()
