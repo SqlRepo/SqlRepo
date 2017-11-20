@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
@@ -344,6 +345,15 @@ namespace SqlRepo.SqlServer.Tests
                 .ExecuteNonQuery(ConnectionString, expected);
         }
 
+        [Test]
+        public async Task ExecuteQueryOnGoAsync()
+        {
+            const string expected = "UPDATE [dbo].[TestEntity]\nSET [StringProperty] = 'My Name';";
+            await this.AssumeGoAsyncIsRequested();
+            await this.CommandExecutor.Received()
+                .ExecuteNonQueryAsync(ConnectionString, expected);
+        }
+
         protected override UpdateCommand<TestEntity> CreateCommand(ICommandExecutor commandExecutor,
             IEntityMapper entityMapper,
             IWritablePropertyMatcher writablePropertyMatcher,
@@ -364,6 +374,12 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.Command.Set(e => e.StringProperty, "My Name")
                 .Go();
+        }
+
+        private async Task AssumeGoAsyncIsRequested()
+        {
+            await this.Command.Set(e => e.StringProperty, "My Name")
+                .GoAsync();
         }
 
         private string ExpectedTableSpecification(string schema, string table)

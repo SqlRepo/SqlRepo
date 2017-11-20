@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
+using System.Threading.Tasks;
 
 namespace SqlRepo.SqlServer
 {
     public class InsertCommand<TEntity> : SqlCommand<TEntity, TEntity>, IInsertCommand<TEntity>
-        where TEntity : class, new()
+        where TEntity: class, new()
     {
-        private const string StatementTemplate =
-            "INSERT [{0}].[{1}]({2})\nVALUES({3}){4};" + "\nSELECT *\nFROM [{0}].[{1}]\nWHERE [Id] = SCOPE_IDENTITY();";
+        private const string StatementTemplate = "INSERT [{0}].[{1}]({2})\nVALUES({3}){4};"
+                                                 + "\nSELECT *\nFROM [{0}].[{1}]\nWHERE [Id] = SCOPE_IDENTITY();"
+            ;
 
         private readonly IList<Expression<Func<TEntity, object>>> selectors =
             new List<Expression<Func<TEntity, object>>>();
@@ -29,123 +31,138 @@ namespace SqlRepo.SqlServer
 
         public IInsertCommand<TEntity> For(TEntity entity)
         {
-            if (selectors.Any())
+            if(this.selectors.Any())
             {
                 throw new InvalidOperationException(
                     "For cannot be used once With has been used, please use FromScratch to reset the command before using With.");
             }
-            IsClean = false;
+            this.IsClean = false;
             this.entity = entity;
             return this;
         }
 
         public IInsertCommand<TEntity> FromScratch()
         {
-            selectors.Clear();
-            values.Clear();
-            entity = null;
-            IsClean = true;
+            this.selectors.Clear();
+            this.values.Clear();
+            this.entity = null;
+            this.IsClean = true;
             return this;
         }
 
         public override TEntity Go(string connectionString = null)
         {
+            if(string.IsNullOrWhiteSpace(connectionString))
+            {
+                connectionString = this.ConnectionString;
+            }
+            using(var reader = this.CommandExecutor.ExecuteReader(connectionString, this.Sql()))
+            {
+                return this.EntityMapper.Map<TEntity>(reader)
+                           .FirstOrDefault();
+            }
+        }
+
+        public override async Task<TEntity> GoAsync(string connectionString = null)
+        {
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                connectionString = ConnectionString;
+                connectionString = this.ConnectionString;
             }
-            using (var reader = CommandExecutor.ExecuteReader(connectionString, Sql()))
+            using (var reader = await this.CommandExecutor.ExecuteReaderAsync(connectionString, this.Sql()))
             {
-                return EntityMapper.Map<TEntity>(reader)
-                    .FirstOrDefault();
+                return this.EntityMapper.Map<TEntity>(reader)
+                           .FirstOrDefault();
             }
         }
 
         public override string Sql()
         {
-            if (entity == null && !selectors.Any())
+            if(this.entity == null && !this.selectors.Any())
             {
                 throw new InvalidOperationException(
                     "Sql cannot be used on a command that has not been initialised using With or For.");
             }
 
             return string.Format(StatementTemplate,
-                TableSchema,
-                TableName,
-                GetColumnsList(),
-                GetValuesList(),
+                this.TableSchema,
+                this.TableName,
+                this.GetColumnsList(),
+                this.GetValuesList(),
                 string.Empty);
         }
 
         public IInsertCommand<TEntity> UsingTableName(string tableName)
         {
-            TableName = tableName;
+            this.TableName = tableName;
             return this;
         }
 
         public IInsertCommand<TEntity> UsingTableSchema(string tableSchema)
         {
-            TableSchema = tableSchema;
+            this.TableSchema = tableSchema;
             return this;
         }
 
-        public IInsertCommand<TEntity> With<TMember>(Expression<Func<TEntity, TMember>> selector, TMember @value)
+        public IInsertCommand<TEntity> With<TMember>(Expression<Func<TEntity, TMember>> selector,
+            TMember @value)
         {
-            if (entity != null)
+            if(this.entity != null)
             {
                 throw new InvalidOperationException(
                     "With cannot be used once For has been used, please use FromScratch to reset the command before using With.");
             }
 
-            IsClean = false;
-            var expression = ConvertExpression(selector);
-            selectors.Add(expression);
-            values.Add(@value);
+            this.IsClean = false;
+            var expression = this.ConvertExpression(selector);
+            this.selectors.Add(expression);
+            this.values.Add(@value);
             return this;
         }
 
         private string FormatColumnNames(IEnumerable<string> names)
         {
-            return string.Join(", ", names.Select(n => string.Format("[{0}]", n)));
+            return string.Join(", ", names.Select(n => $"[{n}]"));
         }
 
         private string FormatValues(IEnumerable<object> values)
         {
-            return string.Join(", ", values.Select(FormatValue));
+            return string.Join(", ", values.Select(this.FormatValue));
         }
 
         private string GetColumnsList()
         {
-            return selectors.Any() ? GetColumnsListFromSelectors() : GetColumnsListFromEntity();
+            return this.selectors.Any()? this.GetColumnsListFromSelectors(): this.GetColumnsListFromEntity();
         }
 
         private string GetColumnsListFromEntity()
         {
-            var names = typeof (TEntity).GetProperties()
-                .Where(p => p.Name != "Id" && writablePropertyMatcher.Test(p.PropertyType))
-                .Select(p => p.Name);
-            return FormatColumnNames(names);
+            var names = typeof(TEntity).GetProperties()
+                                       .Where(p => p.Name != "Id"
+                                                   && this.writablePropertyMatcher.Test(p.PropertyType))
+                                       .Select(p => p.Name);
+            return this.FormatColumnNames(names);
         }
 
         private string GetColumnsListFromSelectors()
         {
-            var names = selectors.Select(GetMemberName);
-            return FormatColumnNames(names);
+            var names = this.selectors.Select(this.GetMemberName);
+            return this.FormatColumnNames(names);
         }
 
         private string GetValuesFromEntity()
         {
-            var entityValues = typeof (TEntity).GetProperties()
-                .Where(
-                    p =>
-                        p.Name != "Id" && writablePropertyMatcher.Test(p.PropertyType))
-                .Select(p => p.GetValue(entity));
-            return FormatValues(entityValues);
+            var entityValues = typeof(TEntity).GetProperties()
+                                              .Where(p => p.Name != "Id"
+                                                          && this.writablePropertyMatcher.Test(
+                                                              p.PropertyType))
+                                              .Select(p => p.GetValue(this.entity));
+            return this.FormatValues(entityValues);
         }
 
         private string GetValuesList()
         {
-            return selectors.Any() ? FormatValues(values) : GetValuesFromEntity();
+            return this.selectors.Any()? this.FormatValues(this.values): this.GetValuesFromEntity();
         }
     }
 }

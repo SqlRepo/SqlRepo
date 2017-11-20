@@ -1,53 +1,30 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
+using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
 using SqlRepo.Testing;
-using FluentAssertions;
 
 namespace SqlRepo.SqlServer.Tests
 {
     [TestFixture]
     public class DeleteCommandShould : SqlCommandTestBase<DeleteCommand<TestEntity>, int>
     {
-        protected override DeleteCommand<TestEntity> CreateCommand(ICommandExecutor commandExecutor,
-            IEntityMapper entityMapper,
-            IWritablePropertyMatcher writablePropertyMatcher,
-            ISelectClauseBuilder selectClauseBuilder,
-            IFromClauseBuilder fromClauseBuilder,
-            IWhereClauseBuilder whereClauseBuilder,
-            string connectionString)
-        {
-            var command = new DeleteCommand<TestEntity>(commandExecutor, entityMapper, whereClauseBuilder);
-            command.UseConnectionString(connectionString);
-            return command;
-        }
-
-        private void AssumeGoIsRequested()
-        {
-            Command.Where(e => e.Id == 1)
-                .Go();
-        }
-
-        private string ExpectedTableSpecification(string schema, string table)
-        {
-            return string.Format("DELETE [{0}].[{1}]", schema, table);
-        }
-
         [Test]
         public void BeCleanByDefault()
         {
-            Command.IsClean.Should()
+            this.Command.IsClean.Should()
                 .BeTrue();
         }
 
         [Test]
         public void BuildCorrectStatementFromEntity()
         {
-            AssumeWhereClauseBuilderReportsClean();
+            this.AssumeWhereClauseBuilderReportsClean();
             this.AssumeTestEntityIsInitialised();
-            var expected = string.Format("DELETE [dbo].[TestEntity]\nWHERE [Id] = {0};", this.Entity.Id);
-            Command.For(this.Entity)
+            var expected = $"DELETE [dbo].[TestEntity]\nWHERE [Id] = {this.Entity.Id};";
+            this.Command.For(this.Entity)
                 .Sql()
                 .Should()
                 .Be(expected);
@@ -57,7 +34,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildDeleteStatementWithNoWhereClause()
         {
             const string expected = "DELETE [dbo].[TestEntity];";
-            Command.Sql()
+            this.Command.Sql()
                 .Should()
                 .Be(expected);
         }
@@ -65,14 +42,14 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void DefaultSchemaToDbo()
         {
-            Command.TableSchema.Should()
+            this.Command.TableSchema.Should()
                 .Be("dbo");
         }
 
         [Test]
         public void DefaultTableNameToNameOfType()
         {
-            Command.TableName.Should()
+            this.Command.TableName.Should()
                 .Be("TestEntity");
         }
 
@@ -81,20 +58,28 @@ namespace SqlRepo.SqlServer.Tests
         {
             const string whereClause = "WHERE [Id] = 55";
             const string expected = "DELETE [dbo].[TestEntity]\n" + whereClause + ";";
-            WhereClauseBuilder.Sql()
+            this.WhereClauseBuilder.Sql()
                 .Returns(whereClause);
-            var result = Command.Where(e => e.Id == 55)
-                .Sql();
+            var result = this.Command.Where(e => e.Id == 55)
+                             .Sql();
             result.Should()
-                .Be(expected);
+                  .Be(expected);
         }
 
         [Test]
         public void ExecuteQueryOnGo()
         {
-            AssumeGoIsRequested();
-            CommandExecutor.Received()
+            this.AssumeGoIsRequested();
+            this.CommandExecutor.Received()
                 .ExecuteNonQuery(ConnectionString, Arg.Any<string>());
+        }
+
+        [Test]
+        public async Task ExecuteQueryOnGoAsync()
+        {
+            await this.AssumeGoAsyncIsRequested();
+            await this.CommandExecutor.Received()
+                      .ExecuteNonQueryAsync(ConnectionString, Arg.Any<string>());
         }
 
         [Test]
@@ -110,24 +95,24 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void SupportChainingAfterSettingTableSchema()
         {
-            Command.UsingTableSchema(OtherValue)
+            this.Command.UsingTableSchema(OtherValue)
                 .Should()
-                .Be(Command);
+                .Be(this.Command);
         }
 
         [Test]
         public void SupportUsingSpecificSchema()
         {
-            Command.UsingTableSchema(OtherValue);
-            Command.TableSchema.Should()
+            this.Command.UsingTableSchema(OtherValue);
+            this.Command.TableSchema.Should()
                 .Be(OtherValue);
         }
 
         [Test]
         public void SupportUsingSpecificTableName()
         {
-            Command.UsingTableName(OtherValue);
-            Command.TableName.Should()
+            this.Command.UsingTableName(OtherValue);
+            this.Command.TableName.Should()
                 .Be(OtherValue);
         }
 
@@ -135,27 +120,27 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowExceptionIfForCalledAfterWhere()
         {
             this.AssumeTestEntityIsInitialised();
-            Command.Where(e => e.ByteProperty == 1);
-            Command.Invoking(s => s.For(this.Entity))
+            this.Command.Where(e => e.ByteProperty == 1);
+            this.Command.Invoking(s => s.For(this.Entity))
                 .ShouldThrow<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfWhereCalledAfterFor()
         {
-            AssumeWhereClauseBuilderReportsClean();
+            this.AssumeWhereClauseBuilderReportsClean();
             this.AssumeTestEntityIsInitialised();
-            Command.For(this.Entity);
-            Command.Invoking(s => s.Where(e => e.ByteProperty == 1))
+            this.Command.For(this.Entity);
+            this.Command.Invoking(s => s.Where(e => e.ByteProperty == 1))
                 .ShouldThrow<InvalidOperationException>();
         }
 
         [Test]
         public void UseBuilderOnSql()
         {
-            Command.Where(e => e.Id == 55)
+            this.Command.Where(e => e.Id == 55)
                 .Sql();
-            WhereClauseBuilder.Received()
+            this.WhereClauseBuilder.Received()
                 .Sql();
         }
 
@@ -163,8 +148,8 @@ namespace SqlRepo.SqlServer.Tests
         public void UserBuilderOnWhere()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            Command.Where(expression);
-            WhereClauseBuilder.Received()
+            this.Command.Where(expression);
+            this.WhereClauseBuilder.Received()
                 .Where(expression);
         }
 
@@ -172,9 +157,9 @@ namespace SqlRepo.SqlServer.Tests
         public void UserWhereBuilderOnAnd()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            Command.Where(expression)
+            this.Command.Where(expression)
                 .And(expression);
-            WhereClauseBuilder.Received()
+            this.WhereClauseBuilder.Received()
                 .And(expression);
         }
 
@@ -182,9 +167,9 @@ namespace SqlRepo.SqlServer.Tests
         public void UserWhereBuilderOnNestedAnd()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            Command.Where(expression)
+            this.Command.Where(expression)
                 .NestedAnd(expression);
-            WhereClauseBuilder.Received()
+            this.WhereClauseBuilder.Received()
                 .NestedAnd(expression);
         }
 
@@ -192,9 +177,9 @@ namespace SqlRepo.SqlServer.Tests
         public void UserWhereBuilderOnNestedOr()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            Command.Where(expression)
+            this.Command.Where(expression)
                 .NestedOr(expression);
-            WhereClauseBuilder.Received()
+            this.WhereClauseBuilder.Received()
                 .NestedOr(expression);
         }
 
@@ -202,10 +187,40 @@ namespace SqlRepo.SqlServer.Tests
         public void UserWhereBuilderOnOr()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            Command.Where(expression)
+            this.Command.Where(expression)
                 .Or(expression);
-            WhereClauseBuilder.Received()
+            this.WhereClauseBuilder.Received()
                 .Or(expression);
+        }
+
+        protected override DeleteCommand<TestEntity> CreateCommand(ICommandExecutor commandExecutor,
+            IEntityMapper entityMapper,
+            IWritablePropertyMatcher writablePropertyMatcher,
+            ISelectClauseBuilder selectClauseBuilder,
+            IFromClauseBuilder fromClauseBuilder,
+            IWhereClauseBuilder whereClauseBuilder,
+            string connectionString)
+        {
+            var command = new DeleteCommand<TestEntity>(commandExecutor, entityMapper, whereClauseBuilder);
+            command.UseConnectionString(connectionString);
+            return command;
+        }
+
+        private async Task AssumeGoAsyncIsRequested()
+        {
+            await this.Command.Where(e => e.Id == 1)
+                      .GoAsync();
+        }
+
+        private void AssumeGoIsRequested()
+        {
+            this.Command.Where(e => e.Id == 1)
+                .Go();
+        }
+
+        private string ExpectedTableSpecification(string schema, string table)
+        {
+            return $"DELETE [{schema}].[{table}]";
         }
     }
 }
