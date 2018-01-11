@@ -12,6 +12,8 @@ namespace SqlRepo
         IDeleteCommand<TEntity> NestedOr(Expression<Func<TEntity, bool>> expression);
         IDeleteCommand<TEntity> Or(Expression<Func<TEntity, bool>> expression);
         IDeleteCommand<TEntity> Where(Expression<Func<TEntity, bool>> expression);
+        IDeleteCommand<TEntity> UsingTableName(string tableName);
+        IDeleteCommand<TEntity> UsingTableSchema(string tableSchema);
 
         IDeleteCommand<TEntity> WhereIn<T, TMember>(Expression<Func<T, TMember>> selector,
             TMember[] values);
