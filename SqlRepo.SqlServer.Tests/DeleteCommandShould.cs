@@ -150,7 +150,7 @@ namespace SqlRepo.SqlServer.Tests
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
             this.Command.Where(expression);
             this.WhereClauseBuilder.Received()
-                .Where(expression);
+                .Where(expression, null, "TestEntity", "dbo");
         }
 
         [Test]
