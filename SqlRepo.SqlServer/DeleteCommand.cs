@@ -100,14 +100,14 @@ namespace SqlRepo.SqlServer
             }
 
             this.IsClean = false;
-            this.whereClauseBuilder.Where(expression);
+            this.whereClauseBuilder.Where(expression, tableName: TableName, tableSchema: TableSchema);
             return this;
         }
 
         public IDeleteCommand<TEntity> WhereIn<T, TMember>(Expression<Func<T, TMember>> selector,
             TMember[] values)
         {
-            this.whereClauseBuilder.WhereIn(selector, values);
+            this.whereClauseBuilder.WhereIn(selector, values, tableName: TableName, tableSchema: TableSchema);
             return this;
         }
 

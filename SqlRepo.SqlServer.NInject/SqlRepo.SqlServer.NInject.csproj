@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +6,7 @@
     <Authors>Mike Hanson &amp; Mark Eastwood</Authors>
     <Company />
     <Product>SQL Repo</Product>
-    <Description>Implementation of SqlRepo for Microsoft SQL Server</Description>
+    <Description>Provides a module for registering SqlRepo.SqlServer components in IoC container using NInject</Description>
     <PackageProjectUrl>http://github.com/testpossessed/sqlrepo</PackageProjectUrl>
     <PackageTags>sql, repository, builder, ninject</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -17,11 +17,11 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.4.2" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
     <ProjectReference Include="..\SqlRepo\SqlRepo.csproj" />
   </ItemGroup>
 
