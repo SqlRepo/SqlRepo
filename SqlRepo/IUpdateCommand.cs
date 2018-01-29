@@ -13,5 +13,7 @@ namespace SqlRepo
         IUpdateCommand<TEntity> Or(Expression<Func<TEntity, bool>> expression);
         IUpdateCommand<TEntity> Set<TMember>(Expression<Func<TEntity, TMember>> selector, TMember @value, string tableSchema = null, string tableName = null);
         IUpdateCommand<TEntity> Where(Expression<Func<TEntity, bool>> expression);
+        IUpdateCommand<TEntity> WhereIn<TMember>(Expression<Func<TEntity, TMember>> selector,
+            TMember[] values);
     }
 }
