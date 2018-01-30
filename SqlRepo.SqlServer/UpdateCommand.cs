@@ -131,6 +131,18 @@ namespace SqlRepo.SqlServer
             this.whereClauseBuilder.Where(expression);
             return this;
         }
+        
+        public IUpdateCommand<TEntity> WhereIn<TMember>(Expression<Func<TEntity, TMember>> selector, TMember[] values)
+        {
+            if (this.entity != null)
+            {
+                throw new InvalidOperationException(
+                    "Where cannot be used once For has been used, please create a new command.");
+            }
+            this.IsClean = false;
+            this.whereClauseBuilder.WhereIn<TEntity, TMember>(selector, values);
+            return this;
+        }
 
         private string FormatColumnValuePairs(IEnumerable<string> columnValuePairs)
         {

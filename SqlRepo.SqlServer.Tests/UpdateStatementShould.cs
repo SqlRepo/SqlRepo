@@ -289,6 +289,23 @@ namespace SqlRepo.SqlServer.Tests
                 .Should()
                 .Be(expected);
         }
+        
+        [Test]
+        public void GenerateCorrectSqlForWhereInQuery()
+        {
+            const string whereClause = "WHERE ([dbo].[TestEntity].[IntProperty] IN (1, 2, 3))";
+            this.WhereClauseBuilder.Sql()
+                .Returns(whereClause);
+
+            const string ExpectedSql = "UPDATE [dbo].[TestEntity]" + "\nSET [StringProperty] = 'TestValue'"
+                                       + "\n" + whereClause + ";";
+            this.Command
+                .Set(p => p.StringProperty, "TestValue")
+                .WhereIn(e => e.IntProperty, new[] { 1, 2, 3 })
+                .Sql()
+                .Should()
+                .Be(ExpectedSql);
+        }
 
         [Test]
         public void ThrowExceptionIfBuildCalledWithoutInitialisingStatement()
@@ -333,6 +350,17 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeTestEntityIsInitialised();
             this.Command.For(this.Entity);
             this.Command.Invoking(s => s.Where(e => e.ByteProperty == 1))
+                .ShouldThrow<InvalidOperationException>();
+        }
+
+        [Test]
+        public void ThrowExceptionIfWhereInCalledAfterFor()
+        {
+            this.AssumeWhereClauseBuilderReportsClean();
+            this.AssumeTestEntityIsInitialised();
+            this.Command.For(this.Entity);
+            var intArray = new []{ 1, 2};
+            this.Command.Invoking(s => s.WhereIn(e => e.IntProperty, intArray))
                 .ShouldThrow<InvalidOperationException>();
         }
 
