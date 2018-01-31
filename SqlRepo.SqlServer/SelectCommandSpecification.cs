@@ -86,11 +86,14 @@ namespace SqlRepo.SqlServer
 
         private string BuildSelectClause()
         {
-            const string ClauseTemplate = "SELECT {0}";
+            const string ClauseTemplate = "SELECT {0}{1}";
+
+            string top = Top.HasValue ? $"TOP ({Top}) " : string.Empty;
+
             var selections = string.Join("\n, ",
                 Columns.Select(c => c.ToString())
                     .ToArray());
-            return string.Format(ClauseTemplate, string.IsNullOrEmpty(selections) ? "*" : selections);
+            return string.Format(ClauseTemplate, top, string.IsNullOrEmpty(selections) ? "*" : selections);
         }
 
         private string BuildWhereClause()

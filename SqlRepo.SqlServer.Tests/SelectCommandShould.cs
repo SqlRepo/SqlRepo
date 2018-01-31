@@ -42,6 +42,18 @@ namespace SqlRepo.SqlServer.Tests
                 .Be(ExpectedSql);
         }
 
+
+        [Test]
+        public void GenerateCorrectSqlForTop()
+        {
+            const string ExpectedSql = "SELECT TOP (50) *\nFROM [dbo].[TestEntity];";
+            this.Command
+                .Top(50)
+                .Sql()
+                .Should()
+                .Be(ExpectedSql);
+        }
+
         [Test]
         public void GenerateCorrectSqlForJoinedQueryWithNoLocks()
         {
