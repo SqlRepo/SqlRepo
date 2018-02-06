@@ -91,6 +91,12 @@ namespace SqlRepo.SqlServer
             var memberExpression = expression as MemberExpression;
             if(memberExpression != null)
             {
+                var fieldsOfObj = memberExpression.Expression as ConstantExpression;
+                var propertyInfo = memberExpression.Member as PropertyInfo;
+
+                if (propertyInfo != null)
+                    return propertyInfo.GetValue(fieldsOfObj, null);
+
                 var @value = this.GetExpressionValue(memberExpression.Expression);
                 return this.ResolveValue((dynamic)memberExpression.Member, @value);
             }
