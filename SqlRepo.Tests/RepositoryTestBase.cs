@@ -13,7 +13,7 @@ namespace SqlRepo.Tests
         {
             AssumeTestEntityIsInitialised();
             AssumeCommandFactoryIsInitialised();
-            repository = new Repository<TestEntity>(CommandFactory);
+            repository = new Repository<TestEntity>(this.StatementFactory);
         }
 
         private IRepository<TestEntity> repository;
@@ -23,7 +23,7 @@ namespace SqlRepo.Tests
             repository.Delete(Entity);
         }
 
-        protected IDeleteCommand<TestEntity> AssumeDeleteIsRequested()
+        protected IDeleteStatement<TestEntity> AssumeDeleteIsRequested()
         {
             return repository.Delete();
         }
@@ -33,17 +33,17 @@ namespace SqlRepo.Tests
             return repository.Insert(Entity);
         }
 
-        protected IInsertCommand<TestEntity> AssumeInsertIsRequested()
+        protected IInsertStatement<TestEntity> AssumeInsertIsRequested()
         {
             return repository.Insert();
         }
 
-        protected IEnumerable<TestEntity> AssumeResultsFromIsRequested(ISelectCommand<TestEntity> query)
+        protected IEnumerable<TestEntity> AssumeResultsFromIsRequested(ISelectStatement<TestEntity> query)
         {
             return repository.ResultsFrom(query);
         }
 
-        protected ISelectCommand<TestEntity> AssumeSelectIsRequested()
+        protected ISelectStatement<TestEntity> AssumeSelectIsRequested()
         {
             return repository.Query();
         }
@@ -53,14 +53,14 @@ namespace SqlRepo.Tests
             repository.Update(Entity);
         }
 
-        protected IUpdateCommand<TestEntity> AssumeUpdateIsRequested()
+        protected IUpdateStatement<TestEntity> AssumeUpdateIsRequested()
         {
             return repository.Update();
         }
 
         private void AssumeCommandFactoryIsInitialised()
         {
-            CommandFactory = Substitute.For<ICommandFactory>();
+            this.StatementFactory = Substitute.For<IStatementFactory>();
             AssumeDeleteCommandIsInitialised();
             AssumeInsertCommandIsInitialised();
             AssumeUpdateCommandIsInitialised();
@@ -69,42 +69,42 @@ namespace SqlRepo.Tests
 
         private void AssumeDeleteCommandIsInitialised()
         {
-            DeleteCommand = Substitute.For<IDeleteCommand<TestEntity>>();
-            CommandFactory.CreateDelete<TestEntity>()
-                .Returns(DeleteCommand);
-            DeleteCommand.For(Entity)
-                .Returns(DeleteCommand);
+            this.DeleteStatement = Substitute.For<IDeleteStatement<TestEntity>>();
+            this.StatementFactory.CreateDelete<TestEntity>()
+                .Returns(this.DeleteStatement);
+            this.DeleteStatement.For(Entity)
+                .Returns(this.DeleteStatement);
         }
 
         private void AssumeInsertCommandIsInitialised()
         {
-            InsertCommand = Substitute.For<IInsertCommand<TestEntity>>();
-            InsertCommand.For(Entity)
-                .Returns(InsertCommand);
-            CommandFactory.CreateInsert<TestEntity>()
-                .Returns(InsertCommand);
+            this.InsertStatement = Substitute.For<IInsertStatement<TestEntity>>();
+            this.InsertStatement.For(Entity)
+                .Returns(this.InsertStatement);
+            this.StatementFactory.CreateInsert<TestEntity>()
+                .Returns(this.InsertStatement);
         }
 
         private void AssumeSelectCommandIsInitialised()
         {
-            SelectCommand = Substitute.For<ISelectCommand<TestEntity>>();
-            CommandFactory.CreateSelect<TestEntity>()
-                .Returns(SelectCommand);
+            this.SelectStatement = Substitute.For<ISelectStatement<TestEntity>>();
+            this.StatementFactory.CreateSelect<TestEntity>()
+                .Returns(this.SelectStatement);
         }
 
         private void AssumeUpdateCommandIsInitialised()
         {
-            UpdateCommand = Substitute.For<IUpdateCommand<TestEntity>>();
-            CommandFactory.CreateUpdate<TestEntity>()
-                .Returns(UpdateCommand);
-            UpdateCommand.For(Entity)
-                .Returns(UpdateCommand);
+            this.UpdateStatement = Substitute.For<IUpdateStatement<TestEntity>>();
+            this.StatementFactory.CreateUpdate<TestEntity>()
+                .Returns(this.UpdateStatement);
+            this.UpdateStatement.For(Entity)
+                .Returns(this.UpdateStatement);
         }
 
-        protected ICommandFactory CommandFactory { get; private set; }
-        protected IDeleteCommand<TestEntity> DeleteCommand { get; private set; }
-        protected IInsertCommand<TestEntity> InsertCommand { get; private set; }
-        protected ISelectCommand<TestEntity> SelectCommand { get; private set; }
-        protected IUpdateCommand<TestEntity> UpdateCommand { get; private set; }
+        protected IStatementFactory StatementFactory { get; private set; }
+        protected IDeleteStatement<TestEntity> DeleteStatement { get; private set; }
+        protected IInsertStatement<TestEntity> InsertStatement { get; private set; }
+        protected ISelectStatement<TestEntity> SelectStatement { get; private set; }
+        protected IUpdateStatement<TestEntity> UpdateStatement { get; private set; }
     }
 }

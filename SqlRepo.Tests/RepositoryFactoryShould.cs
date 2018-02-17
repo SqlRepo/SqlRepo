@@ -13,7 +13,7 @@ namespace SqlRepo.Tests
         public void SetUp()
         {
             this.AssumeCommandFactoryIsInitialised();
-            this.factory = new RepositoryFactory(this.commandFactory);
+            this.factory = new RepositoryFactory(this.statementFactory);
         }
 
         [Test]
@@ -34,12 +34,12 @@ namespace SqlRepo.Tests
                   .BeAssignableTo<Repository<TestEntity>>();
         }
 
-        private ICommandFactory commandFactory;
+        private IStatementFactory statementFactory;
         private IRepositoryFactory factory;
 
         private void AssumeCommandFactoryIsInitialised()
         {
-            this.commandFactory = Substitute.For<ICommandFactory>();
+            this.statementFactory = Substitute.For<IStatementFactory>();
         }
 
         private IRepository<TestEntity> AssumeCreateIsRequested()

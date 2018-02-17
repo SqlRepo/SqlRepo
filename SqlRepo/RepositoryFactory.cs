@@ -4,16 +4,16 @@ namespace SqlRepo
 {
     public class RepositoryFactory : IRepositoryFactory
     {
-        private readonly ICommandFactory commandFactory;
+        private readonly IStatementFactory statementFactory;
 
-        public RepositoryFactory(ICommandFactory commandFactory)
+        public RepositoryFactory(IStatementFactory statementFactory)
         {
-            this.commandFactory = commandFactory;
+            this.statementFactory = statementFactory;
         }
 
         public IRepository<TEntity> Create<TEntity>() where TEntity: class, new()
         {
-            return new Repository<TEntity>(this.commandFactory);
+            return new Repository<TEntity>(this.statementFactory);
         }
     }
 }

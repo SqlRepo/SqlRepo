@@ -6,13 +6,13 @@ namespace SqlRepo
     public interface IRepository<TEntity>
         where TEntity: class, new()
     {
-        IDeleteCommand<TEntity> Delete();
+        IDeleteStatement<TEntity> Delete();
         int Delete(TEntity entity);
-        IInsertCommand<TEntity> Insert();
+        IInsertStatement<TEntity> Insert();
         TEntity Insert(TEntity entity);
-        ISelectCommand<TEntity> Query();
-        IEnumerable<TEntity> ResultsFrom(ISelectCommand<TEntity> query);
-        IUpdateCommand<TEntity> Update();
+        ISelectStatement<TEntity> Query();
+        IEnumerable<TEntity> ResultsFrom(ISelectStatement<TEntity> query);
+        IUpdateStatement<TEntity> Update();
         int Update(TEntity entity);
     }
 }

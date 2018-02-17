@@ -12,7 +12,7 @@ namespace SqlRepo.Tests
         [Test]
         public void ExecuteQuery()
         {
-            var query = Substitute.For<ISelectCommand<TestEntity>>();
+            var query = Substitute.For<ISelectStatement<TestEntity>>();
             this.AssumeResultsFromIsRequested(query);
             query.Received()
                  .Go();
@@ -21,7 +21,7 @@ namespace SqlRepo.Tests
         [Test]
         public void ReturnResultsFromQuery()
         {
-            var query = Substitute.For<ISelectCommand<TestEntity>>();
+            var query = Substitute.For<ISelectStatement<TestEntity>>();
             var expected = new[] {new TestEntity(), new TestEntity()};
             query.Go()
                  .Returns(expected);
