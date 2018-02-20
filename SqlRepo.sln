@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo", "SqlRepo\SqlRepo.csproj", "{9773F144-2310-4B6F-9702-CF67BDBB165E}"
 EndProject
@@ -16,12 +16,17 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.Tests", "SqlRepo.SqlServer.Tests\SqlRepo.SqlServer.Tests.csproj", "{201582B4-5F26-4BBC-B202-F121E38CB4C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D7381234-9483-400D-8EC8-D08CB6341B58}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor.yml = appveyor.yml
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.Demo", "SqlRepo.SqlServer.Demo\SqlRepo.SqlServer.Demo.csproj", "{3CECDF69-DB69-4E9E-B451-A4367E566F3D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.NInject", "SqlRepo.SqlServer.NInject\SqlRepo.SqlServer.NInject.csproj", "{AF70042D-51B7-4F03-AA82-97D0218D266D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepo.SqlServer.ServiceCollection", "SqlRepo.SqlServer.ServiceCollection\SqlRepo.SqlServer.ServiceCollection.csproj", "{BF895150-957D-4356-95A9-FE0FEB12FB21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.ServiceCollection", "SqlRepo.SqlServer.ServiceCollection\SqlRepo.SqlServer.ServiceCollection.csproj", "{BF895150-957D-4356-95A9-FE0FEB12FB21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepo.SqlServer.Static", "SqlRepo.SqlServer.Static\SqlRepo.SqlServer.Static.csproj", "{D4AA77F6-9D07-4EBE-A05A-5492A115249E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +70,10 @@ Global
 		{BF895150-957D-4356-95A9-FE0FEB12FB21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF895150-957D-4356-95A9-FE0FEB12FB21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF895150-957D-4356-95A9-FE0FEB12FB21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4AA77F6-9D07-4EBE-A05A-5492A115249E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4AA77F6-9D07-4EBE-A05A-5492A115249E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4AA77F6-9D07-4EBE-A05A-5492A115249E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4AA77F6-9D07-4EBE-A05A-5492A115249E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
