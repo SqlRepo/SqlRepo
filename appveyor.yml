@@ -23,6 +23,10 @@ build_script:
 
     dotnet build "SqlRepo.SqlServer"
 
+    dotnet restore "SqlRepo.SqlServer.Static"
+
+    dotnet build "SqlRepo.SqlServer.Static"
+
     dotnet restore "SqlRepo.SqlServer.Autofac"
 
     dotnet build "SqlRepo.SqlServer.Autofac"
