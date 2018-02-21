@@ -25,6 +25,12 @@ namespace SqlRepo.SqlServer
             foreach (var field in fieldNames)
             {
                 var propertyInfo = typeof(TEntity).GetProperty(field);
+
+                if (propertyInfo == null)
+                {
+                    continue;
+                }
+
                 setterList.Add(BuildUntypedSetter<TEntity>(propertyInfo));
 
                 typeToRetrieve.Add(field, propertyInfo.PropertyType);
