@@ -29,6 +29,7 @@ namespace SqlRepo.SqlServer
             this.writablePropertyMatcher = writablePropertyMatcher;
         }
 
+        [Obsolete]
         public IInsertCommand<TEntity> For(TEntity entity)
         {
             if(this.selectors.Any())
