@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace SqlRepo.SqlServer
 {
@@ -37,6 +38,7 @@ namespace SqlRepo.SqlServer
             var orderByClause = BuildOrderByClause();
             var groupByClause = BuildGroupByClause();
             var havingClause = BuildHavingClause();
+            
             return string.Format(CommandTemplate,
                 selectClause,
                 fromClause,
@@ -44,6 +46,21 @@ namespace SqlRepo.SqlServer
                 groupByClause,
                 orderByClause,
                 havingClause);
+
+            /*var selectClause = BuildSelectClause();
+            var fromClause = BuildFromClause();
+            var whereClause = BuildWhereClause();
+            var orderByClause = BuildOrderByClause();
+            var groupByClause = BuildGroupByClause();
+            var havingClause = BuildHavingClause();
+
+            return 
+                selectClause +
+                fromClause +
+                whereClause +
+                groupByClause +
+                orderByClause +
+                havingClause;*/
         }
 
         private string BuildFromClause()
