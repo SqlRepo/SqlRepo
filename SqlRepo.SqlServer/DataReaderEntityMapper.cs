@@ -55,6 +55,10 @@ namespace SqlRepo.SqlServer
                         {
                             setterArray[i](entity, reader.GetString(i));
                         }
+                        else if (dataType == typeof(short))
+                        {
+                            setterArray[i](entity, reader.GetInt16(i));
+                        }
                         else if (dataType == typeof(int))
                         {
                             setterArray[i](entity, reader.GetInt32(i));
@@ -62,6 +66,26 @@ namespace SqlRepo.SqlServer
                         else if (dataType == typeof(long))
                         {
                             setterArray[i](entity, reader.GetInt64(i));
+                        }
+                        else if (dataType == typeof(DateTime))
+                        {
+                            setterArray[i](entity, reader.GetDateTime(i));
+                        }
+                        else if (dataType == typeof(double))
+                        {
+                            setterArray[i](entity, reader.GetDouble(i));
+                        }
+                        else if (dataType == typeof(bool))
+                        {
+                            setterArray[i](entity, reader.GetBoolean(i));
+                        }
+                        else if (dataType == typeof(byte))
+                        {
+                            setterArray[i](entity, reader.GetByte(i));
+                        }
+                        else if (dataType == typeof(float))
+                        {
+                            setterArray[i](entity, reader.GetFloat(i));
                         }
                         else
                         {
