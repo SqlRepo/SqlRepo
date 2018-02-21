@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.16</Version>
+    <Authors>Mike Hanson &amp; Mark Eastwood</Authors>
+    <Company>SqlRepo</Company>
+    <Product>SqlRepo</Product>
+    <Description>Provides static wrapper for repository factory for those who cannot or do not want to use dependency injection</Description>
+    <PackageProjectUrl>https://github.com/sqlrepo/sqlrepo</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sqlrepo/sqlrepo</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>sql, repository pattern, builder</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
+    <ProjectReference Include="..\SqlRepo\SqlRepo.csproj" />
+  </ItemGroup>
+
+</Project>

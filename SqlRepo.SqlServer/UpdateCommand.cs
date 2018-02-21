@@ -36,6 +36,7 @@ namespace SqlRepo.SqlServer
             return this;
         }
 
+        [Obsolete]
         public IUpdateCommand<TEntity> For(TEntity entity)
         {
             if(this.setSelectors.Any() || !this.whereClauseBuilder.IsClean)

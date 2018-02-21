@@ -76,6 +76,15 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
+        public void NotThrowForAndedConditionsOnDateTimeProperty()
+        {
+            builder.Where<TestEntity>(e => e.DateTimeProperty > DateTime.UtcNow)
+                .And<TestEntity>(e => e.DateTimeProperty < DateTime.UtcNow)
+                .Invoking(e => e.Sql())
+                .ShouldNotThrow();
+        }
+
+        [Test]
         public void ReturnCorrectSqlForAndedConditionsOnIntProperty()
         {
             const string expected =
@@ -103,7 +112,7 @@ namespace SqlRepo.SqlServer.Tests
                 .Should()
                 .Be(expected);
         }
-
+        
         [Test]
         public void ReturnCorrectSqlForBetween()
         {
