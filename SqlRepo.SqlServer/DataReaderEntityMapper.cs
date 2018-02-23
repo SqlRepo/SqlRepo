@@ -19,12 +19,17 @@ namespace SqlRepo.SqlServer
                 fieldNames[i] = reader.GetName(i);
 
             var setterList = new List<Action<TEntity, object>>();
-
             var typeToRetrieve = new Dictionary<string, Type>();
 
             foreach (var field in fieldNames)
             {
                 var propertyInfo = typeof(TEntity).GetProperty(field);
+
+                if (propertyInfo == null)
+                {
+                    continue;
+                }
+
                 setterList.Add(BuildUntypedSetter<TEntity>(propertyInfo));
 
                 typeToRetrieve.Add(field, propertyInfo.PropertyType);
@@ -47,7 +52,7 @@ namespace SqlRepo.SqlServer
                     {
                         var dataType = typeToRetrieve[columnName];
 
-                        if (dataType == typeof(decimal))
+                        if (dataType == typeof(decimal) || dataType == typeof(decimal?))
                         {
                             setterArray[i](entity, reader.GetDecimal(i));
                         }
@@ -55,35 +60,35 @@ namespace SqlRepo.SqlServer
                         {
                             setterArray[i](entity, reader.GetString(i));
                         }
-                        else if (dataType == typeof(short))
+                        else if (dataType == typeof(short) || dataType == typeof(short?))
                         {
                             setterArray[i](entity, reader.GetInt16(i));
                         }
-                        else if (dataType == typeof(int))
+                        else if (dataType == typeof(int) || dataType == typeof(int?))
                         {
                             setterArray[i](entity, reader.GetInt32(i));
                         }
-                        else if (dataType == typeof(long))
+                        else if (dataType == typeof(long) || dataType == typeof(long?))
                         {
                             setterArray[i](entity, reader.GetInt64(i));
                         }
-                        else if (dataType == typeof(DateTime))
+                        else if (dataType == typeof(DateTime) || dataType == typeof(DateTime?))
                         {
                             setterArray[i](entity, reader.GetDateTime(i));
                         }
-                        else if (dataType == typeof(double))
+                        else if (dataType == typeof(double) || dataType == typeof(double?))
                         {
                             setterArray[i](entity, reader.GetDouble(i));
                         }
-                        else if (dataType == typeof(bool))
+                        else if (dataType == typeof(bool) || dataType == typeof(bool?))
                         {
                             setterArray[i](entity, reader.GetBoolean(i));
                         }
-                        else if (dataType == typeof(byte))
+                        else if (dataType == typeof(byte) || dataType == typeof(byte?))
                         {
                             setterArray[i](entity, reader.GetByte(i));
                         }
-                        else if (dataType == typeof(float))
+                        else if (dataType == typeof(float) || dataType == typeof(float?))
                         {
                             setterArray[i](entity, reader.GetFloat(i));
                         }

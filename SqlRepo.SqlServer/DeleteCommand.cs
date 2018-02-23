@@ -25,6 +25,7 @@ namespace SqlRepo.SqlServer
             return this;
         }
 
+        [Obsolete]
         public IDeleteCommand<TEntity> For(TEntity entity)
         {
             if(!this.whereClauseBuilder.IsClean)
