@@ -46,21 +46,6 @@ namespace SqlRepo.SqlServer
                 groupByClause,
                 orderByClause,
                 havingClause);
-
-            /*var selectClause = BuildSelectClause();
-            var fromClause = BuildFromClause();
-            var whereClause = BuildWhereClause();
-            var orderByClause = BuildOrderByClause();
-            var groupByClause = BuildGroupByClause();
-            var havingClause = BuildHavingClause();
-
-            return 
-                selectClause +
-                fromClause +
-                whereClause +
-                groupByClause +
-                orderByClause +
-                havingClause;*/
         }
 
         private string BuildFromClause()
