@@ -17,7 +17,7 @@ namespace SqlRepo.Benchmark
             SqlRepoBenchmarkDbContext dbContext = new SqlRepoBenchmarkDbContext();
             dbContext.Database.Migrate();
 
-            services.AddSingleton<ISqlLogger, DoNothingSqlLogger>();
+            services.AddSingleton<ISqlLogger, NoOpSqlLogger>();
             services.AddSingleton<IBenchmarkHelpers, BenchmarkHelpers>();
 
             services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationEfCore>();
