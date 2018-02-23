@@ -20,14 +20,18 @@ namespace SqlRepo.Benchmark
             services.AddSingleton<ISqlLogger, NoOpSqlLogger>();
             services.AddSingleton<IBenchmarkHelpers, BenchmarkHelpers>();
 
-            services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationEfCore>();
+            services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationDapper>();
             services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationSqlRepo>();
+            services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationEfCore>();
+            services.AddSingleton<IBenchmarkOperation, SelectTop5000BenchmarkOperationDapper>();
             services.AddSingleton<IBenchmarkOperation, SelectTop5000BenchmarkOperationSqlRepo>();
             services.AddSingleton<IBenchmarkOperation, SelectTop5000BenchmarkOperationEfCore>();
+            services.AddSingleton<IBenchmarkOperation, SelectWhereBetweenBenchmarkOperationDapper>();
             services.AddSingleton<IBenchmarkOperation, SelectWhereBetweenBenchmarkOperationSqlRepo>();
             services.AddSingleton<IBenchmarkOperation, SelectWhereBetweenBenchmarkOperationEfCore>();
-            services.AddSingleton<IBenchmarkOperation, SelectSingleColumnBenchmarkEfCore>();
+            services.AddSingleton<IBenchmarkOperation, SelectSingleColumnBenchmarkDapper>();
             services.AddSingleton<IBenchmarkOperation, SelectSingleColumnBenchmarkSqlRepo>();
+            services.AddSingleton<IBenchmarkOperation, SelectSingleColumnBenchmarkEfCore>();
 
             services.AddSingleton<IBenchmarkRunner, BenchmarkRunner>();
 

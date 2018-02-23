@@ -16,7 +16,7 @@ namespace SqlRepo.Benchmark
 
         public void Run()
         {
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 6; i++)
                 foreach (var benchmarkOperation in _benchmarkOperations)
                 {
                     var benchmarkResult = benchmarkOperation.Run();

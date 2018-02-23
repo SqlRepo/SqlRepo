@@ -3,6 +3,7 @@
     public enum Component
     {
         SqlRepo,
-        EfCore2
+        EfCore2,
+        Dapper
     }
 }
