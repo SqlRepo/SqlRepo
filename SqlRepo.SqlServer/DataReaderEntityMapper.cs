@@ -57,7 +57,12 @@ namespace SqlRepo.SqlServer
                     for (var i = 0; i < reader.FieldCount; i++)
                     {
                         var columnName = reader.GetName(i);
+
+                        if (!entityMapper.PropertySetters.ContainsKey(columnName))
+                            continue;
+
                         var propertySetter = entityMapper.PropertySetters[columnName];
+
                         var fieldIndex = i;
 
                         if (entityMapper.ColumnTypeMappings.ContainsKey(columnName))
@@ -269,6 +274,11 @@ namespace SqlRepo.SqlServer
                                 return e;
                             };
                         }
+                    }
+
+                    foreach (var mappingInstruction in mappingInstructions)
+                    {
+                        mappingInstruction?.Invoke(reader, entity);
                     }
                 }
 
