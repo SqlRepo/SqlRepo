@@ -9,16 +9,11 @@ namespace SqlRepo
             this Type type)
         {
             return
-                type.IsValueType ||
                 type.IsPrimitive ||
                 new[]
                 {
                     typeof(string),
-                    typeof(decimal),
-                    typeof(DateTime),
-                    typeof(DateTimeOffset),
-                    typeof(TimeSpan),
-                    typeof(Guid)
+                    typeof(decimal)
                 }.Contains(type) ||
                 Convert.GetTypeCode(type) != TypeCode.Object;
         }
