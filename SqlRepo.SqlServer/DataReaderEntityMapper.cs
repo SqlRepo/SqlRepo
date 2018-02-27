@@ -43,14 +43,7 @@ namespace SqlRepo.SqlServer
             {
                 var entity = entityMapper.Activator();
 
-                if (!isFirst)
-                {
-                    foreach (var mappingInstruction in mappingInstructions)
-                    {
-                        mappingInstruction?.Invoke(reader, entity);
-                    }
-                }
-                else
+                if (isFirst)
                 {
                     isFirst = false;
 
@@ -275,11 +268,11 @@ namespace SqlRepo.SqlServer
                             };
                         }
                     }
+                }
 
-                    foreach (var mappingInstruction in mappingInstructions)
-                    {
-                        mappingInstruction?.Invoke(reader, entity);
-                    }
+                foreach (var mappingInstruction in mappingInstructions)
+                {
+                    mappingInstruction?.Invoke(reader, entity);
                 }
 
                 list.Add(entity);
