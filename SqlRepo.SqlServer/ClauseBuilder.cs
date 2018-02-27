@@ -94,7 +94,7 @@ namespace SqlRepo.SqlServer
                 var fieldsOfObj = memberExpression.Expression as ConstantExpression;
                 var propertyInfo = memberExpression.Member as PropertyInfo;
 
-                if (propertyInfo != null)
+                if (propertyInfo != null && !propertyInfo.PropertyType.IsSimpleType())
                     return propertyInfo.GetValue(fieldsOfObj, null);
 
                 var @value = this.GetExpressionValue(memberExpression.Expression);
