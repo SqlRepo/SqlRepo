@@ -8,102 +8,267 @@ namespace SqlRepo.SqlServer
 {
     public class DataReaderEntityMapper : IEntityMapper
     {
+        private static readonly Dictionary<string, object> EntityMapperDefinitions = new Dictionary<string, object>();
+
         public virtual IEnumerable<TEntity> Map<TEntity>(IDataReader reader) where TEntity : class, new()
         {
-            var createdActivator = EntityActivator.GetActivator<TEntity>();
-
             var list = new List<TEntity>();
-            var fieldNames = new string[reader.FieldCount];
 
-            for (var i = 0; i < reader.FieldCount; i++)
-                fieldNames[i] = reader.GetName(i);
+            EntityMapperDefinition<TEntity> entityMapper;
 
-            var setterList = new List<Action<TEntity, object>>();
-            var typeToRetrieve = new Dictionary<string, Type>();
+            var fullTypeName = typeof(TEntity).FullName;
 
-            foreach (var field in fieldNames)
+            if (EntityMapperDefinitions.ContainsKey(fullTypeName))
             {
-                var propertyInfo = typeof(TEntity).GetProperty(field);
+                entityMapper = (EntityMapperDefinition<TEntity>)EntityMapperDefinitions[fullTypeName];
+            }
+            else
+            {
+                entityMapper =
+                    new EntityMapperDefinition<TEntity> { Activator = EntityActivator.GetActivator<TEntity>() };
 
-                if (propertyInfo == null)
+                foreach (var propertyInfo in typeof(TEntity).GetProperties())
                 {
-                    continue;
+                    entityMapper.PropertySetters.Add(propertyInfo.Name, BuildUntypedSetter<TEntity>(propertyInfo));
+                    entityMapper.ColumnTypeMappings.Add(propertyInfo.Name, propertyInfo.PropertyType);
                 }
 
-                setterList.Add(BuildUntypedSetter<TEntity>(propertyInfo));
-
-                typeToRetrieve.Add(field, propertyInfo.PropertyType);
+                EntityMapperDefinitions.Add(fullTypeName, entityMapper);
             }
 
-            var setterArray = setterList.ToArray();
+            var isFirst = true;
+            var mappingInstructions = new Func<IDataReader, TEntity, TEntity>[reader.FieldCount];
 
             while (reader.Read())
             {
-                var entity = createdActivator();
+                var entity = entityMapper.Activator();
 
-                for (var i = 0; i < setterArray.Length; i++)
+                if (!isFirst)
                 {
-                    var columnName = reader.GetName(i);
-
-                    if (reader.IsDBNull(i))
-                        continue;
-
-                    if (typeToRetrieve.ContainsKey(columnName))
+                    foreach (var mappingInstruction in mappingInstructions)
                     {
-                        var dataType = typeToRetrieve[columnName];
+                        mappingInstruction?.Invoke(reader, entity);
+                    }
+                }
+                else
+                {
+                    isFirst = false;
 
-                        if (dataType == typeof(decimal) || dataType == typeof(decimal?))
+                    for (var i = 0; i < reader.FieldCount; i++)
+                    {
+                        var columnName = reader.GetName(i);
+                        var propertySetter = entityMapper.PropertySetters[columnName];
+                        var fieldIndex = i;
+
+                        if (entityMapper.ColumnTypeMappings.ContainsKey(columnName))
                         {
-                            setterArray[i](entity, reader.GetDecimal(i));
-                        }
-                        else if (dataType == typeof(string))
-                        {
-                            setterArray[i](entity, reader.GetString(i));
-                        }
-                        else if (dataType == typeof(short) || dataType == typeof(short?))
-                        {
-                            setterArray[i](entity, reader.GetInt16(i));
-                        }
-                        else if (dataType == typeof(int) || dataType == typeof(int?))
-                        {
-                            setterArray[i](entity, reader.GetInt32(i));
-                        }
-                        else if (dataType == typeof(long) || dataType == typeof(long?))
-                        {
-                            setterArray[i](entity, reader.GetInt64(i));
-                        }
-                        else if (dataType == typeof(DateTime) || dataType == typeof(DateTime?))
-                        {
-                            setterArray[i](entity, reader.GetDateTime(i));
-                        }
-                        else if (dataType == typeof(double) || dataType == typeof(double?))
-                        {
-                            setterArray[i](entity, reader.GetDouble(i));
-                        }
-                        else if (dataType == typeof(bool) || dataType == typeof(bool?))
-                        {
-                            setterArray[i](entity, reader.GetBoolean(i));
-                        }
-                        else if (dataType == typeof(byte) || dataType == typeof(byte?))
-                        {
-                            setterArray[i](entity, reader.GetByte(i));
-                        }
-                        else if (dataType == typeof(float) || dataType == typeof(float?))
-                        {
-                            setterArray[i](entity, reader.GetFloat(i));
+                            var dataType = entityMapper.ColumnTypeMappings[columnName];
+
+                            if (dataType == typeof(decimal))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    propertySetter(e, reader.GetDecimal(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(decimal?))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetDecimal(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(string))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetString(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(short))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    propertySetter(e, reader.GetInt16(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(short?))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetInt16(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(int))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    propertySetter(e, reader.GetInt32(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(int?))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetInt32(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(long))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    propertySetter(e, reader.GetInt64(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(long?))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetInt64(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(DateTime))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    propertySetter(e, reader.GetDateTime(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(DateTime?))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetDateTime(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(double))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    propertySetter(e, reader.GetDouble(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(double?))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetDouble(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(bool))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    propertySetter(e, reader.GetBoolean(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(bool?))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetBoolean(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(byte))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    propertySetter(e, reader.GetByte(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(byte?))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetByte(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(float))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    propertySetter(e, reader.GetFloat(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else if (dataType == typeof(float?))
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetFloat(fieldIndex));
+                                    return e;
+                                };
+                            }
+                            else
+                            {
+                                mappingInstructions[i] = (dataReader, e) =>
+                                {
+                                    if (reader.IsDBNull(fieldIndex))
+                                        return e;
+
+                                    propertySetter(e, reader.GetValue(fieldIndex));
+                                    return e;
+                                };
+                            }
                         }
                         else
                         {
-                            var value = reader.GetValue(i);
+                            mappingInstructions[i] = (dataReader, e) =>
+                            {
+                                if (reader.IsDBNull(fieldIndex))
+                                    return e;
 
-                            setterArray[i](entity, value);
+                                propertySetter(e, reader.GetValue(fieldIndex));
+                                return e;
+                            };
                         }
-                    }
-                    else
-                    {
-                        var value = reader.GetValue(i);
-
-                        setterArray[i](entity, value);
                     }
                 }
 
