@@ -21,7 +21,7 @@ namespace SqlRepo.SqlServer.Tests
                 .Returns(this.command);
             this.logger = Substitute.For<ISqlLogger>();
             this.connectionProvider = Substitute.For<ISqlConnectionProvider>();
-            this.connectionProvider.Provide()
+            this.connectionProvider.Provide<ISqlConnection>()
                 .Returns(this.connection);
             this.target = new StatementExecutor(this.logger, this.connectionProvider);
         }
@@ -39,7 +39,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.target.ExecuteNonQuery(Arg.Any<string>());
             this.connectionProvider.Received()
-                .Provide();
+                .Provide<ISqlConnection>();
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.target.ExecuteNonQueryAsync(Arg.Any<string>());
             this.connectionProvider.Received()
-                .Provide();
+                .Provide<ISqlConnection>();
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.target.ExecuteReader(Arg.Any<string>());
             this.connectionProvider.Received()
-                .Provide();
+                .Provide<ISqlConnection>();
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.target.ExecuteReaderAsync(Arg.Any<string>());
             this.connectionProvider.Received()
-                .Provide();
+                .Provide<ISqlConnection>();
         }
 
         [Test]
@@ -143,7 +143,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.target.ExecuteStoredProcedure(Arg.Any<string>());
             this.connectionProvider.Received()
-                .Provide();
+                .Provide<ISqlConnection>();
         }
 
         [Test]
@@ -184,7 +184,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.target.ExecuteStoredProcedureAsync(Arg.Any<string>());
             this.connectionProvider.Received()
-                .Provide();
+                .Provide<ISqlConnection>();
         }
 
         [Test]

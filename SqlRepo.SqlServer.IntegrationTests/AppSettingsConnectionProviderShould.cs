@@ -22,7 +22,7 @@ namespace SqlRepo.SqlServer.IntegrationTests
         [Test]
         public void ProvideASqlConnection()
         {
-            var connection = this.target.Provide();
+            var connection = this.target.Provide<ISqlConnection>();
             connection.Should()
                       .BeAssignableTo<ISqlConnection>();
         }

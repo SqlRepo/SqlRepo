@@ -14,11 +14,13 @@ namespace SqlRepo.SqlServer
             this.connectionName = connectionName;
         }
 
-        public ISqlConnection Provide()
+      
+        public T Provide<T>()
+            where T: class, IConnection
         {
             var connectionString = ConfigurationManager.ConnectionStrings[this.connectionName]
                                                        .ConnectionString;
-            return new SqlConnectionAdapter(connectionString);
+            return new SqlConnectionAdapter(connectionString) as T;
         }
     }
 }

@@ -2,8 +2,5 @@
 
 namespace SqlRepo.SqlServer.Abstractions
 {
-    public interface ISqlConnectionProvider
-    {
-        ISqlConnection Provide();
-    }
+    public interface ISqlConnectionProvider : IConnectionProvider { }
 }

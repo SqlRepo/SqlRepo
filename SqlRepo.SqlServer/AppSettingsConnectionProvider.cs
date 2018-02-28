@@ -15,10 +15,12 @@ namespace SqlRepo.SqlServer
             this.connectionName = connectionName;
         }
 
-        public ISqlConnection Provide()
+        public T Provide<T>()
+            where T: class, IConnection
         {
             var connectionString = this.configuration.GetConnectionString(this.connectionName);
-            return new SqlConnectionAdapter(connectionString);
+
+            return new SqlConnectionAdapter(connectionString) as T;
         }
     }
 }

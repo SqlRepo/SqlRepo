@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.Data.SqlClient;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SqlRepo.SqlServer.Abstractions
@@ -11,33 +8,34 @@ namespace SqlRepo.SqlServer.Abstractions
     {
         private readonly SqlConnection connection;
 
-
         public SqlConnectionAdapter(string connectionString)
         {
             this.connection = new SqlConnection(connectionString);
         }
+
         public SqlConnectionAdapter()
         {
-            this.connection = new SqlConnection();    
+            this.connection = new SqlConnection();
+        }
+
+        public ISqlCommand CreateCommand()
+        {
+            return new SqlCommandAdapter(this.connection.CreateCommand());
+        }
+
+        public void Dispose()
+        {
+            this.connection.Dispose();
         }
 
         public void Open()
         {
             this.connection.Open();
         }
-        public ISqlCommand CreateCommand()
-        { 
-            return new SqlCommandAdapter(this.connection.CreateCommand());
-        }
 
         public Task OpenAsync()
         {
             return this.connection.OpenAsync();
-        }
-
-        public void Dispose()
-        {
-            this.connection.Dispose();
         }
     }
 }

@@ -20,7 +20,7 @@ namespace SqlRepo.SqlServer
         public int ExecuteNonQuery(string sql)
         {
             this.LogQuery(sql);
-            using(var connection = this.connectionProvider.Provide())
+            using(var connection = this.connectionProvider.Provide<ISqlConnection>())
             {
                 connection.Open();
                 using(var command = connection.CreateCommand())
@@ -36,7 +36,7 @@ namespace SqlRepo.SqlServer
         public async Task<int> ExecuteNonQueryAsync(string sql)
         {
             this.LogQuery(sql);
-            using(var connection = this.connectionProvider.Provide())
+            using(var connection = this.connectionProvider.Provide<ISqlConnection>())
             {
                 await connection.OpenAsync();
                 using(var command = connection.CreateCommand())
@@ -52,7 +52,7 @@ namespace SqlRepo.SqlServer
         public IDataReader ExecuteReader(string sql)
         {
             this.LogQuery(sql);
-            var connection = this.connectionProvider.Provide();
+            var connection = this.connectionProvider.Provide<ISqlConnection>();
             connection.Open();
             using(var command = connection.CreateCommand())
             {
@@ -66,7 +66,7 @@ namespace SqlRepo.SqlServer
         public async Task<IDataReader> ExecuteReaderAsync(string sql)
         {
             this.LogQuery(sql);
-            var connection = this.connectionProvider.Provide();
+            var connection = this.connectionProvider.Provide<ISqlConnection>();
             await connection.OpenAsync();
             using(var command = connection.CreateCommand())
             {
@@ -81,7 +81,7 @@ namespace SqlRepo.SqlServer
             params ParameterDefinition[] parametersDefinitions)
         {
             this.logger.Log($"Executing SP: {name}");
-            var connection = this.connectionProvider.Provide();
+            var connection = this.connectionProvider.Provide<ISqlConnection>();
             connection.Open();
             using(var command = connection.CreateCommand())
             {
@@ -100,7 +100,7 @@ namespace SqlRepo.SqlServer
             params ParameterDefinition[] parametersDefinitions)
         {
             this.logger.Log($"Executing SP: {name}");
-            var connection = this.connectionProvider.Provide();
+            var connection = this.connectionProvider.Provide<ISqlConnection>();
             await connection.OpenAsync();
             using(var command = connection.CreateCommand())
             {
