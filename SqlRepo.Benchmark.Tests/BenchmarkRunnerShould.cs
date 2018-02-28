@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using NSubstitute;
 using NUnit.Framework;
-using SqlRepo.Testing;
-using SqlRepo.Testing.FluentAssertions;
+using SqlRepo.Testing.NSubstitute;
 
 namespace SqlRepo.Benchmark.Tests
 {
@@ -15,7 +14,7 @@ namespace SqlRepo.Benchmark.Tests
         {
             _benchmarkOperation = Substitute.For<IBenchmarkOperation>();
             _benchmarkResultRepository = Substitute.For<IRepository<BenchmarkResult>>();
-            _insertCommand = _benchmarkResultRepository.CreateInsertCommandStub();
+            _insertCommand = _benchmarkResultRepository.CreateInsertCommandSubstitute();
             _repositoryFactory = Substitute.For<IRepositoryFactory>();
             _repositoryFactory.Create<BenchmarkResult>().Returns(_benchmarkResultRepository);
             _benchmarkOperations = new List<IBenchmarkOperation>();
