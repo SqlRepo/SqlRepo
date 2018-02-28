@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using NSubstitute;
 
-namespace SqlRepo.Testing.FluentAssertions
+namespace SqlRepo.Testing.NSubstitute
 {
     public static class DeleteCommandSubstituteExtensions
     {

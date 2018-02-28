@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace SqlRepo.Testing.FluentAssertions
+namespace SqlRepo.Testing
 {
     public static class ExpressionAssertionExtensions
     {

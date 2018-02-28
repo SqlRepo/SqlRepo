@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using SqlRepo.Benchmark.Select;
 using SqlRepo.Testing;
-using SqlRepo.Testing.FluentAssertions;
+using SqlRepo.Testing.NSubstitute;
 
 namespace SqlRepo.Benchmark.Tests
 {
@@ -11,7 +11,7 @@ namespace SqlRepo.Benchmark.Tests
         [SetUp]
         public void Setup()
         {
-            _selectCommand = BenchmarkEntityRepository.CreateSelectCommandStub();
+            _selectCommand = BenchmarkEntityRepository.CreateSelectCommandSubstitute();
         }
 
         private ISelectCommand<BenchmarkEntity> _selectCommand;
