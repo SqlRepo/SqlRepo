@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using SqlRepo.SqlServer;
 
-namespace SqlRepo.Testing.FluentAssertions
+namespace SqlRepo.Testing
 {
     public class ExpressionHelper
     {

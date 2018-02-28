@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using NSubstitute;
 
-namespace SqlRepo.Testing.FluentAssertions
+namespace SqlRepo.Testing.NSubstitute
 {
     public static class InsertCommandSubstituteExtensions
     {

@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Benchmark", "SqlRep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Benchmark.Tests", "SqlRepo.Benchmark.Tests\SqlRepo.Benchmark.Tests.csproj", "{B98F24AB-E304-4BEE-BF03-DC291DA165B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Testing.FluentAssertions", "SqlRepo.Testing.FluentAssertions\SqlRepo.Testing.FluentAssertions.csproj", "{3A2DF27E-8613-4A26-A56C-4289E551B7AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Testing.NSubstitute", "SqlRepo.Testing.NSubstitute\SqlRepo.Testing.NSubstitute.csproj", "{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,10 +88,10 @@ Global
 		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A2DF27E-8613-4A26-A56C-4289E551B7AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A2DF27E-8613-4A26-A56C-4289E551B7AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A2DF27E-8613-4A26-A56C-4289E551B7AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A2DF27E-8613-4A26-A56C-4289E551B7AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
