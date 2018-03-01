@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
@@ -14,16 +13,26 @@ namespace SqlRepo.SqlServer.Tests
         [SetUp]
         public void SetUp()
         {
+            AssumeSqlLoggerIsInitialised();
+            AssumeConnectionProviderIsInitialised();
+            this.target = new StatementExecutor(this.logger, this.connectionProvider);
+        }
+
+        private void AssumeConnectionProviderIsInitialised()
+        {
             this.command = Substitute.For<ISqlCommand>();
-           
+
             this.connection = Substitute.For<ISqlConnection>();
             this.connection.CreateCommand()
                 .Returns(this.command);
-            this.logger = Substitute.For<ISqlLogger>();
             this.connectionProvider = Substitute.For<ISqlConnectionProvider>();
             this.connectionProvider.Provide<ISqlConnection>()
                 .Returns(this.connection);
-            this.target = new StatementExecutor(this.logger, this.connectionProvider);
+        }
+
+        private void AssumeSqlLoggerIsInitialised()
+        {
+            this.logger = Substitute.For<ISqlLogger>();
         }
 
         [Test]
