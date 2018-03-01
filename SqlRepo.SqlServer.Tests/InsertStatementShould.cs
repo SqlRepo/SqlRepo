@@ -369,11 +369,11 @@ namespace SqlRepo.SqlServer.Tests
             ISelectClauseBuilder selectClauseBuilder,
             IFromClauseBuilder fromClauseBuilder,
             IWhereClauseBuilder whereClauseBuilder,
-            string connectionString)
+            ISqlConnectionProvider connectionProvider)
         {
             var command =
                 new InsertStatement<TestEntity>(statementExecutor, entityMapper, writablePropertyMatcher);
-            command.UseConnectionString(connectionString);
+            command.UseConnectionString(connectionProvider);
             return command;
         }
 

@@ -8,8 +8,8 @@ namespace SqlRepo.SqlServer
     public class StatementExecutor : IStatementExecutor
     {
         private const int CommandTimeout = 300000;
-        private readonly ISqlConnectionProvider connectionProvider;
         private readonly ISqlLogger logger;
+        private ISqlConnectionProvider connectionProvider;
 
         public StatementExecutor(ISqlLogger logger, ISqlConnectionProvider connectionProvider)
         {
@@ -113,6 +113,12 @@ namespace SqlRepo.SqlServer
                 }
                 return await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             }
+        }
+
+        public IStatementExecutor UseConnectionProvider(ISqlConnectionProvider connectionProvider)
+        {
+            this.connectionProvider = connectionProvider;
+            return this;
         }
 
         private void LogQuery(string sql)

@@ -390,13 +390,13 @@ namespace SqlRepo.SqlServer.Tests
             ISelectClauseBuilder selectClauseBuilder,
             IFromClauseBuilder fromClauseBuilder,
             IWhereClauseBuilder whereClauseBuilder,
-            string connectionString)
+            ISqlConnectionProvider connectionProvider)
         {
             var command = new UpdateStatement<TestEntity>(statementExecutor,
                 entityMapper,
                 writablePropertyMatcher,
                 whereClauseBuilder);
-            command.UseConnectionString(connectionString);
+            command.UseConnectionString(connectionProvider);
             return command;
         }
 

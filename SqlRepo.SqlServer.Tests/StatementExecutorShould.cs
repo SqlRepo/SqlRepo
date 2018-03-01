@@ -18,29 +18,22 @@ namespace SqlRepo.SqlServer.Tests
             this.target = new StatementExecutor(this.logger, this.connectionProvider);
         }
 
-        private void AssumeConnectionProviderIsInitialised()
-        {
-            this.command = Substitute.For<ISqlCommand>();
-
-            this.connection = Substitute.For<ISqlConnection>();
-            this.connection.CreateCommand()
-                .Returns(this.command);
-            this.connectionProvider = Substitute.For<ISqlConnectionProvider>();
-            this.connectionProvider.Provide<ISqlConnection>()
-                .Returns(this.connection);
-        }
-
-        private void AssumeSqlLoggerIsInitialised()
-        {
-            this.logger = Substitute.For<ISqlLogger>();
-        }
-
         [Test]
         public void LogQueryWhenExecuteNonQuery()
         {
             this.target.ExecuteNonQuery("sql");
             this.logger.Received()
                 .Log($"Executing SQL:{Environment.NewLine}sql");
+        }
+
+        [Test]
+        public void SupportChangingConnectionProvider()
+        {
+            var connectionProviderOverride = Substitute.For<ISqlConnectionProvider>();
+            this.target.UseConnectionProvider(connectionProviderOverride);
+            this.target.ExecuteNonQuery("sql");
+            this.connectionProvider.DidNotReceive().Provide<ISqlConnection>();
+            connectionProviderOverride.Received().Provide<ISqlConnection>();
         }
 
         [Test]
@@ -153,6 +146,23 @@ namespace SqlRepo.SqlServer.Tests
             this.target.ExecuteStoredProcedure(Arg.Any<string>());
             this.connectionProvider.Received()
                 .Provide<ISqlConnection>();
+        }
+
+        private void AssumeConnectionProviderIsInitialised()
+        {
+            this.command = Substitute.For<ISqlCommand>();
+
+            this.connection = Substitute.For<ISqlConnection>();
+            this.connection.CreateCommand()
+                .Returns(this.command);
+            this.connectionProvider = Substitute.For<ISqlConnectionProvider>();
+            this.connectionProvider.Provide<ISqlConnection>()
+                .Returns(this.connection);
+        }
+
+        private void AssumeSqlLoggerIsInitialised()
+        {
+            this.logger = Substitute.For<ISqlLogger>();
         }
 
         [Test]

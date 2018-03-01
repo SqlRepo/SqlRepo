@@ -1,8 +1,8 @@
 using System;
 using System.Data;
-using System.Linq.Expressions;
 using FluentAssertions;
 using NSubstitute;
+using NSubstitute.Extensions;
 using NUnit.Framework;
 using SqlRepo.SqlServer.Abstractions;
 using SqlRepo.Testing;
@@ -10,8 +10,8 @@ using SqlRepo.Testing;
 namespace SqlRepo.SqlServer.Tests
 {
     [TestFixture]
-    public abstract class SqlStatementTestBase<TCommand, TResult> : TestBase
-        where TCommand: SqlStatement<TestEntity, TResult>
+    public abstract class SqlStatementTestBase<TStatement, TResult> : TestBase
+        where TStatement : SqlStatement<TestEntity, TResult>
     {
         [SetUp]
         public void SetUp()
@@ -23,13 +23,14 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeFromClauseBuilderIsInitialised();
             this.AssumeWhereClauseBuilderIsInitialised();
             this.AssumeWritablePropertyMathcerIsInitialised();
+            this.AssumeConnectionProviderIsInitialised();
             this.Statement = this.CreateStatement(this.StatementExecutor,
                 this.EntityMapper,
                 this.WritablePropertyMatcher,
                 this.SelectClauseBuilder,
                 this.FromClauseBuilder,
                 this.WhereClauseBuilder,
-                ConnectionString);
+                this.ConnectionProvider);
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace SqlRepo.SqlServer.Tests
                             this.SelectClauseBuilder,
                             this.FromClauseBuilder,
                             this.WhereClauseBuilder,
-                            ConnectionString))
+                            this.ConnectionProvider))
                 .ShouldThrow<ArgumentException>();
         }
 
@@ -58,11 +59,10 @@ namespace SqlRepo.SqlServer.Tests
                             this.SelectClauseBuilder,
                             this.FromClauseBuilder,
                             this.WhereClauseBuilder,
-                            ConnectionString))
+                            this.ConnectionProvider))
                 .ShouldThrow<ArgumentException>();
         }
 
-        protected const string ConnectionString = "MyConnection";
 
         protected void AssumeFromClauseBuilderIsInitialised()
         {
@@ -82,27 +82,13 @@ namespace SqlRepo.SqlServer.Tests
         protected void AssumeSelectClauseBuilderIsInitialised()
         {
             this.SelectClauseBuilder = Substitute.For<ISelectClauseBuilder>();
-            this.SelectClauseBuilder.Select(Arg.Any<Expression<Func<TestEntity, object>>>())
-                .Returns(this.SelectClauseBuilder);
-            this.SelectClauseBuilder.For(Arg.Any<TestEntity>())
-                .Returns(this.SelectClauseBuilder);
+            this.SelectClauseBuilder.ReturnsForAll(this.SelectClauseBuilder);
         }
 
         protected void AssumeWhereClauseBuilderIsInitialised()
         {
             this.WhereClauseBuilder = Substitute.For<IWhereClauseBuilder>();
-            this.WhereClauseBuilder.Where(Arg.Any<Expression<Func<TestEntity, bool>>>())
-                .Returns(this.WhereClauseBuilder);
-            this.WhereClauseBuilder.And(Arg.Any<Expression<Func<TestEntity, bool>>>())
-                .Returns(this.WhereClauseBuilder);
-            this.WhereClauseBuilder.Or(Arg.Any<Expression<Func<TestEntity, bool>>>())
-                .Returns(this.WhereClauseBuilder);
-            this.WhereClauseBuilder.NestedAnd(Arg.Any<Expression<Func<TestEntity, bool>>>())
-                .Returns(this.WhereClauseBuilder);
-            this.WhereClauseBuilder.NestedOr(Arg.Any<Expression<Func<TestEntity, bool>>>())
-                .Returns(this.WhereClauseBuilder);
-            this.WhereClauseBuilder.EndNesting()
-                .Returns(this.WhereClauseBuilder);
+            this.WhereClauseBuilder.ReturnsForAll(this.WhereClauseBuilder);
         }
 
         protected void AssumeWhereClauseBuilderReportsClean()
@@ -110,13 +96,13 @@ namespace SqlRepo.SqlServer.Tests
             this.WhereClauseBuilder.IsClean.Returns(true);
         }
 
-        protected abstract TCommand CreateStatement(IStatementExecutor statementExecutor,
+        protected abstract TStatement CreateStatement(IStatementExecutor statementExecutor,
             IEntityMapper entityMapper,
             IWritablePropertyMatcher writablePropertyMatcher,
             ISelectClauseBuilder selectClauseBuilder,
             IFromClauseBuilder fromClauseBuilder,
             IWhereClauseBuilder whereClauseBuilder,
-            string connectionString);
+            ISqlConnectionProvider connectionProvider);
 
         private void AssumeCommandExecutorIsInitialised()
         {
@@ -126,11 +112,16 @@ namespace SqlRepo.SqlServer.Tests
                 .Returns(this.DataReader);
         }
 
+        private void AssumeConnectionProviderIsInitialised()
+        {
+            this.ConnectionProvider = Substitute.For<ISqlConnectionProvider>();
+        }
+
         private void AssumeEntityMapperIsInitialised()
         {
             this.EntityMapper = Substitute.For<IEntityMapper>();
             this.EntityMapper.Map<TestEntity>(Arg.Any<IDataReader>())
-                .Returns(new[] { this.Entity });
+                .Returns(new[] {this.Entity});
         }
 
         private void AssumeWritablePropertyMathcerIsInitialised()
@@ -140,14 +131,14 @@ namespace SqlRepo.SqlServer.Tests
                 .Returns(true);
         }
 
-        public TableDefinition TableDefinition { get; private set; }
-
-        protected TCommand Statement { get; private set; }
-        protected IStatementExecutor StatementExecutor { get; private set; }
+        protected ISqlConnectionProvider ConnectionProvider { get; private set; }
         protected IDataReader DataReader { get; private set; }
         protected IEntityMapper EntityMapper { get; private set; }
         protected IFromClauseBuilder FromClauseBuilder { get; private set; }
         protected ISelectClauseBuilder SelectClauseBuilder { get; set; }
+        protected TStatement Statement { get; private set; }
+        protected IStatementExecutor StatementExecutor { get; private set; }
+        protected TableDefinition TableDefinition { get; private set; }
         protected IWhereClauseBuilder WhereClauseBuilder { get; set; }
         protected IWritablePropertyMatcher WritablePropertyMatcher { get; set; }
     }

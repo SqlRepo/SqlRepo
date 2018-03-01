@@ -1,5 +1,7 @@
 using SqlRepo.Testing;
 using System.Collections.Generic;
+using NSubstitute;
+using NUnit.Framework;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.Tests
@@ -19,11 +21,11 @@ namespace SqlRepo.SqlServer.Tests
             ISelectClauseBuilder selectClauseBuilder,
             IFromClauseBuilder fromClauseBuilder,
             IWhereClauseBuilder whereClauseBuilder,
-            string connectionString)
+            ISqlConnectionProvider connectionProvider)
         {
-            var command = new SelectStatement<TestEntity>(statementExecutor, entityMapper);
-            command.UseConnectionString(connectionString);
-            return command;
+            var statement = new SelectStatement<TestEntity>(statementExecutor, entityMapper);
+            statement.UseConnectionString(connectionProvider);
+            return statement;
         }
     }
 }

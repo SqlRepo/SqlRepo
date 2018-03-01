@@ -18,5 +18,7 @@ namespace SqlRepo.SqlServer.Abstractions
         Task<IDataReader> ExecuteStoredProcedureAsync(
             string name,
             params ParameterDefinition[] parametersDefinitions);
+
+        IStatementExecutor UseConnectionProvider(ISqlConnectionProvider connectionProvider);
     }
 }
