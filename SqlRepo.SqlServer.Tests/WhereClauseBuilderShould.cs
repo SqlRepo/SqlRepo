@@ -73,6 +73,35 @@ namespace SqlRepo.SqlServer.Tests
                 .Should()
                 .Be(expected);
         }
+        
+        [Test]
+        public void NotThrowForAndedConditionsOnStringProperty()
+        {
+            string stringProperty = "TestString";
+            builder.Where<TestEntity>(e => e.StringProperty == "TestString")
+                .Or<TestEntity>(e => e.StringProperty == stringProperty)
+                .Invoking(e => e.Sql())
+                .ShouldNotThrow();
+        }
+
+        [Test]
+        public void NotThrowForAndedConditionsOnIntProperty()
+        {
+            var intProperty = 10;
+            builder.Where<TestEntity>(e => e.IntProperty > 2)
+                .And<TestEntity>(e => e.IntProperty < intProperty)
+                .Invoking(e => e.Sql())
+                .ShouldNotThrow();
+        }
+
+        [Test]
+        public void NotThrowForAndedConditionsOnDateTimeProperty()
+        {
+            builder.Where<TestEntity>(e => e.DateTimeProperty > DateTime.UtcNow)
+                .And<TestEntity>(e => e.DateTimeProperty < DateTime.UtcNow)
+                .Invoking(e => e.Sql())
+                .ShouldNotThrow();
+        }
 
         [Test]
         public void ReturnCorrectSqlForAndedConditionsOnIntProperty()
@@ -97,7 +126,7 @@ namespace SqlRepo.SqlServer.Tests
                 .Should()
                 .Be(expected);
         }
-
+        
         [Test]
         public void ReturnCorrectSqlForBetween()
         {

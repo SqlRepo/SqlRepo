@@ -5,12 +5,12 @@
     <Version>1.0.16</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Mike Hanson &amp; Mark Eastwood</Authors>
-    <Company>Mike Hanson &amp; Mark Eastwood</Company>
+    <Authors>Mike Hanson, Mark Eastwood &amp; Faustina Fechita</Authors>
+    <Company></Company>
     <Product>SQL Repo</Product>
     <Description>Provides an extension method for registering SqlRepo.SqlServer components in IoC container using Microsoft Dependency Injection (Microsoft.Extensions.DependencyInjection)</Description>
-    <PackageProjectUrl>http://github.com/testpossessed/sqlrepo</PackageProjectUrl>
-    <RepositoryType>sql, repository, builder, servicecollection</RepositoryType>
+    <PackageProjectUrl>http://github.com/sqlrepo/sqlrepo</PackageProjectUrl>
+    <RepositoryType>sql, repository, builder, sql server, servicecollection</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>

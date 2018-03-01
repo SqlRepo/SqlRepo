@@ -17,6 +17,7 @@ namespace SqlRepo.SqlServer.Abstractions
 
         ISelectClauseBuilder CountAll();
 
+        [Obsolete]
         ISelectClauseBuilder For<TEntity>(TEntity entity,
             string alias = null,
             string tableName = null,

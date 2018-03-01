@@ -71,6 +71,7 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
+        [Ignore("Obsolete")]
         public void ReturnCorrectSqlForExplicitSelectionOfAllColumnsForSingleEntity()
         {
             const string expected =

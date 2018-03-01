@@ -20,6 +20,7 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
+        [Ignore("Obsolete")]
         public void BuildCorrectStatementFromEntity()
         {
             this.AssumeWhereClauseBuilderReportsClean();

@@ -1,0 +1,73 @@
+version: 1.0.{build}
+branches:
+  only:
+  - master
+image: Visual Studio 2017
+configuration: Release
+platform: Any CPU
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+build_script:
+- cmd: >-
+    dotnet restore "SqlRepo"
+
+    dotnet build "SqlRepo"
+
+    dotnet restore "SqlRepo.SqlServer"
+
+    dotnet build "SqlRepo.SqlServer"
+
+    dotnet restore "SqlRepo.SqlServer.Static"
+
+    dotnet build "SqlRepo.SqlServer.Static"
+
+    dotnet restore "SqlRepo.SqlServer.Autofac"
+
+    dotnet build "SqlRepo.SqlServer.Autofac"
+
+    dotnet restore "SqlRepo.SqlServer.NInject"
+
+    dotnet build "SqlRepo.SqlServer.NInject"
+
+    dotnet restore "SqlRepo.SqlServer.ServiceCollection"
+
+    dotnet build "SqlRepo.SqlServer.ServiceCollection"
+
+    dotnet restore "SqlRepo.Testing"
+
+    dotnet build "SqlRepo.Testing"
+
+    dotnet restore "SqlRepo.Tests"
+
+    dotnet build "SqlRepo.Tests"
+
+    dotnet restore "SqlRepo.SqlServer.Tests"
+
+    dotnet build "SqlRepo.SqlServer.Tests"
+test:
+  assemblies:
+    only:
+    - '**\*.Tests.dll'
+artifacts:
+- path: '**\SqlRepo*.nupkg'
+  name: NuGet
+deploy:
+- provider: NuGet
+  api_key:
+    secure: lCLiRn5lE1tXGSdJLTpkshQtUSw63lvOMGBFyWnxws5/7cG5R2ZLr7i9kaHNKJJs
+  on:
+    branch: master
+notifications:
+- provider: Email
+  to:
+  - testpossessed@outlook.com
+  subject: SqlRepo Build Notification
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net47</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
+    <PackageReference Include="FluentAssertions" Version="5.0.0" />
+    <PackageReference Include="NSubstitute" Version="3.1.0" />
+    <PackageReference Include="NUnit" Version="3.9.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SqlRepo.Benchmark\SqlRepo.Benchmark.csproj" />
+    <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
+    <ProjectReference Include="..\SqlRepo.Testing.NSubstitute\SqlRepo.Testing.NSubstitute.csproj" />
+    <ProjectReference Include="..\SqlRepo.Testing\SqlRepo.Testing.csproj" />
+    <ProjectReference Include="..\SqlRepo\SqlRepo.csproj" />
+  </ItemGroup>
+
+</Project>
