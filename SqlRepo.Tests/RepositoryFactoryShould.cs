@@ -12,7 +12,7 @@ namespace SqlRepo.Tests
         [SetUp]
         public void SetUp()
         {
-            this.AssumeCommandFactoryIsInitialised();
+            this.AssumeStatementFactoryIsInitialised();
             this.factory = new RepositoryFactory(this.statementFactory);
         }
 
@@ -37,7 +37,7 @@ namespace SqlRepo.Tests
         private IStatementFactory statementFactory;
         private IRepositoryFactory factory;
 
-        private void AssumeCommandFactoryIsInitialised()
+        private void AssumeStatementFactoryIsInitialised()
         {
             this.statementFactory = Substitute.For<IStatementFactory>();
         }

@@ -12,7 +12,7 @@ namespace SqlRepo.Tests
         public void SetUp()
         {
             AssumeTestEntityIsInitialised();
-            AssumeCommandFactoryIsInitialised();
+            AssumeStatementFactoryIsInitialised();
             repository = new Repository<TestEntity>(this.StatementFactory);
         }
 
@@ -58,13 +58,13 @@ namespace SqlRepo.Tests
             return repository.Update();
         }
 
-        private void AssumeCommandFactoryIsInitialised()
+        private void AssumeStatementFactoryIsInitialised()
         {
             this.StatementFactory = Substitute.For<IStatementFactory>();
             AssumeDeleteCommandIsInitialised();
             AssumeInsertCommandIsInitialised();
             AssumeUpdateCommandIsInitialised();
-            AssumeSelectCommandIsInitialised();
+            AssumeSelectStatementIsInitialised();
         }
 
         private void AssumeDeleteCommandIsInitialised()
@@ -85,7 +85,7 @@ namespace SqlRepo.Tests
                 .Returns(this.InsertStatement);
         }
 
-        private void AssumeSelectCommandIsInitialised()
+        private void AssumeSelectStatementIsInitialised()
         {
             this.SelectStatement = Substitute.For<ISelectStatement<TestEntity>>();
             this.StatementFactory.CreateSelect<TestEntity>()

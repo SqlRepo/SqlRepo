@@ -4,33 +4,33 @@ using NSubstitute;
 
 namespace SqlRepo.Testing.NSubstitute
 {
-    public static class UpdateCommandSubstituteExtensions
+    public static class UpdateStatementSubstituteExtensions
     {
-        public static IUpdateCommand<TEntity> DidNotReceiveWhereEquals<TEntity>(
-            this IUpdateCommand<TEntity> updateCommand,
+        public static IUpdateStatement<TEntity> DidNotReceiveWhereEquals<TEntity>(
+            this IUpdateStatement<TEntity> updateStatement,
             string property,
             string value) where TEntity: class, new()
         {
-            return updateCommand.DidNotReceive()
+            return updateStatement.DidNotReceive()
                                 .Where(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "=", value)));
         }
 
-        public static IUpdateCommand<TEntity> ReceivedOrEquals<TEntity>(
-            this IUpdateCommand<TEntity> updateCommand,
+        public static IUpdateStatement<TEntity> ReceivedOrEquals<TEntity>(
+            this IUpdateStatement<TEntity> updateStatement,
             string property,
             string value,
             string alias = null) where TEntity: class, new()
         {
-            return updateCommand.Received()
+            return updateStatement.Received()
                                 .Or(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "=", value)));
         }
 
-        public static IUpdateCommand<TEntity> ReceivedSet<TEntity, TMember>(
-            this IUpdateCommand<TEntity> command,
+        public static IUpdateStatement<TEntity> ReceivedSet<TEntity, TMember>(
+            this IUpdateStatement<TEntity> command,
             string property,
             TMember value) where TEntity: class, new()
         {
@@ -39,8 +39,8 @@ namespace SqlRepo.Testing.NSubstitute
                               value);
         }
 
-        public static IUpdateCommand<TEntity> ReceivedSet<TEntity, TMember>(
-            this IUpdateCommand<TEntity> command,
+        public static IUpdateStatement<TEntity> ReceivedSet<TEntity, TMember>(
+            this IUpdateStatement<TEntity> command,
             string property,
             TMember value, int expectedCalls) where TEntity: class, new()
         {
@@ -49,22 +49,22 @@ namespace SqlRepo.Testing.NSubstitute
                               value);
         }
 
-        public static IUpdateCommand<TEntity> ReceivedWhereEquals<TEntity>(
-            this IUpdateCommand<TEntity> updateCommand,
+        public static IUpdateStatement<TEntity> ReceivedWhereEquals<TEntity>(
+            this IUpdateStatement<TEntity> updateStatement,
             string property,
             string value) where TEntity: class, new()
         {
-            return updateCommand.Received()
+            return updateStatement.Received()
                                 .Where(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "=", value)));
         }
 
-        public static IUpdateCommand<TEntity> ReceivedAndEquals<TEntity>(this IUpdateCommand<TEntity> updateCommand,
+        public static IUpdateStatement<TEntity> ReceivedAndEquals<TEntity>(this IUpdateStatement<TEntity> updateStatement,
             string property,
             string value) where TEntity: class, new()
         {
-            return updateCommand.Received()
+            return updateStatement.Received()
                                 .And(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "=", value)));

@@ -14,7 +14,7 @@ namespace SqlRepo.Benchmark.Tests
         {
             _benchmarkOperation = Substitute.For<IBenchmarkOperation>();
             _benchmarkResultRepository = Substitute.For<IRepository<BenchmarkResult>>();
-            _insertCommand = _benchmarkResultRepository.CreateInsertCommandSubstitute();
+            _insertCommand = _benchmarkResultRepository.CreateInsertStatementSubstitute();
             _repositoryFactory = Substitute.For<IRepositoryFactory>();
             _repositoryFactory.Create<BenchmarkResult>().Returns(_benchmarkResultRepository);
             _benchmarkOperations = new List<IBenchmarkOperation>();
@@ -30,7 +30,7 @@ namespace SqlRepo.Benchmark.Tests
         private List<IBenchmarkOperation> _benchmarkOperations;
         private IBenchmarkOperation _benchmarkOperation;
         private IRepository<BenchmarkResult> _benchmarkResultRepository;
-        private IInsertCommand<BenchmarkResult> _insertCommand;
+        private IInsertStatement<BenchmarkResult> _insertCommand;
 
         private readonly BenchmarkResult _benchmarkResult = new BenchmarkResult
         {

@@ -28,7 +28,7 @@ namespace SqlRepo.SqlServer.Static
                 sqlLogger = new NoOpSqlLogger();
             }
 
-            repositoryFactory = new RepositoryFactory(new CommandFactory(new CommandExecutor(sqlLogger),
+            repositoryFactory = new RepositoryFactory(new StatementFactory(new StatementExecutor(sqlLogger), 
                 DataReaderEntityMapper,
                 WritablePropertyMatcher));
         }

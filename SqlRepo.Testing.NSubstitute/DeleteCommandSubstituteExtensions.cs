@@ -5,99 +5,99 @@ using NSubstitute;
 
 namespace SqlRepo.Testing.NSubstitute
 {
-    public static class DeleteCommandSubstituteExtensions
+    public static class DeleteStatementSubstituteExtensions
     {
-        public static IDeleteCommand<TEntity> DidNotReceiveWhereEquals<TEntity>(
-            this IDeleteCommand<TEntity> deleteCommand,
+        public static IDeleteStatement<TEntity> DidNotReceiveWhereEquals<TEntity>(
+            this IDeleteStatement<TEntity> deleteStatement,
             string property,
             string value) where TEntity: class, new()
         {
-            return deleteCommand.DidNotReceive()
+            return deleteStatement.DidNotReceive()
                                 .Where(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "=", value)));
         }
 
-        public static IDeleteCommand<TEntity> ReceivedAndEquals<TEntity>(this IDeleteCommand<TEntity> deleteCommand,
+        public static IDeleteStatement<TEntity> ReceivedAndEquals<TEntity>(this IDeleteStatement<TEntity> deleteStatement,
             string property,
             string value) where TEntity: class, new()
         {
-            return deleteCommand.Received()
+            return deleteStatement.Received()
                                 .And(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "=", value)));
         }
 
-        public static IDeleteCommand<TEntity> ReceivedAndGreaterThan<TEntity>(this IDeleteCommand<TEntity> deleteCommand,
+        public static IDeleteStatement<TEntity> ReceivedAndGreaterThan<TEntity>(this IDeleteStatement<TEntity> deleteStatement,
             string property,
             string value) where TEntity : class, new()
         {
-            return deleteCommand.Received()
+            return deleteStatement.Received()
                                 .And(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, ">", value)));
         }
 
-        public static IDeleteCommand<TEntity> ReceivedAndLessThan<TEntity>(this IDeleteCommand<TEntity> deleteCommand,
+        public static IDeleteStatement<TEntity> ReceivedAndLessThan<TEntity>(this IDeleteStatement<TEntity> deleteStatement,
             string property,
             string value) where TEntity : class, new()
         {
-            return deleteCommand.Received()
+            return deleteStatement.Received()
                                 .And(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "<", value)));
         }
 
-        public static IDeleteCommand<TEntity> ReceivedOrEquals<TEntity>(
-            this IDeleteCommand<TEntity> deleteCommand,
+        public static IDeleteStatement<TEntity> ReceivedOrEquals<TEntity>(
+            this IDeleteStatement<TEntity> deleteStatement,
             string property,
             string value) where TEntity: class, new()
         {
-            return deleteCommand.Received()
+            return deleteStatement.Received()
                                 .Or(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "=", value)));
         }
 
-        public static IDeleteCommand<TEntity> ReceivedWhereEquals<TEntity>(
-            this IDeleteCommand<TEntity> deleteCommand,
+        public static IDeleteStatement<TEntity> ReceivedWhereEquals<TEntity>(
+            this IDeleteStatement<TEntity> deleteStatement,
             string property,
             string value) where TEntity: class, new()
         {
-            return deleteCommand.Received()
+            return deleteStatement.Received()
                                 .Where(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "=", value)));
         }
 
-        public static IDeleteCommand<TEntity> ReceivedWhereGreaterThan<TEntity>(
-            this IDeleteCommand<TEntity> deleteCommand,
+        public static IDeleteStatement<TEntity> ReceivedWhereGreaterThan<TEntity>(
+            this IDeleteStatement<TEntity> deleteStatement,
             string property,
             string value) where TEntity: class, new()
         {
-            return deleteCommand.Received()
+            return deleteStatement.Received()
                                 .Where(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, ">", value)));
         }
 
-        public static IDeleteCommand<TEntity> ReceivedWhereLessThan<TEntity>(
-            this IDeleteCommand<TEntity> deleteCommand,
+        public static IDeleteStatement<TEntity> ReceivedWhereLessThan<TEntity>(
+            this IDeleteStatement<TEntity> deleteStatement,
             string property,
             string value) where TEntity: class, new()
         {
-            return deleteCommand.Received()
+            return deleteStatement.Received()
                                 .Where(
                                     Arg.Is<Expression<Func<TEntity, bool>>>(
                                         e => e.IsComparisonWith(property, "<", value)));
         }
 
-        public static IDeleteCommand<TEntity> ReceivedWhereIn<TEntity, TMember>(
-            this IDeleteCommand<TEntity> deleteCommand,
+        public static IDeleteStatement<TEntity> ReceivedWhereIn<TEntity, TMember>(
+            this IDeleteStatement<TEntity> deleteStatement,
             string property,
             params TMember[] values) where TEntity: class, new()
         {
-            return deleteCommand.Received()
+            return deleteStatement.Received()
                                 .WhereIn(
                                     Arg.Is<Expression<Func<TEntity, TMember>>>(
                                         e => e.HasMemberName(property)), Arg.Is<TMember[]>(e => AssertMatch(values, e)));

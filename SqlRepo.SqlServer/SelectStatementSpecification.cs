@@ -25,8 +25,8 @@ namespace SqlRepo.SqlServer
         public IList<JoinSpecification> Joins { get; }
         public IList<OrderSpecification> Orderings { get; }
         public IList<SelectStatementTableSpecification> Tables { get; }
-        public IList<FilterGroup> Filters { get; set; }
-        public bool NoLocks { get; internal set; }
+        public IList<FilterGroup> Filters { get; private set; }
+        public bool NoLocks { private get; set; }
         public int? Top { get; internal set; }
         public bool UseTopPercent { get; internal set; }
 
@@ -86,11 +86,15 @@ namespace SqlRepo.SqlServer
 
         private string BuildSelectClause()
         {
-            const string ClauseTemplate = "SELECT {0}";
+            const string ClauseTemplate = "SELECT {0}{1}";
+
+            var top = Top.HasValue ? $"TOP ({Top}) " : string.Empty;
+
             var selections = string.Join("\n, ",
                 this.Columns.Select(c => c.ToString())
                     .ToArray());
-            return string.Format(ClauseTemplate, string.IsNullOrEmpty(selections)? "*": selections);
+
+            return string.Format(ClauseTemplate, top, string.IsNullOrEmpty(selections) ? "*" : selections);
         }
 
         private string BuildWhereClause()

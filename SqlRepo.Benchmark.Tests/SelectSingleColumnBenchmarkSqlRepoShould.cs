@@ -11,10 +11,10 @@ namespace SqlRepo.Benchmark.Tests
         [SetUp]
         public void Setup()
         {
-            _selectCommand = BenchmarkEntityRepository.CreateSelectCommandSubstitute();
+            _selectCommand = BenchmarkEntityRepository.CreateSelectStatementSubstitute();
         }
 
-        private ISelectCommand<BenchmarkEntity> _selectCommand;
+        private ISelectStatement<BenchmarkEntity> _selectCommand;
 
         public override IBenchmarkOperation Create(IRepositoryFactory repositoryFactory,
             IBenchmarkHelpers benchmarkHelpers)

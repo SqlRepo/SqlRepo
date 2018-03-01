@@ -47,7 +47,7 @@ namespace SqlRepo.SqlServer.Tests
         public void GenerateCorrectSqlForTop()
         {
             const string ExpectedSql = "SELECT TOP (50) *\nFROM [dbo].[TestEntity];";
-            this.Command
+            this.Statement
                 .Top(50)
                 .Sql()
                 .Should()
