@@ -2,6 +2,7 @@
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.Testing;
 
 namespace SqlRepo.Tests
@@ -12,8 +13,8 @@ namespace SqlRepo.Tests
         [SetUp]
         public void SetUp()
         {
-            this.AssumeStatementFactoryIsInitialised();
-            this.factory = new RepositoryFactory(this.statementFactory);
+            this.AssumeStatementFactoryProviderIsInitialised();
+            this.factory = new RepositoryFactory(this.statementFactoryProvider);
         }
 
         [Test]
@@ -34,12 +35,16 @@ namespace SqlRepo.Tests
                   .BeAssignableTo<Repository<TestEntity>>();
         }
 
-        private IStatementFactory statementFactory;
+        private IStatementFactoryProvider statementFactoryProvider;
         private IRepositoryFactory factory;
+        private IStatementFactory statementFactory;
 
-        private void AssumeStatementFactoryIsInitialised()
+        private void AssumeStatementFactoryProviderIsInitialised()
         {
+            this.statementFactoryProvider = Substitute.For<IStatementFactoryProvider>();
             this.statementFactory = Substitute.For<IStatementFactory>();
+            this.statementFactoryProvider.Provide()
+                .Returns(this.statementFactory);
         }
 
         private IRepository<TestEntity> AssumeCreateIsRequested()

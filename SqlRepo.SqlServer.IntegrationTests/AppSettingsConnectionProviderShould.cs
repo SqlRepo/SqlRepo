@@ -4,7 +4,9 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
+using SqlRepo.SqlServer.ConnectionProviders;
 
 namespace SqlRepo.SqlServer.IntegrationTests
 {
@@ -31,10 +33,10 @@ namespace SqlRepo.SqlServer.IntegrationTests
         public void ExecuteQueryUsingProvidedConnection()
         {
             var statementExecutor = new StatementExecutor(this.logger, this.target);
-            var sql = "SELECT * FROM Test";
-            ;
+            const string Sql = "SELECT * FROM Test";
+
             var rowsCount = 0;
-            using(var reader = statementExecutor.ExecuteReader(sql))
+            using(var reader = statementExecutor.ExecuteReader(Sql))
             {
                 while(reader.Read())
                 {
@@ -50,10 +52,10 @@ namespace SqlRepo.SqlServer.IntegrationTests
         public async Task ExecuteAsyncQueryUsingProvidedConnectionAsync()
         {
             var statementExecutor = new StatementExecutor(this.logger, this.target);
-            var sql = "SELECT * FROM Test";
+            const string Sql = "SELECT * FROM Test";
 
             var rowsCount = 0;
-            using(var reader = await statementExecutor.ExecuteReaderAsync(sql))
+            using(var reader = await statementExecutor.ExecuteReaderAsync(Sql))
             {
                 while(reader.Read())
                 {
@@ -66,9 +68,7 @@ namespace SqlRepo.SqlServer.IntegrationTests
         }
 
         private IConfiguration configuration;
-
         private ISqlLogger logger;
-
         private ISqlConnectionProvider target;
 
         private void BuildConfiguration()

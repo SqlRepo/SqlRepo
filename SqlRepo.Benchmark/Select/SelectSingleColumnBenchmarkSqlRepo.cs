@@ -1,20 +1,26 @@
-﻿namespace SqlRepo.Benchmark.Select
+﻿using System;
+using SqlRepo.Abstractions;
+
+namespace SqlRepo.Benchmark.Select
 {
     public class SelectSingleColumnBenchmarkSqlRepo : BenchmarkOperationBase
     {
-        private readonly IRepositoryFactory _repositoryFactory;
+        private readonly IRepositoryFactory repositoryFactory;
 
         public SelectSingleColumnBenchmarkSqlRepo(IRepositoryFactory repositoryFactory,
-            IBenchmarkHelpers benchmarkHelpers) : base(benchmarkHelpers,
-            Component.SqlRepo)
+            IBenchmarkHelpers benchmarkHelpers)
+            : base(benchmarkHelpers, Component.SqlRepo)
         {
-            _repositoryFactory = repositoryFactory;
+            this.repositoryFactory = repositoryFactory;
         }
 
         public override void Execute()
         {
-            var result = _repositoryFactory.Create<BenchmarkEntity>().Query().Select(e => e.DecimalValue)
-                .OrderBy(e => e.DecimalValue).Go(ConnectionString.Value);
+            var result = this.repositoryFactory.Create<BenchmarkEntity>()
+                             .Query()
+                             .Select(e => e.DecimalValue)
+                             .OrderBy(e => e.DecimalValue)
+                             .Go();
         }
 
         public override string GetNotes()

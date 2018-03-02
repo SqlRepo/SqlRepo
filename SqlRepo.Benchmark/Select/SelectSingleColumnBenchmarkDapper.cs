@@ -1,18 +1,17 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using Dapper;
 
 namespace SqlRepo.Benchmark.Select
 {
     public class SelectSingleColumnBenchmarkDapper : BenchmarkOperationBase
     {
-        public SelectSingleColumnBenchmarkDapper(IBenchmarkHelpers benchmarkHelpers) : base(benchmarkHelpers,
-            Component.Dapper)
-        {
-        }
+        public SelectSingleColumnBenchmarkDapper(IBenchmarkHelpers benchmarkHelpers)
+            : base(benchmarkHelpers, Component.Dapper) { }
 
         public override void Execute()
         {
-            using (var conn = new SqlConnection(ConnectionString.Value))
+            using(var conn = new SqlConnection(ConnectionString.Value))
             {
                 conn.Open();
                 var result = conn.Query<BenchmarkEntity>("SELECT DecimalValue FROM BenchmarkEntity");

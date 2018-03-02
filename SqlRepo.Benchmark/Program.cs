@@ -1,20 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using SqlRepo.Abstractions;
 using SqlRepo.Benchmark.Select;
+using SqlRepo.SqlServer.ConnectionProviders;
 using SqlRepo.SqlServer.ServiceCollection;
 
 namespace SqlRepo.Benchmark
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var services = new ServiceCollection()
-                .AddSqlRepo();
+            var services = new ServiceCollection().AddSqlRepo();
+            services.AddSingleton<IConnectionProvider>(
+                new ConnectionStringConnectionProvider(ConnectionString.Value));
 
-            SqlRepoBenchmarkDbContext dbContext = new SqlRepoBenchmarkDbContext();
+            var dbContext = new SqlRepoBenchmarkDbContext();
             dbContext.Database.Migrate();
 
             services.AddSingleton<ISqlLogger, NoOpSqlLogger>();
@@ -37,7 +39,8 @@ namespace SqlRepo.Benchmark
 
             var serviceCollection = services.BuildServiceProvider();
 
-            serviceCollection.GetService<IBenchmarkRunner>().Run();
+            serviceCollection.GetService<IBenchmarkRunner>()
+                             .Run();
 
             Console.WriteLine("Completed All Benchmarks");
 

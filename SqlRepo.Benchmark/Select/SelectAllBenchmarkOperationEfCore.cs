@@ -1,13 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace SqlRepo.Benchmark.Select
 {
     public class SelectAllBenchmarkOperationEfCore : BenchmarkOperationBase
     {
-        public SelectAllBenchmarkOperationEfCore(IBenchmarkHelpers benchmarkHelpers) : base(
-            benchmarkHelpers, Component.EfCore2)
-        {
-        }
+        public SelectAllBenchmarkOperationEfCore(IBenchmarkHelpers benchmarkHelpers)
+            : base(benchmarkHelpers, Component.EfCore2) { }
 
         public override void Execute()
         {

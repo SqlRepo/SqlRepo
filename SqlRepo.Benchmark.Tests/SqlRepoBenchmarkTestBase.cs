@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace SqlRepo.Benchmark.Tests
@@ -8,7 +9,9 @@ namespace SqlRepo.Benchmark.Tests
         [Test]
         public void ShouldReturnCorrectComponent()
         {
-            AssumeTargetIsExecuted().Component.Should().Be(Component.SqlRepo.ToString());
+            this.AssumeTargetIsExecuted()
+                .Component.Should()
+                .Be(Component.SqlRepo.ToString());
         }
     }
 }

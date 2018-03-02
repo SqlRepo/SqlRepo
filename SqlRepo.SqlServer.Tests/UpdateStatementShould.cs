@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 using SqlRepo.Testing;
 
@@ -392,12 +393,12 @@ namespace SqlRepo.SqlServer.Tests
             IWhereClauseBuilder whereClauseBuilder,
             ISqlConnectionProvider connectionProvider)
         {
-            var command = new UpdateStatement<TestEntity>(statementExecutor,
+            var statement = new UpdateStatement<TestEntity>(statementExecutor,
                 entityMapper,
                 writablePropertyMatcher,
                 whereClauseBuilder);
-            command.UseConnectionString(connectionProvider);
-            return command;
+            statement.UseConnectionProvider(connectionProvider);
+            return statement;
         }
 
         private void AssumeGoIsRequested()
@@ -414,7 +415,7 @@ namespace SqlRepo.SqlServer.Tests
 
         private string ExpectedTableSpecification(string schema, string table)
         {
-            return string.Format("UPDATE [{0}].[{1}]\nSET", schema, table);
+            return $"UPDATE [{schema}].[{table}]\nSET";
         }
     }
 }

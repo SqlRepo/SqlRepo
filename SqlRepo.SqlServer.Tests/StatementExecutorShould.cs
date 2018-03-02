@@ -3,6 +3,7 @@ using System.Data;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.Tests

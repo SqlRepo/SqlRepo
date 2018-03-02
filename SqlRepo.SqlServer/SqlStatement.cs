@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
@@ -11,23 +11,25 @@ namespace SqlRepo.SqlServer
     {
         protected SqlStatement(IStatementExecutor statementExecutor, IEntityMapper entityMapper)
         {
-            this.StatementExecutor = statementExecutor ?? throw new ArgumentNullException(nameof(statementExecutor));
+            this.StatementExecutor =
+                statementExecutor ?? throw new ArgumentNullException(nameof(statementExecutor));
             this.EntityMapper = entityMapper ?? throw new ArgumentNullException(nameof(entityMapper));
             this.TableSchema = "dbo";
             this.TableName = typeof(TEntity).Name;
         }
 
-        public string ConnectionString { get; private set; }
-        public string TableName { get; protected set; }
-        public string TableSchema { get; protected set; }
         protected IStatementExecutor StatementExecutor { get; }
         protected IEntityMapper EntityMapper { get; }
-        public abstract TResult Go(string connectionString = null);
-        public abstract Task<TResult> GoAsync(string connectionString = null);
 
-        public void UseConnectionString(string connectionString)
+        public string TableName { get; protected set; }
+        public string TableSchema { get; protected set; }
+        public abstract TResult Go();
+        public abstract Task<TResult> GoAsync();
+
+        public ISqlStatement<TResult> UseConnectionProvider(IConnectionProvider connectionProvider)
         {
-            this.ConnectionString = connectionString;
+            this.StatementExecutor.UseConnectionProvider(connectionProvider);
+            return this;
         }
 
         protected EntityIdentity GetIdByConvention<T>(T entity)
@@ -48,6 +50,7 @@ namespace SqlRepo.SqlServer
                 identiy.Name = property.Name;
                 identiy.Value = property.GetValue(entity);
             }
+
             return identiy;
         }
     }

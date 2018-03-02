@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
@@ -51,12 +52,8 @@ namespace SqlRepo.SqlServer
             return this;
         }
 
-        public override TEntity Go(string connectionString = null)
+        public override TEntity Go()
         {
-            if(string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = this.ConnectionString;
-            }
             using(var reader = this.StatementExecutor.ExecuteReader(this.Sql()))
             {
                 return this.EntityMapper.Map<TEntity>(reader)
@@ -64,12 +61,8 @@ namespace SqlRepo.SqlServer
             }
         }
 
-        public override async Task<TEntity> GoAsync(string connectionString = null)
+        public override async Task<TEntity> GoAsync()
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = this.ConnectionString;
-            }
             using (var reader = await this.StatementExecutor.ExecuteReaderAsync(this.Sql()))
             {
                 return this.EntityMapper.Map<TEntity>(reader)

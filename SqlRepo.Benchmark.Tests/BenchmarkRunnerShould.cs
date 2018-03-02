@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.Testing.NSubstitute;
 
 namespace SqlRepo.Benchmark.Tests
@@ -12,101 +13,110 @@ namespace SqlRepo.Benchmark.Tests
         [SetUp]
         public void SetUp()
         {
-            _benchmarkOperation = Substitute.For<IBenchmarkOperation>();
-            _benchmarkResultRepository = Substitute.For<IRepository<BenchmarkResult>>();
-            _insertCommand = _benchmarkResultRepository.CreateInsertStatementSubstitute();
-            _repositoryFactory = Substitute.For<IRepositoryFactory>();
-            _repositoryFactory.Create<BenchmarkResult>().Returns(_benchmarkResultRepository);
-            _benchmarkOperations = new List<IBenchmarkOperation>();
-            _benchmarkOperations.Add(_benchmarkOperation);
+            this.benchmarkOperation = Substitute.For<IBenchmarkOperation>();
+            this.benchmarkResultRepository = Substitute.For<IRepository<BenchmarkResult>>();
+            this.insertCommand = this.benchmarkResultRepository.CreateInsertStatementSubstitute();
+            this.repositoryFactory = Substitute.For<IRepositoryFactory>();
+            this.repositoryFactory.Create<BenchmarkResult>()
+                .Returns(this.benchmarkResultRepository);
+            this.benchmarkOperations = new List<IBenchmarkOperation>();
+            this.benchmarkOperations.Add(this.benchmarkOperation);
 
-            _benchmarkOperation.Run().Returns(_benchmarkResult);
+            this.benchmarkOperation.Run()
+                .Returns(this.benchmarkResult);
 
-            _benchmarkRunner = new BenchmarkRunner(_benchmarkOperations, _repositoryFactory);
-        }
-
-        private IBenchmarkRunner _benchmarkRunner;
-        private IRepositoryFactory _repositoryFactory;
-        private List<IBenchmarkOperation> _benchmarkOperations;
-        private IBenchmarkOperation _benchmarkOperation;
-        private IRepository<BenchmarkResult> _benchmarkResultRepository;
-        private IInsertStatement<BenchmarkResult> _insertCommand;
-
-        private readonly BenchmarkResult _benchmarkResult = new BenchmarkResult
-        {
-            TestName = "TestName",
-            Component = "AnyCom",
-            Created = DateTime.UtcNow,
-            Notes = "Any Notes",
-            TimeTaken = TimeSpan.FromHours(55).TotalMilliseconds
-        };
-
-        private void AssumeTargetIsExecuted()
-        {
-            _benchmarkRunner.Run();
+            this.benchmarkRunner = new BenchmarkRunner(this.benchmarkOperations, this.repositoryFactory);
         }
 
         [Test]
         public void CreateBenchmarkResultRepository()
         {
-            AssumeTargetIsExecuted();
-            _repositoryFactory.Received().Create<BenchmarkResult>();
+            this.AssumeTargetIsExecuted();
+            this.repositoryFactory.Received()
+                .Create<BenchmarkResult>();
         }
 
         [Test]
         public void CreateInsertCommand()
         {
-            AssumeTargetIsExecuted();
-            _benchmarkResultRepository.Received().Insert();
+            this.AssumeTargetIsExecuted();
+            this.benchmarkResultRepository.Received()
+                .Insert();
         }
 
         [Test]
         public void ExecuteSqlStatement()
         {
-            AssumeTargetIsExecuted();
-            _insertCommand.Received().Go(ConnectionString.Value);
+            this.AssumeTargetIsExecuted();
+            this.insertCommand.Received()
+                .Go();
         }
 
         [Test]
         public void InsertComponent()
         {
-            AssumeTargetIsExecuted();
-            _insertCommand.ReceivedWith("Component", _benchmarkResult.Component);
+            this.AssumeTargetIsExecuted();
+            this.insertCommand.ReceivedWith("Component", this.benchmarkResult.Component);
         }
 
         [Test]
         public void InsertCreated()
         {
-            AssumeTargetIsExecuted();
-            _insertCommand.ReceivedWith("Created", _benchmarkResult.Created);
+            this.AssumeTargetIsExecuted();
+            this.insertCommand.ReceivedWith("Created", this.benchmarkResult.Created);
         }
 
         [Test]
         public void InserTimeTaken()
         {
-            AssumeTargetIsExecuted();
-            _insertCommand.ReceivedWith("TimeTaken", _benchmarkResult.TimeTaken);
+            this.AssumeTargetIsExecuted();
+            this.insertCommand.ReceivedWith("TimeTaken", this.benchmarkResult.TimeTaken);
         }
 
         [Test]
         public void InsertNotes()
         {
-            AssumeTargetIsExecuted();
-            _insertCommand.ReceivedWith("Notes", _benchmarkResult.Notes);
+            this.AssumeTargetIsExecuted();
+            this.insertCommand.ReceivedWith("Notes", this.benchmarkResult.Notes);
         }
 
         [Test]
         public void InsertTestName()
         {
-            AssumeTargetIsExecuted();
-            _insertCommand.ReceivedWith("TestName", _benchmarkResult.TestName);
+            this.AssumeTargetIsExecuted();
+            this.insertCommand.ReceivedWith("TestName", this.benchmarkResult.TestName);
         }
 
         [Test]
         public void RunBenchmarkOperation()
         {
-            AssumeTargetIsExecuted();
-            _benchmarkOperation.Received().Run();
+            this.AssumeTargetIsExecuted();
+            this.benchmarkOperation.Received()
+                .Run();
+        }
+
+        private IBenchmarkOperation benchmarkOperation;
+        private List<IBenchmarkOperation> benchmarkOperations;
+
+        private readonly BenchmarkResult benchmarkResult = new BenchmarkResult
+                                                            {
+                                                                TestName = "TestName",
+                                                                Component = "AnyCom",
+                                                                Created = DateTime.UtcNow,
+                                                                Notes = "Any Notes",
+                                                                TimeTaken = TimeSpan
+                                                                            .FromHours(55)
+                                                                            .TotalMilliseconds
+                                                            };
+        private IRepository<BenchmarkResult> benchmarkResultRepository;
+
+        private IBenchmarkRunner benchmarkRunner;
+        private IInsertStatement<BenchmarkResult> insertCommand;
+        private IRepositoryFactory repositoryFactory;
+
+        private void AssumeTargetIsExecuted()
+        {
+            this.benchmarkRunner.Run();
         }
     }
 }

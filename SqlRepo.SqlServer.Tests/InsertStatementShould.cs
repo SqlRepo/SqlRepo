@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 using SqlRepo.Testing;
 
@@ -252,28 +253,12 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        [Ignore("Obsolete")]
         public void BuildCorrectStatementFromEntity()
         {
             this.AssumeTestEntityIsInitialised();
             var expected =
-                string.Format(
-                    "INSERT [dbo].[TestEntity]([DateTimeOffsetProperty], [NullableDateTimeOffsetProperty], [DateTimeProperty], [NullableDateTimeProperty], [DoubleProperty], [IntProperty], [IntProperty2], [StringProperty], [TestEnumProperty], [DecimalProperty], [ByteProperty], [ShortProperty], [SingleProperty], [GuidProperty])\n"
-                    + "VALUES('{0}', '{1}', '{2}', '{3}', {4}, {5}, {6}, '{7}', {8}, {9}, {10}, {11}, {12}, '{13}');",
-                    this.Entity.DateTimeOffsetProperty.ToString(FormatString.DateTimeOffset),
-                    this.Entity.NullableDateTimeOffsetProperty.Value.ToString(FormatString.DateTimeOffset),
-                    this.Entity.DateTimeProperty.ToString(FormatString.DateTime),
-                    this.Entity.NullableDateTimeProperty.Value.ToString(FormatString.DateTime),
-                    this.Entity.DoubleProperty,
-                    this.Entity.IntProperty,
-                    this.Entity.IntProperty2,
-                    this.Entity.StringProperty,
-                    (int)this.Entity.TestEnumProperty,
-                    this.Entity.DecimalProperty,
-                    this.Entity.ByteProperty,
-                    this.Entity.ShortProperty,
-                    this.Entity.SingleProperty,
-                    this.Entity.GuidProperty);
+                "INSERT [dbo].[TestEntity]([DateTimeOffsetProperty], [NullableDateTimeOffsetProperty], [DateTimeProperty], [NullableDateTimeProperty], [DoubleProperty], [IntProperty], [IntProperty2], [StringProperty], [TestEnumProperty], [DecimalProperty], [ByteProperty], [ShortProperty], [SingleProperty], [GuidProperty])\n"
+                + $"VALUES('{this.Entity.DateTimeOffsetProperty.ToString(FormatString.DateTimeOffset)}', '{this.Entity.NullableDateTimeOffsetProperty.Value.ToString(FormatString.DateTimeOffset)}', '{this.Entity.DateTimeProperty.ToString(FormatString.DateTime)}', '{this.Entity.NullableDateTimeProperty.Value.ToString(FormatString.DateTime)}', {this.Entity.DoubleProperty}, {this.Entity.IntProperty}, {this.Entity.IntProperty2}, '{this.Entity.StringProperty}', {(int)this.Entity.TestEnumProperty}, {this.Entity.DecimalProperty}, {this.Entity.ByteProperty}, {this.Entity.ShortProperty}, {this.Entity.SingleProperty}, '{this.Entity.GuidProperty}');";
             this.Statement.For(this.Entity)
                 .Sql()
                 .Should()
@@ -371,10 +356,10 @@ namespace SqlRepo.SqlServer.Tests
             IWhereClauseBuilder whereClauseBuilder,
             ISqlConnectionProvider connectionProvider)
         {
-            var command =
+            var statement =
                 new InsertStatement<TestEntity>(statementExecutor, entityMapper, writablePropertyMatcher);
-            command.UseConnectionString(connectionProvider);
-            return command;
+            statement.UseConnectionProvider(connectionProvider);
+            return statement;
         }
 
         private async Task AssumeGoAsyncIsRequested()

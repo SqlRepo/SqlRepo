@@ -1,5 +1,6 @@
 ﻿using System;
 using Autofac;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.Autofac
@@ -10,10 +11,8 @@ namespace SqlRepo.SqlServer.Autofac
         {
             containerBuilder.RegisterType<RepositoryFactory>()
                             .As<IRepositoryFactory>();
-            containerBuilder.RegisterType<StatementExecutor>()
-                            .As<IStatementExecutor>();
-            containerBuilder.RegisterType<StatementFactory>()
-                            .As<IStatementFactory>();
+            containerBuilder.RegisterType<StatementFactoryProvider>()
+                            .As<IStatementFactoryProvider>();
             containerBuilder.RegisterType<DataReaderEntityMapper>()
                             .As<IEntityMapper>();
             containerBuilder.RegisterType<WritablePropertyMatcher>()

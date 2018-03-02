@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.SqlServer.Abstractions
 {
@@ -19,6 +20,6 @@ namespace SqlRepo.SqlServer.Abstractions
             string name,
             params ParameterDefinition[] parametersDefinitions);
 
-        IStatementExecutor UseConnectionProvider(ISqlConnectionProvider connectionProvider);
+        IStatementExecutor UseConnectionProvider(IConnectionProvider connectionProvider);
     }
 }

@@ -1,7 +1,8 @@
-﻿using NSubstitute;
+﻿using System;
+using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.Benchmark.Select;
-using SqlRepo.Testing;
 using SqlRepo.Testing.NSubstitute;
 
 namespace SqlRepo.Benchmark.Tests
@@ -11,10 +12,26 @@ namespace SqlRepo.Benchmark.Tests
         [SetUp]
         public void Setup()
         {
-            _selectCommand = BenchmarkEntityRepository.CreateSelectStatementSubstitute();
+            this.selectCommand = this.BenchmarkEntityRepository.CreateSelectStatementSubstitute();
         }
 
-        private ISelectStatement<BenchmarkEntity> _selectCommand;
+        [Test]
+        public void CreateSelectStatement()
+        {
+            this.AssumeTargetIsExecuted();
+            this.BenchmarkEntityRepository.Received()
+                .Query();
+        }
+
+        [Test]
+        public void ExecuteSqlStatement()
+        {
+            this.AssumeTargetIsExecuted();
+            this.selectCommand.Received()
+                .Go();
+        }
+
+        private ISelectStatement<BenchmarkEntity> selectCommand;
 
         public override IBenchmarkOperation Create(IRepositoryFactory repositoryFactory,
             IBenchmarkHelpers benchmarkHelpers)
@@ -25,20 +42,6 @@ namespace SqlRepo.Benchmark.Tests
         public override string GetExpectedNotes()
         {
             return "Select all (50000) records";
-        }
-
-        [Test]
-        public void CreateSelectStatement()
-        {
-            AssumeTargetIsExecuted();
-            BenchmarkEntityRepository.Received().Query();
-        }
-
-        [Test]
-        public void ExecuteSqlStatement()
-        {
-            AssumeTargetIsExecuted();
-            _selectCommand.Received().Go(ConnectionString.Value);
         }
     }
 }

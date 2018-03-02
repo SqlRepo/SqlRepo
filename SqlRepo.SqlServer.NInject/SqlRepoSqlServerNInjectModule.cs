@@ -1,4 +1,5 @@
 ﻿using Ninject.Modules;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.NInject
@@ -9,10 +10,8 @@ namespace SqlRepo.SqlServer.NInject
         {
             this.Bind<IRepositoryFactory>()
                 .To<RepositoryFactory>();
-            this.Bind<IStatementExecutor>()
-                .To<StatementExecutor>();
-            this.Bind<IStatementFactory>()
-                .To<StatementFactory>();
+            this.Bind<IStatementFactoryProvider>()
+                .To<StatementFactoryProvider>();
             this.Bind<IEntityMapper>()
                 .To<DataReaderEntityMapper>();
             this.Bind<IWritablePropertyMatcher>()

@@ -1,50 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 
 namespace SqlRepo.Benchmark
 {
     public abstract class BenchmarkOperationBase : IBenchmarkOperation
     {
-        private readonly Component _component;
-        public IBenchmarkHelpers BenchmarkHelpers { get; }
+        private readonly Component component;
 
         protected BenchmarkOperationBase(IBenchmarkHelpers benchmarkHelpers, Component component)
         {
-            _component = component;
-            BenchmarkHelpers = benchmarkHelpers;
+            this.component = component;
+            this.BenchmarkHelpers = benchmarkHelpers;
         }
 
-        public BenchmarkResult Run()
-        {
-            var notes = GetNotes();
+        public IBenchmarkHelpers BenchmarkHelpers { get; }
 
-            Console.WriteLine($"Running {GetType().Name}");
-
-            if(!string.IsNullOrEmpty(notes))
-                Console.WriteLine(notes);
-
-            var result = new BenchmarkResult();
-            result.TestName = GetType().Name;
-
-            Setup();
-            Thread.Sleep(2000);
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
-            Execute();
-
-            sw.Stop();
-
-            result.TimeTaken = Math.Round(sw.Elapsed.TotalMilliseconds, 2);
-            result.Notes = GetNotes();
-            result.Component = _component.ToString();
-
-            return result;
-        }
+        public abstract void Execute();
 
         public virtual string GetNotes()
         {
@@ -53,11 +25,41 @@ namespace SqlRepo.Benchmark
 
         public virtual void Setup()
         {
-            BenchmarkHelpers.ClearRecords();
-            BenchmarkHelpers.ClearBufferPool();
-            BenchmarkHelpers.InsertRecords(50000);
+            this.BenchmarkHelpers.ClearRecords();
+            this.BenchmarkHelpers.ClearBufferPool();
+            this.BenchmarkHelpers.InsertRecords(50000);
         }
 
-        public abstract void Execute();
+        public BenchmarkResult Run()
+        {
+            var notes = this.GetNotes();
+
+            Console.WriteLine($"Running {this.GetType() .Name}");
+
+            if(!string.IsNullOrEmpty(notes))
+            {
+                Console.WriteLine(notes);
+            }
+
+            var result = new BenchmarkResult();
+            result.TestName = this.GetType()
+                                  .Name;
+
+            this.Setup();
+            Thread.Sleep(2000);
+
+            var sw = new Stopwatch();
+            sw.Start();
+
+            this.Execute();
+
+            sw.Stop();
+
+            result.TimeTaken = Math.Round(sw.Elapsed.TotalMilliseconds, 2);
+            result.Notes = this.GetNotes();
+            result.Component = this.component.ToString();
+
+            return result;
+        }
     }
 }

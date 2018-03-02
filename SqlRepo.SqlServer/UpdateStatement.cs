@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
@@ -50,21 +51,13 @@ namespace SqlRepo.SqlServer
             return this;
         }
 
-        public override int Go(string connectionString = null)
+        public override int Go()
         {
-            if(string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = this.ConnectionString;
-            }
             return this.StatementExecutor.ExecuteNonQuery(this.Sql());
         }
 
-        public override async Task<int> GoAsync(string connectionString = null)
+        public override async Task<int> GoAsync()
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = this.ConnectionString;
-            }
             return await this.StatementExecutor.ExecuteNonQueryAsync(this.Sql());
         }
 

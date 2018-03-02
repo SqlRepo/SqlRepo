@@ -1,6 +1,7 @@
 ﻿using System;
 using NSubstitute;
 using NSubstitute.Extensions;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Testing.NSubstitute
 {

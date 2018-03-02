@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
@@ -39,21 +40,13 @@ namespace SqlRepo.SqlServer
             return this;
         }
 
-        public override int Go(string connectionString = null)
+        public override int Go()
         {
-            if(string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = this.ConnectionString;
-            }
             return this.StatementExecutor.ExecuteNonQuery(this.Sql());
         }
 
-        public override async Task<int> GoAsync(string connectionString = null)
+        public override async Task<int> GoAsync()
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = this.ConnectionString;
-            }
             return await this.StatementExecutor.ExecuteNonQueryAsync(this.Sql());
         }
 
@@ -101,14 +94,19 @@ namespace SqlRepo.SqlServer
             }
 
             this.IsClean = false;
-            this.whereClauseBuilder.Where(expression, tableName: TableName, tableSchema: TableSchema);
+            this.whereClauseBuilder.Where(expression,
+                tableName: this.TableName,
+                tableSchema: this.TableSchema);
             return this;
         }
 
         public IDeleteStatement<TEntity> WhereIn<T, TMember>(Expression<Func<T, TMember>> selector,
             TMember[] values)
         {
-            this.whereClauseBuilder.WhereIn(selector, values, tableName: TableName, tableSchema: TableSchema);
+            this.whereClauseBuilder.WhereIn(selector,
+                values,
+                tableName: this.TableName,
+                tableSchema: this.TableSchema);
             return this;
         }
 

@@ -1,48 +1,67 @@
-﻿using SqlRepo.SqlServer.Abstractions;
+﻿using System;
+using SqlRepo.Abstractions;
+using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
 {
     public class StatementFactory : IStatementFactory
     {
-        private readonly IStatementExecutor statementExecutor;
         private readonly IEntityMapper entityMapper;
+        private readonly ISqlLogger sqlLogger;
         private readonly IWritablePropertyMatcher writablePropertyMatcher;
+        private IConnectionProvider connectionProvider;
 
-        public StatementFactory(IStatementExecutor statementExecutor,
+        public StatementFactory(ISqlLogger sqlLogger,
+            IConnectionProvider connectionProvider,
             IEntityMapper entityMapper,
             IWritablePropertyMatcher writablePropertyMatcher)
         {
-            this.statementExecutor = statementExecutor;
+            this.sqlLogger = sqlLogger;
+            this.connectionProvider = connectionProvider;
             this.entityMapper = entityMapper;
             this.writablePropertyMatcher = writablePropertyMatcher;
         }
 
-        public IDeleteStatement<TEntity> CreateDelete<TEntity>() where TEntity : class, new()
+        public IDeleteStatement<TEntity> CreateDelete<TEntity>()
+            where TEntity: class, new()
         {
-            return new DeleteStatement<TEntity>(this.statementExecutor,
-                entityMapper,
+            return new DeleteStatement<TEntity>(this.CreateStatementExecutor(),
+                this.entityMapper,
                 new WhereClauseBuilder());
         }
 
-        public IInsertStatement<TEntity> CreateInsert<TEntity>() where TEntity : class, new()
+        public IInsertStatement<TEntity> CreateInsert<TEntity>()
+            where TEntity: class, new()
         {
-            return new InsertStatement<TEntity>(this.statementExecutor,
-                entityMapper,
-                writablePropertyMatcher);
+            return new InsertStatement<TEntity>(this.CreateStatementExecutor(),
+                this.entityMapper,
+                this.writablePropertyMatcher);
         }
 
-        public ISelectStatement<TEntity> CreateSelect<TEntity>() where TEntity : class, new()
+        public ISelectStatement<TEntity> CreateSelect<TEntity>()
+            where TEntity: class, new()
         {
-            return new SelectStatement<TEntity>(this.statementExecutor,
-                entityMapper);
+            return new SelectStatement<TEntity>(this.CreateStatementExecutor(), this.entityMapper);
         }
 
-        public IUpdateStatement<TEntity> CreateUpdate<TEntity>() where TEntity : class, new()
+        public IUpdateStatement<TEntity> CreateUpdate<TEntity>()
+            where TEntity: class, new()
         {
-            return new UpdateStatement<TEntity>(this.statementExecutor,
-                entityMapper,
-                writablePropertyMatcher,
+            return new UpdateStatement<TEntity>(this.CreateStatementExecutor(),
+                this.entityMapper,
+                this.writablePropertyMatcher,
                 new WhereClauseBuilder());
+        }
+
+        public IStatementFactory UseConnectionProvider(IConnectionProvider connectionProvider)
+        {
+            this.connectionProvider = connectionProvider;
+            return this;
+        }
+
+        private IStatementExecutor CreateStatementExecutor()
+        {
+            return new StatementExecutor(this.sqlLogger, this.connectionProvider);
         }
     }
 }

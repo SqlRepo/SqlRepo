@@ -6,14 +6,14 @@ namespace SqlRepo.Benchmark
     {
         public BenchmarkResult()
         {
-            Created = DateTime.UtcNow;    
+            this.Created = DateTime.UtcNow;
         }
 
-        public int Id { get; set; }
-        public DateTime Created { get; set; }
-        public string TestName { get; set; }
-        public string Notes { get; set; }
-        public double TimeTaken { get; set; }
         public string Component { get; set; }
+        public DateTime Created { get; set; }
+        public int Id { get; set; }
+        public string Notes { get; set; }
+        public string TestName { get; set; }
+        public double TimeTaken { get; set; }
     }
 }

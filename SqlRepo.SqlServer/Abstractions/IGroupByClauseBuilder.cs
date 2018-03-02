@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.SqlServer.Abstractions
 {

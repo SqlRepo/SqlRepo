@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
@@ -149,26 +150,16 @@ namespace SqlRepo.SqlServer
             return this;
         }
 
-        public override IEnumerable<TEntity> Go(string connectionString = null)
+        public override IEnumerable<TEntity> Go()
         {
-            if(string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = this.ConnectionString;
-            }
-
             using(var reader = this.StatementExecutor.ExecuteReader(this.Sql()))
             {
                 return this.EntityMapper.Map<TEntity>(reader);
             }
         }
 
-        public override async Task<IEnumerable<TEntity>> GoAsync(string connectionString = null)
+        public override async Task<IEnumerable<TEntity>> GoAsync()
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                connectionString = this.ConnectionString;
-            }
-
             using (var reader = await this.StatementExecutor.ExecuteReaderAsync(this.Sql()))
             {
                 return this.EntityMapper.Map<TEntity>(reader);

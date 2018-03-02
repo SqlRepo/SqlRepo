@@ -1,4 +1,6 @@
-﻿namespace SqlRepo.Benchmark
+﻿using System;
+
+namespace SqlRepo.Benchmark
 {
     public enum Component
     {

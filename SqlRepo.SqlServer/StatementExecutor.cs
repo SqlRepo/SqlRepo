@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
@@ -9,9 +10,9 @@ namespace SqlRepo.SqlServer
     {
         private const int CommandTimeout = 300000;
         private readonly ISqlLogger logger;
-        private ISqlConnectionProvider connectionProvider;
+        private IConnectionProvider connectionProvider;
 
-        public StatementExecutor(ISqlLogger logger, ISqlConnectionProvider connectionProvider)
+        public StatementExecutor(ISqlLogger logger, IConnectionProvider connectionProvider)
         {
             this.logger = logger;
             this.connectionProvider = connectionProvider;
@@ -115,7 +116,7 @@ namespace SqlRepo.SqlServer
             }
         }
 
-        public IStatementExecutor UseConnectionProvider(ISqlConnectionProvider connectionProvider)
+        public IStatementExecutor UseConnectionProvider(IConnectionProvider connectionProvider)
         {
             this.connectionProvider = connectionProvider;
             return this;

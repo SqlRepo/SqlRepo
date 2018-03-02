@@ -1,19 +1,20 @@
 using System;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo
 {
     public class RepositoryFactory : IRepositoryFactory
     {
-        private readonly IStatementFactory statementFactory;
+        private readonly IStatementFactoryProvider statementFactoryProvider;
 
-        public RepositoryFactory(IStatementFactory statementFactory)
+        public RepositoryFactory(IStatementFactoryProvider statementFactoryProvider)
         {
-            this.statementFactory = statementFactory;
+            this.statementFactoryProvider = statementFactoryProvider;
         }
 
         public IRepository<TEntity> Create<TEntity>() where TEntity: class, new()
         {
-            return new Repository<TEntity>(this.statementFactory);
+            return new Repository<TEntity>(this.statementFactoryProvider.Provide());
         }
     }
 }

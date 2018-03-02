@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.Testing;
 
 namespace SqlRepo.Tests
@@ -11,60 +13,49 @@ namespace SqlRepo.Tests
         [SetUp]
         public void SetUp()
         {
-            AssumeTestEntityIsInitialised();
-            AssumeStatementFactoryIsInitialised();
-            repository = new Repository<TestEntity>(this.StatementFactory);
+            this.AssumeTestEntityIsInitialised();
+            this.AssumeStatementFactoryIsInitialised();
+            this.Repository = new Repository<TestEntity>(this.StatementFactory);
         }
-
-        private IRepository<TestEntity> repository;
 
         protected void AssumeDeleteEntityIsRequested()
         {
-            repository.Delete(Entity);
+            this.Repository.Delete(this.Entity);
         }
 
         protected IDeleteStatement<TestEntity> AssumeDeleteIsRequested()
         {
-            return repository.Delete();
+            return this.Repository.Delete();
         }
 
         protected TestEntity AssumeInsertEntityIsRequested()
         {
-            return repository.Insert(Entity);
+            return this.Repository.Insert(this.Entity);
         }
 
         protected IInsertStatement<TestEntity> AssumeInsertIsRequested()
         {
-            return repository.Insert();
+            return this.Repository.Insert();
         }
 
         protected IEnumerable<TestEntity> AssumeResultsFromIsRequested(ISelectStatement<TestEntity> query)
         {
-            return repository.ResultsFrom(query);
+            return this.Repository.ResultsFrom(query);
         }
 
         protected ISelectStatement<TestEntity> AssumeSelectIsRequested()
         {
-            return repository.Query();
+            return this.Repository.Query();
         }
 
         protected void AssumeUpdateEntityIsRequested()
         {
-            repository.Update(Entity);
+            this.Repository.Update(this.Entity);
         }
 
         protected IUpdateStatement<TestEntity> AssumeUpdateIsRequested()
         {
-            return repository.Update();
-        }
-
-        private void AssumeStatementFactoryIsInitialised()
-        {
-            this.StatementFactory = Substitute.For<IStatementFactory>();
-            AssumeDeleteCommandIsInitialised();
-            AssumeInsertCommandIsInitialised();
-            AssumeUpdateCommandIsInitialised();
-            AssumeSelectStatementIsInitialised();
+            return this.Repository.Update();
         }
 
         private void AssumeDeleteCommandIsInitialised()
@@ -72,14 +63,14 @@ namespace SqlRepo.Tests
             this.DeleteStatement = Substitute.For<IDeleteStatement<TestEntity>>();
             this.StatementFactory.CreateDelete<TestEntity>()
                 .Returns(this.DeleteStatement);
-            this.DeleteStatement.For(Entity)
+            this.DeleteStatement.For(this.Entity)
                 .Returns(this.DeleteStatement);
         }
 
         private void AssumeInsertCommandIsInitialised()
         {
             this.InsertStatement = Substitute.For<IInsertStatement<TestEntity>>();
-            this.InsertStatement.For(Entity)
+            this.InsertStatement.For(this.Entity)
                 .Returns(this.InsertStatement);
             this.StatementFactory.CreateInsert<TestEntity>()
                 .Returns(this.InsertStatement);
@@ -92,19 +83,30 @@ namespace SqlRepo.Tests
                 .Returns(this.SelectStatement);
         }
 
+        private void AssumeStatementFactoryIsInitialised()
+        {
+            this.StatementFactory = Substitute.For<IStatementFactory>();
+            this.AssumeDeleteCommandIsInitialised();
+            this.AssumeInsertCommandIsInitialised();
+            this.AssumeUpdateCommandIsInitialised();
+            this.AssumeSelectStatementIsInitialised();
+        }
+
         private void AssumeUpdateCommandIsInitialised()
         {
             this.UpdateStatement = Substitute.For<IUpdateStatement<TestEntity>>();
             this.StatementFactory.CreateUpdate<TestEntity>()
                 .Returns(this.UpdateStatement);
-            this.UpdateStatement.For(Entity)
+            this.UpdateStatement.For(this.Entity)
                 .Returns(this.UpdateStatement);
         }
 
-        protected IStatementFactory StatementFactory { get; private set; }
         protected IDeleteStatement<TestEntity> DeleteStatement { get; private set; }
         protected IInsertStatement<TestEntity> InsertStatement { get; private set; }
+
+        protected IRepository<TestEntity> Repository { get; private set; }
         protected ISelectStatement<TestEntity> SelectStatement { get; private set; }
+        protected IStatementFactory StatementFactory { get; private set; }
         protected IUpdateStatement<TestEntity> UpdateStatement { get; private set; }
     }
 }

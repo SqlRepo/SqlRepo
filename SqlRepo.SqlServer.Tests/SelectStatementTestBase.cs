@@ -1,7 +1,6 @@
 using SqlRepo.Testing;
 using System.Collections.Generic;
-using NSubstitute;
-using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.Tests
@@ -24,7 +23,7 @@ namespace SqlRepo.SqlServer.Tests
             ISqlConnectionProvider connectionProvider)
         {
             var statement = new SelectStatement<TestEntity>(statementExecutor, entityMapper);
-            statement.UseConnectionString(connectionProvider);
+            statement.UseConnectionProvider(connectionProvider);
             return statement;
         }
     }

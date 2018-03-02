@@ -1,34 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Benchmark
 {
     public class BenchmarkRunner : IBenchmarkRunner
     {
-        private readonly IEnumerable<IBenchmarkOperation> _benchmarkOperations;
-        private readonly IRepositoryFactory _repositoryFactory;
+        private readonly IEnumerable<IBenchmarkOperation> benchmarkOperations;
+        private readonly IRepositoryFactory repositoryFactory;
 
         public BenchmarkRunner(IEnumerable<IBenchmarkOperation> benchmarkOperations,
             IRepositoryFactory repositoryFactory)
         {
-            _benchmarkOperations = benchmarkOperations;
-            _repositoryFactory = repositoryFactory;
+            this.benchmarkOperations = benchmarkOperations;
+            this.repositoryFactory = repositoryFactory;
         }
 
         public void Run()
         {
-            for (var i = 0; i < 6; i++)
-                foreach (var benchmarkOperation in _benchmarkOperations)
+            for(var i = 0; i < 6; i++)
+            {
+                foreach(var benchmarkOperation in this.benchmarkOperations)
                 {
                     var benchmarkResult = benchmarkOperation.Run();
 
-                    _repositoryFactory.Create<BenchmarkResult>().Insert()
+                    this.repositoryFactory.Create<BenchmarkResult>()
+                        .Insert()
                         .With(e => e.TestName, benchmarkResult.TestName)
                         .With(e => e.Created, benchmarkResult.Created)
                         .With(e => e.TimeTaken, benchmarkResult.TimeTaken)
                         .With(e => e.Notes, benchmarkResult.Notes)
                         .With(e => e.Component, benchmarkResult.Component)
-                        .Go(ConnectionString.Value);
+                        .Go();
                 }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo
 {
@@ -57,6 +58,12 @@ namespace SqlRepo
             return this.statementFactory.CreateUpdate<TEntity>()
                        .For(entity)
                        .Go();
+        }
+
+        public IRepository<TEntity> UseConnectionProvider(IConnectionProvider connectionProvider)
+        {
+            this.statementFactory.UseConnectionProvider(connectionProvider);
+            return this;
         }
     }
 }

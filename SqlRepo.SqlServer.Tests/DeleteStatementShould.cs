@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 using SqlRepo.Testing;
 
@@ -202,9 +203,9 @@ namespace SqlRepo.SqlServer.Tests
             IWhereClauseBuilder whereClauseBuilder,
             ISqlConnectionProvider connectionProvider)
         {
-            var command = new DeleteStatement<TestEntity>(statementExecutor, entityMapper, whereClauseBuilder);
-            command.UseConnectionString(connectionProvider);
-            return command;
+            var statement = new DeleteStatement<TestEntity>(statementExecutor, entityMapper, whereClauseBuilder);
+            statement.UseConnectionProvider(connectionProvider);
+            return statement;
         }
 
         private async Task AssumeGoAsyncIsRequested()

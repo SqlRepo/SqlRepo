@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace SqlRepo.Benchmark
 {
@@ -14,8 +15,10 @@ namespace SqlRepo.Benchmark
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<BenchmarkEntity>().ToTable(nameof(BenchmarkEntity));
-            builder.Entity<BenchmarkResult>().ToTable(nameof(BenchmarkResult));
+            builder.Entity<BenchmarkEntity>()
+                   .ToTable(nameof(BenchmarkEntity));
+            builder.Entity<BenchmarkResult>()
+                   .ToTable(nameof(BenchmarkResult));
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Benchmark.Tests
 {
@@ -10,40 +12,43 @@ namespace SqlRepo.Benchmark.Tests
         [SetUp]
         public void SetupTests()
         {
-            BenchmarkEntityRepository = Substitute.For<IRepository<BenchmarkEntity>>();
-            RepositoryFactory = Substitute.For<IRepositoryFactory>();
-            RepositoryFactory.Create<BenchmarkEntity>().Returns(BenchmarkEntityRepository);
-            BenchmarkHelpers = Substitute.For<IBenchmarkHelpers>();
-            BenchmarkOperation = Create(RepositoryFactory, BenchmarkHelpers);
-        }
-
-        public IRepositoryFactory RepositoryFactory { get; private set; }
-        public IRepository<BenchmarkEntity> BenchmarkEntityRepository { get; private set; }
-        public IBenchmarkHelpers BenchmarkHelpers { get; private set; }
-
-        public abstract IBenchmarkOperation Create(IRepositoryFactory repositoryFactory,
-            IBenchmarkHelpers benchmarkHelpers);
-
-        public abstract string GetExpectedNotes();
-
-        public IBenchmarkOperation BenchmarkOperation { get; private set; }
-
-        protected BenchmarkResult AssumeTargetIsExecuted()
-        {
-            return BenchmarkOperation.Run();
+            this.BenchmarkEntityRepository = Substitute.For<IRepository<BenchmarkEntity>>();
+            this.RepositoryFactory = Substitute.For<IRepositoryFactory>();
+            this.RepositoryFactory.Create<BenchmarkEntity>()
+                .Returns(this.BenchmarkEntityRepository);
+            this.BenchmarkHelpers = Substitute.For<IBenchmarkHelpers>();
+            this.BenchmarkOperation = this.Create(this.RepositoryFactory, this.BenchmarkHelpers);
         }
 
         [Test]
         public void CreateBenchmarkEntityRepository()
         {
             this.AssumeTargetIsExecuted();
-            this.RepositoryFactory.Received().Create<BenchmarkEntity>();
+            this.RepositoryFactory.Received()
+                .Create<BenchmarkEntity>();
         }
 
         [Test]
         public void ReturnCorrectNotes()
         {
-            this.AssumeTargetIsExecuted().Notes.Should().Be(GetExpectedNotes());
+            this.AssumeTargetIsExecuted()
+                .Notes.Should()
+                .Be(this.GetExpectedNotes());
         }
+
+        public abstract IBenchmarkOperation Create(IRepositoryFactory repositoryFactory,
+            IBenchmarkHelpers benchmarkHelpers);
+
+        public abstract string GetExpectedNotes();
+
+        protected BenchmarkResult AssumeTargetIsExecuted()
+        {
+            return this.BenchmarkOperation.Run();
+        }
+
+        public IRepository<BenchmarkEntity> BenchmarkEntityRepository { get; private set; }
+        public IBenchmarkHelpers BenchmarkHelpers { get; private set; }
+        public IBenchmarkOperation BenchmarkOperation { get; private set; }
+        public IRepositoryFactory RepositoryFactory { get; private set; }
     }
 }

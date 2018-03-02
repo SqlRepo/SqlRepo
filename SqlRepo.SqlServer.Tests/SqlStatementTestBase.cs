@@ -4,6 +4,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.Extensions;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 using SqlRepo.Testing;
 
