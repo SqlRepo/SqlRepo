@@ -7,7 +7,6 @@ namespace SqlRepo
     public interface ISelectCommand<TEntity> : ISqlCommand<IEnumerable<TEntity>>
         where TEntity: class, new()
     {
-
         ISelectCommand<TEntity> And(Expression<Func<TEntity, bool>> selector, string alias = null);
 
         ISelectCommand<TEntity> And<T>(Expression<Func<T, bool>> selector, string alias = null);

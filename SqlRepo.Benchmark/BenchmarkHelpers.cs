@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
+using SqlRepo.Benchmark.Entities;
 
 namespace SqlRepo.Benchmark
 {

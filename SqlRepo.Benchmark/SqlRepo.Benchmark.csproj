@@ -22,7 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Delete\" />
-    <Folder Include="Insert\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Transactions" />

@@ -23,7 +23,7 @@ namespace SqlRepo.Benchmark.Tests
 
             _benchmarkOperation.Run().Returns(_benchmarkResult);
 
-            _benchmarkRunner = new BenchmarkRunner(_benchmarkOperations, _repositoryFactory);
+            _benchmarkRunner = new BenchmarkRunner(_benchmarkOperations, _repositoryFactory, _benchmarkHelpers);
         }
 
         private IBenchmarkRunner _benchmarkRunner;
@@ -41,6 +41,8 @@ namespace SqlRepo.Benchmark.Tests
             Notes = "Any Notes",
             TimeTaken = TimeSpan.FromHours(55).TotalMilliseconds
         };
+
+        private IBenchmarkHelpers _benchmarkHelpers;
 
         private void AssumeTargetIsExecuted()
         {

@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using Dapper;
+using SqlRepo.Benchmark.Entities;
 
 namespace SqlRepo.Benchmark.Select
 {
@@ -15,7 +16,7 @@ namespace SqlRepo.Benchmark.Select
             using (var conn = new SqlConnection(ConnectionString.Value))
             {
                 conn.Open();
-                var result = conn.Query<BenchmarkEntity>("SELECT DecimalValue FROM BenchmarkEntity");
+                var result = conn.QuerySingleOrDefault<BenchmarkEntity>("SELECT DecimalValue FROM BenchmarkEntity");
             }
         }
 

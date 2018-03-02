@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SqlRepo.Benchmark.Entities;
 
 namespace SqlRepo.Benchmark
 {

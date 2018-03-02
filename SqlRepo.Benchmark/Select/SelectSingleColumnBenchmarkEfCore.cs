@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using SqlRepo.Benchmark.Entities;
 
 namespace SqlRepo.Benchmark.Select
 {

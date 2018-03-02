@@ -4,5 +4,6 @@
     {
         BenchmarkResult Run();
         string GetNotes();
+        Component Component { get; set; }
     }
 }

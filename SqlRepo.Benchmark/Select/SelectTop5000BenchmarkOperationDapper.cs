@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using Dapper;
+using SqlRepo.Benchmark.Entities;
 
 namespace SqlRepo.Benchmark.Select
 {

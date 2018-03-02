@@ -8,12 +8,11 @@ namespace SqlRepo.Benchmark
 {
     public abstract class BenchmarkOperationBase : IBenchmarkOperation
     {
-        private readonly Component _component;
         public IBenchmarkHelpers BenchmarkHelpers { get; }
 
         protected BenchmarkOperationBase(IBenchmarkHelpers benchmarkHelpers, Component component)
         {
-            _component = component;
+            Component = component;
             BenchmarkHelpers = benchmarkHelpers;
         }
 
@@ -41,7 +40,7 @@ namespace SqlRepo.Benchmark
 
             result.TimeTaken = Math.Round(sw.Elapsed.TotalMilliseconds, 2);
             result.Notes = GetNotes();
-            result.Component = _component.ToString();
+            result.Component = Component.ToString();
 
             return result;
         }
@@ -51,11 +50,13 @@ namespace SqlRepo.Benchmark
             return null;
         }
 
+        public Component Component { get; set; }
+
         public virtual void Setup()
         {
-            BenchmarkHelpers.ClearRecords();
-            BenchmarkHelpers.ClearBufferPool();
-            BenchmarkHelpers.InsertRecords(50000);
+            //BenchmarkHelpers.ClearRecords();
+            //BenchmarkHelpers.ClearBufferPool();
+            //BenchmarkHelpers.InsertRecords(50000);
         }
 
         public abstract void Execute();

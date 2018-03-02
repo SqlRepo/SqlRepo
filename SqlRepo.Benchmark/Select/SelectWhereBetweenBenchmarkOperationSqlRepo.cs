@@ -1,4 +1,6 @@
-﻿namespace SqlRepo.Benchmark.Select
+﻿using SqlRepo.Benchmark.Entities;
+
+namespace SqlRepo.Benchmark.Select
 {
     public class SelectWhereBetweenBenchmarkOperationSqlRepo : BenchmarkOperationBase
     {
@@ -13,9 +15,7 @@
         public override void Execute()
         {
             var results = _repositoryFactory.Create<BenchmarkEntity>()
-                .Query().Select(e => e.Id)
-                .Select(e => e.DecimalValue)
-                .Select(e => e.TextValue)
+                .Query()
                 .WhereBetween(e => e.DecimalValue, 500, 1000).Go(ConnectionString.Value);
         }
 

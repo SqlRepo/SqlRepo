@@ -1,4 +1,6 @@
-﻿namespace SqlRepo.Benchmark.Select
+﻿using SqlRepo.Benchmark.Entities;
+
+namespace SqlRepo.Benchmark.Select
 {
     public class SelectSingleColumnBenchmarkSqlRepo : BenchmarkOperationBase
     {
@@ -14,7 +16,7 @@
         public override void Execute()
         {
             var result = _repositoryFactory.Create<BenchmarkEntity>().Query().Select(e => e.DecimalValue)
-                .OrderBy(e => e.DecimalValue).Go(ConnectionString.Value);
+                .Go(ConnectionString.Value);
         }
 
         public override string GetNotes()

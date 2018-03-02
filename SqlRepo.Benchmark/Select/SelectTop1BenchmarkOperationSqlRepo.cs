@@ -2,11 +2,11 @@
 
 namespace SqlRepo.Benchmark.Select
 {
-    public class SelectTop5000BenchmarkOperationSqlRepo : BenchmarkOperationBase
+    public class SelectTop1BenchmarkOperationSqlRepo : BenchmarkOperationBase
     {
         private readonly IRepositoryFactory _repositoryFactory;
 
-        public SelectTop5000BenchmarkOperationSqlRepo(IRepositoryFactory repositoryFactory,
+        public SelectTop1BenchmarkOperationSqlRepo(IRepositoryFactory repositoryFactory,
             IBenchmarkHelpers benchmarkHelpers) : base(benchmarkHelpers, Component.SqlRepo)
         {
             _repositoryFactory = repositoryFactory;
@@ -14,12 +14,12 @@ namespace SqlRepo.Benchmark.Select
 
         public override void Execute()
         {
-            var results = _repositoryFactory.Create<BenchmarkEntity>()
+            _repositoryFactory.Create<BenchmarkEntity>()
                 .Query()
-                .Top(5000)
+                .Top(1)
                 .Go(ConnectionString.Value);
         }
 
-        public override string GetNotes() => "Select TOP 5000 records";
+        public override string GetNotes() => "Select TOP 1 records";
     }
 }

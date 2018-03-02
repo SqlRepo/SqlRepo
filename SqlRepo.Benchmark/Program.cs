@@ -20,18 +20,28 @@ namespace SqlRepo.Benchmark
             services.AddSingleton<ISqlLogger, NoOpSqlLogger>();
             services.AddSingleton<IBenchmarkHelpers, BenchmarkHelpers>();
 
+            /*services.AddSingleton<IBenchmarkOperation, SelectUpdateDeleteBenchmarkOperationDapper>();
+            services.AddSingleton<IBenchmarkOperation, SelectUpdateDeleteBenchmarkOperationSqlRepo>();*/
+
+            /*services.AddSingleton<IBenchmarkOperation, SelectByDecimalValueBenchmarkOperationDapper>();
             services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationDapper>();
-            services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationSqlRepo>();
-            services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationEfCore>();
-            services.AddSingleton<IBenchmarkOperation, SelectTop5000BenchmarkOperationDapper>();
-            services.AddSingleton<IBenchmarkOperation, SelectTop5000BenchmarkOperationSqlRepo>();
-            services.AddSingleton<IBenchmarkOperation, SelectTop5000BenchmarkOperationEfCore>();
-            services.AddSingleton<IBenchmarkOperation, SelectWhereBetweenBenchmarkOperationDapper>();
-            services.AddSingleton<IBenchmarkOperation, SelectWhereBetweenBenchmarkOperationSqlRepo>();
-            services.AddSingleton<IBenchmarkOperation, SelectWhereBetweenBenchmarkOperationEfCore>();
+            services.AddSingleton<IBenchmarkOperation, SelectTop5000BenchmarkOperationDapper>();*/
+            services.AddSingleton<IBenchmarkOperation, SelectTop1BenchmarkOperationDapper>();
+            /*services.AddSingleton<IBenchmarkOperation, SelectWhereBetweenBenchmarkOperationDapper>();
             services.AddSingleton<IBenchmarkOperation, SelectSingleColumnBenchmarkDapper>();
-            services.AddSingleton<IBenchmarkOperation, SelectSingleColumnBenchmarkSqlRepo>();
-            services.AddSingleton<IBenchmarkOperation, SelectSingleColumnBenchmarkEfCore>();
+            services.AddSingleton<IBenchmarkOperation, SelectByDecimalValueBenchmarkOperationSqlRepo>();
+            services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationSqlRepo>();
+            services.AddSingleton<IBenchmarkOperation, SelectWhereBetweenBenchmarkOperationSqlRepo>();
+            services.AddSingleton<IBenchmarkOperation, SelectTop5000BenchmarkOperationSqlRepo>();*/
+            services.AddSingleton<IBenchmarkOperation, SelectTop1BenchmarkOperationSqlRepoCache>();
+            services.AddSingleton<IBenchmarkOperation, SelectTop1BenchmarkOperationSqlRepo>();
+            //services.AddSingleton<IBenchmarkOperation, SelectSingleColumnBenchmarkSqlRepo>();
+            
+            //services.AddSingleton<IBenchmarkOperation, SelectAllBenchmarkOperationEfCore>();
+            //services.AddSingleton<IBenchmarkOperation, SelectTop5000BenchmarkOperationEfCore>();
+            //services.AddSingleton<IBenchmarkOperation, SelectWhereBetweenBenchmarkOperationEfCore>();
+            //services.AddSingleton<IBenchmarkOperation, SelectTop1BenchmarkOperationEfCore>();
+            //services.AddSingleton<IBenchmarkOperation, SelectSingleColumnBenchmarkEfCore>();
 
             services.AddSingleton<IBenchmarkRunner, BenchmarkRunner>();
 

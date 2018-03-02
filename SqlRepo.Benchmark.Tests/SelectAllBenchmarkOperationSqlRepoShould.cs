@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Benchmark.Entities;
 using SqlRepo.Benchmark.Select;
 using SqlRepo.Testing;
 using SqlRepo.Testing.FluentAssertions;

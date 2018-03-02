@@ -4,10 +4,10 @@ using SqlRepo.Benchmark.Entities;
 
 namespace SqlRepo.Benchmark.Select
 {
-    public class SelectAllBenchmarkOperationDapper : BenchmarkOperationBase
+    public class SelectTop1BenchmarkOperationDapper : BenchmarkOperationBase
     {
-        public SelectAllBenchmarkOperationDapper(IBenchmarkHelpers benchmarkHelpers) : base(
-            benchmarkHelpers, Component.Dapper)
+        public SelectTop1BenchmarkOperationDapper(IBenchmarkHelpers benchmarkHelpers) : base(benchmarkHelpers,
+            Component.Dapper)
         {
         }
 
@@ -16,13 +16,13 @@ namespace SqlRepo.Benchmark.Select
             using (var conn = new SqlConnection(ConnectionString.Value))
             {
                 conn.Open();
-                var result = conn.Query<BenchmarkEntity>("SELECT * FROM BenchmarkEntity");
+                var result = conn.QuerySingleOrDefault<BenchmarkEntity>("SELECT TOP(1) * FROM BenchmarkEntity");
             }
         }
 
         public override string GetNotes()
         {
-            return "Select all (50000) records";
+            return "Select TOP 1 records";
         }
     }
 }

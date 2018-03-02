@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SqlRepo.Benchmark
+﻿namespace SqlRepo.Benchmark.Entities
 {
     public class BenchmarkEntity
     {
