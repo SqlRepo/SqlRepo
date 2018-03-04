@@ -9,6 +9,7 @@ SqlRepo is an implementation of the Repository Pattern that allows you to build 
 * Compatible with .NET Standard 2.0 and .NET Framework 4.7
 * Intuitively build SQL statements using C# Lambda Expressions
 * Map SQL query results to plain old CLR objects
+* Low memory footprint and [high performance](https://github.com/SqlRepo/Benchmarks)
 * Almost 100% unit test coverage
 
 ## Installation
@@ -57,6 +58,3 @@ FROM [dbo].[ToDo]
 WHERE [dbo].[ToDo].[IsCompleted] = 0;
 
 ```
-
-## Performance Benchmarks
-We have created our own performance benchmarks which can be found in our [SqlRepo Benchmark Repository](https://github.com/SqlRepo/Benchmarks)
