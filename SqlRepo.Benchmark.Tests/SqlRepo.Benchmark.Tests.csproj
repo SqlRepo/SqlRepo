@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SqlRepo.Benchmark\SqlRepo.Benchmark.csproj" />
     <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
     <ProjectReference Include="..\SqlRepo.Testing.NSubstitute\SqlRepo.Testing.NSubstitute.csproj" />
     <ProjectReference Include="..\SqlRepo.Testing\SqlRepo.Testing.csproj" />
