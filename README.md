@@ -57,3 +57,6 @@ FROM [dbo].[ToDo]
 WHERE [dbo].[ToDo].[IsCompleted] = 0;
 
 ```
+
+## Performance Benchmarks
+We have created our own performance benchmarks which can be found in our [SqlRepo Benchmark Repository](https://github.com/SqlRepo/Benchmarks)
