@@ -1,26 +1,31 @@
-﻿using SqlRepo.Benchmark.Entities;
+﻿using System;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Benchmark.Select
 {
     public class SelectTop1BenchmarkOperationSqlRepoCache : BenchmarkOperationBase
     {
+        private readonly ISelectStatement<BenchmarkEntity> _cachedCommand;
         private readonly IRepositoryFactory _repositoryFactory;
-        private readonly ISelectCommand<BenchmarkEntity> _cachedCommand;
 
         public SelectTop1BenchmarkOperationSqlRepoCache(IRepositoryFactory repositoryFactory,
-            IBenchmarkHelpers benchmarkHelpers) : base(benchmarkHelpers, Component.SqlRepo)
+            IBenchmarkHelpers benchmarkHelpers)
+            : base(benchmarkHelpers, Component.SqlRepo)
         {
-            _repositoryFactory = repositoryFactory;
-            _cachedCommand = _repositoryFactory.Create<BenchmarkEntity>()
-                .Query()
-                .Top(1);
+            this._repositoryFactory = repositoryFactory;
+            this._cachedCommand = this._repositoryFactory.Create<BenchmarkEntity>()
+                                      .Query()
+                                      .Top(1);
         }
 
         public override void Execute()
         {
-            _cachedCommand.Go(ConnectionString.Value);
+            this._cachedCommand.Go();
         }
 
-        public override string GetNotes() => "Select TOP 1 records";
+        public override string GetNotes()
+        {
+            return "Select TOP 1 records";
+        }
     }
 }

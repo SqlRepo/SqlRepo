@@ -1,4 +1,5 @@
-﻿using SqlRepo.Benchmark.Entities;
+﻿using System;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Benchmark.Select
 {
@@ -7,16 +8,18 @@ namespace SqlRepo.Benchmark.Select
         private readonly IRepositoryFactory _repositoryFactory;
 
         public SelectSingleColumnBenchmarkSqlRepo(IRepositoryFactory repositoryFactory,
-            IBenchmarkHelpers benchmarkHelpers) : base(benchmarkHelpers,
-            Component.SqlRepo)
+            IBenchmarkHelpers benchmarkHelpers)
+            : base(benchmarkHelpers, Component.SqlRepo)
         {
-            _repositoryFactory = repositoryFactory;
+            this._repositoryFactory = repositoryFactory;
         }
 
         public override void Execute()
         {
-            var result = _repositoryFactory.Create<BenchmarkEntity>().Query().Select(e => e.DecimalValue)
-                .Go(ConnectionString.Value);
+            var result = this._repositoryFactory.Create<BenchmarkEntity>()
+                             .Query()
+                             .Select(e => e.DecimalValue)
+                             .Go();
         }
 
         public override string GetNotes()

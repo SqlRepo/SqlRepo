@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
-using SqlRepo.Benchmark.Entities;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Benchmark
 {
     public class BenchmarkHelpers : IBenchmarkHelpers
     {
-        private readonly IRepository<BenchmarkEntity> _repository;
+        private readonly IRepository<BenchmarkEntity> repository;
 
         public BenchmarkHelpers(IRepositoryFactory repositoryFactory)
         {
-            _repository = repositoryFactory.Create<BenchmarkEntity>();
+            this.repository = repositoryFactory.Create<BenchmarkEntity>();
         }
 
         public void ClearBufferPool()
@@ -23,35 +22,36 @@ namespace SqlRepo.Benchmark
 
         public void ClearRecords()
         {
-            _repository.Delete().Go(ConnectionString.Value);
+            this.repository.Delete()
+                .Go();
 
             Console.WriteLine($"Deleted all records");
         }
 
         public void InsertRecords(int amount)
         {
-            List<BenchmarkEntity> entities = new List<BenchmarkEntity>();
+            var entities = new List<BenchmarkEntity>();
 
-            for (int i = 0; i < amount; i++)
+            for(var i = 0; i < amount; i++)
             {
                 bool? nullableBool = null;
 
-                if (i % 5 == 0)
+                if(i % 5 == 0)
                 {
                     nullableBool = false;
                 }
-                else if (i % 6 == 0)
+                else if(i % 6 == 0)
                 {
                     nullableBool = true;
                 }
 
                 entities.Add(new BenchmarkEntity
-                {
-                    DecimalValue = i,
-                    TextValue = i.ToString(),
-                    IntegerValue = i,
-                    NullableBoolean = nullableBool
-                });
+                             {
+                                 DecimalValue = i,
+                                 TextValue = i.ToString(),
+                                 IntegerValue = i,
+                                 NullableBoolean = nullableBool
+                             });
             }
 
             var dbContext = new SqlRepoBenchmarkDbContext();
@@ -63,7 +63,7 @@ namespace SqlRepo.Benchmark
 
         public void RunActionMultiple(Action action, int timesToRun)
         {
-            for (int i = 0; i < timesToRun; i++)
+            for(var i = 0; i < timesToRun; i++)
             {
                 action.Invoke();
             }

@@ -1,4 +1,5 @@
-﻿using SqlRepo.Benchmark.Entities;
+﻿using System;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Benchmark.Select
 {
@@ -7,18 +8,23 @@ namespace SqlRepo.Benchmark.Select
         private readonly IRepositoryFactory _repositoryFactory;
 
         public SelectWhereBetweenBenchmarkOperationSqlRepo(IRepositoryFactory repositoryFactory,
-            IBenchmarkHelpers benchmarkHelpers) : base(benchmarkHelpers, Component.SqlRepo)
+            IBenchmarkHelpers benchmarkHelpers)
+            : base(benchmarkHelpers, Component.SqlRepo)
         {
-            _repositoryFactory = repositoryFactory;
+            this._repositoryFactory = repositoryFactory;
         }
 
         public override void Execute()
         {
-            var results = _repositoryFactory.Create<BenchmarkEntity>()
-                .Query()
-                .WhereBetween(e => e.DecimalValue, 500, 1000).Go(ConnectionString.Value);
+            var results = this._repositoryFactory.Create<BenchmarkEntity>()
+                              .Query()
+                              .WhereBetween(e => e.DecimalValue, 500, 1000)
+                              .Go();
         }
 
-        public override string GetNotes() => "Select all records WHERE DecimalValue is between 500 and 1000";
+        public override string GetNotes()
+        {
+            return "Select all records WHERE DecimalValue is between 500 and 1000";
+        }
     }
 }

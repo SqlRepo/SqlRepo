@@ -1,4 +1,6 @@
-﻿using System.Transactions;
+﻿using System;
+using System.Transactions;
+using SqlRepo.Abstractions;
 using SqlRepo.Benchmark.Entities;
 
 namespace SqlRepo.Benchmark.Insert
@@ -7,29 +9,31 @@ namespace SqlRepo.Benchmark.Insert
     {
         private readonly IRepositoryFactory _repositoryFactory;
 
-        public InsertCustomerBenchmarkSqlRepo(IBenchmarkHelpers benchmarkHelpers, IRepositoryFactory repositoryFactory)
-            : base(benchmarkHelpers,
-                Component.SqlRepo)
+        public InsertCustomerBenchmarkSqlRepo(IBenchmarkHelpers benchmarkHelpers,
+            IRepositoryFactory repositoryFactory)
+            : base(benchmarkHelpers, Component.SqlRepo)
         {
-            _repositoryFactory = repositoryFactory;
+            this._repositoryFactory = repositoryFactory;
         }
 
         public override void Execute()
         {
-            using (var transaction = new TransactionScope())
+            using(var transaction = new TransactionScope())
             {
-                var address = _repositoryFactory.Create<Address>().Insert(new Address
-                {
-                    ZipCode = "ABC 123"
-                });
+                var address = this._repositoryFactory.Create<Address>()
+                                  .Insert(new Address
+                                          {
+                                              ZipCode = "ABC 123"
+                                          });
 
-                var customer = _repositoryFactory.Create<Customer>().Insert(new Customer
-                {
-                    AddressId = address.Id,
-                    FirstName = "John",
-                    LastName = "Doe",
-                    Gender = Gender.Male
-                });
+                var customer = this._repositoryFactory.Create<Customer>()
+                                   .Insert(new Customer
+                                           {
+                                               AddressId = address.Id,
+                                               FirstName = "John",
+                                               LastName = "Doe",
+                                               Gender = Gender.Male
+                                           });
 
                 transaction.Complete();
             }

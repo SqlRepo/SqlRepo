@@ -1,5 +1,6 @@
-﻿using System.Linq;
-using SqlRepo.Benchmark.Entities;
+﻿using System;
+using System.Linq;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Benchmark.Select
 {
@@ -8,30 +9,36 @@ namespace SqlRepo.Benchmark.Select
         private readonly IRepositoryFactory _repositoryFactory;
 
         public SelectUpdateDeleteBenchmarkOperationSqlRepo(IBenchmarkHelpers benchmarkHelpers,
-            IRepositoryFactory repositoryFactory) : base(benchmarkHelpers,
-            Component.SqlRepo)
+            IRepositoryFactory repositoryFactory)
+            : base(benchmarkHelpers, Component.SqlRepo)
         {
-            _repositoryFactory = repositoryFactory;
-        }
-
-        public override void Setup()
-        {
-            BenchmarkHelpers.ClearRecords();
-            BenchmarkHelpers.InsertRecords(50000);
+            this._repositoryFactory = repositoryFactory;
         }
 
         public override void Execute()
         {
-            var repository = _repositoryFactory.Create<BenchmarkEntity>();
+            var repository = this._repositoryFactory.Create<BenchmarkEntity>();
 
-            var benchmark = repository.Query().Select(e => e.Id)
-                .Where(e => e.DecimalValue == 506)
-                .Go(ConnectionString.Value).First();
+            var benchmark = repository.Query()
+                                      .Select(e => e.Id)
+                                      .Where(e => e.DecimalValue == 506)
+                                      .Go()
+                                      .First();
 
-            repository.Update().Set(e => e.TextValue, "NewText").Where(e => e.Id == benchmark.Id)
-                .Go(ConnectionString.Value);
+            repository.Update()
+                      .Set(e => e.TextValue, "NewText")
+                      .Where(e => e.Id == benchmark.Id)
+                      .Go();
 
-            repository.Delete().Where(e => e.Id == benchmark.Id).Go(ConnectionString.Value);
+            repository.Delete()
+                      .Where(e => e.Id == benchmark.Id)
+                      .Go();
+        }
+
+        public override void Setup()
+        {
+            this.BenchmarkHelpers.ClearRecords();
+            this.BenchmarkHelpers.InsertRecords(50000);
         }
     }
 }

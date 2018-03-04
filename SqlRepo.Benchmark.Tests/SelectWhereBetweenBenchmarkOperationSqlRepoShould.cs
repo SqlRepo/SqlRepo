@@ -1,9 +1,9 @@
-﻿using NSubstitute;
+﻿using System;
+using NSubstitute;
 using NUnit.Framework;
-using SqlRepo.Benchmark.Entities;
+using SqlRepo.Abstractions;
 using SqlRepo.Benchmark.Select;
-using SqlRepo.Testing;
-using SqlRepo.Testing.FluentAssertions;
+using SqlRepo.Testing.NSubstitute;
 
 namespace SqlRepo.Benchmark.Tests
 {
@@ -12,10 +12,47 @@ namespace SqlRepo.Benchmark.Tests
         [SetUp]
         public void Setup()
         {
-            _selectCommand = BenchmarkEntityRepository.CreateSelectCommandStub();
+            this._selectCommand = this.BenchmarkEntityRepository.CreateSelectStatementSubstitute();
         }
 
-        private ISelectCommand<BenchmarkEntity> _selectCommand;
+        [Test]
+        public void CreateSelectStatement()
+        {
+            this.AssumeTargetIsExecuted();
+            this.BenchmarkEntityRepository.Received()
+                .Query();
+        }
+
+        [Test]
+        public void ExecuteSqlStatement()
+        {
+            this.AssumeTargetIsExecuted();
+            this._selectCommand.Received()
+                .Go();
+        }
+
+        [Test]
+        public void SelectDecimalProperty()
+        {
+            this.AssumeTargetIsExecuted();
+            this._selectCommand.ReceivedSelect("DecimalValue");
+        }
+
+        [Test]
+        public void SelectIdProperty()
+        {
+            this.AssumeTargetIsExecuted();
+            this._selectCommand.ReceivedSelect("Id");
+        }
+
+        [Test]
+        public void SelectWhereBetween()
+        {
+            this.AssumeTargetIsExecuted();
+            this._selectCommand.ReceivedWhereBetween("DecimalValue", 500m, 1000m, null);
+        }
+
+        private ISelectStatement<BenchmarkEntity> _selectCommand;
 
         public override IBenchmarkOperation Create(IRepositoryFactory repositoryFactory,
             IBenchmarkHelpers benchmarkHelpers)
@@ -26,41 +63,6 @@ namespace SqlRepo.Benchmark.Tests
         public override string GetExpectedNotes()
         {
             return "Select all records WHERE DecimalValue is between 500 and 1000";
-        }
-
-        [Test]
-        public void CreateSelectStatement()
-        {
-            AssumeTargetIsExecuted();
-            BenchmarkEntityRepository.Received().Query();
-        }
-
-        [Test]
-        public void ExecuteSqlStatement()
-        {
-            AssumeTargetIsExecuted();
-            _selectCommand.Received().Go(ConnectionString.Value);
-        }
-
-        [Test]
-        public void SelectIdProperty()
-        {
-            AssumeTargetIsExecuted();
-            _selectCommand.ReceivedSelect("Id");
-        }
-
-        [Test]
-        public void SelectDecimalProperty()
-        {
-            AssumeTargetIsExecuted();
-            _selectCommand.ReceivedSelect("DecimalValue");
-        }
-
-        [Test]
-        public void SelectWhereBetween()
-        {
-            AssumeTargetIsExecuted();
-            _selectCommand.ReceivedWhereBetween("DecimalValue", 500m, 1000m, null);
         }
     }
 }

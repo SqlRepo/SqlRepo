@@ -1,4 +1,5 @@
-﻿using SqlRepo.Benchmark.Entities;
+﻿using System;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Benchmark.Select
 {
@@ -7,19 +8,23 @@ namespace SqlRepo.Benchmark.Select
         private readonly IRepositoryFactory _repositoryFactory;
 
         public SelectTop5000BenchmarkOperationSqlRepo(IRepositoryFactory repositoryFactory,
-            IBenchmarkHelpers benchmarkHelpers) : base(benchmarkHelpers, Component.SqlRepo)
+            IBenchmarkHelpers benchmarkHelpers)
+            : base(benchmarkHelpers, Component.SqlRepo)
         {
-            _repositoryFactory = repositoryFactory;
+            this._repositoryFactory = repositoryFactory;
         }
 
         public override void Execute()
         {
-            var results = _repositoryFactory.Create<BenchmarkEntity>()
-                .Query()
-                .Top(5000)
-                .Go(ConnectionString.Value);
+            var results = this._repositoryFactory.Create<BenchmarkEntity>()
+                              .Query()
+                              .Top(5000)
+                              .Go();
         }
 
-        public override string GetNotes() => "Select TOP 5000 records";
+        public override string GetNotes()
+        {
+            return "Select TOP 5000 records";
+        }
     }
 }

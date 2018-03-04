@@ -1,4 +1,5 @@
-﻿using SqlRepo.Benchmark.Entities;
+﻿using System;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Benchmark.Select
 {
@@ -7,19 +8,23 @@ namespace SqlRepo.Benchmark.Select
         private readonly IRepositoryFactory _repositoryFactory;
 
         public SelectTop1BenchmarkOperationSqlRepo(IRepositoryFactory repositoryFactory,
-            IBenchmarkHelpers benchmarkHelpers) : base(benchmarkHelpers, Component.SqlRepo)
+            IBenchmarkHelpers benchmarkHelpers)
+            : base(benchmarkHelpers, Component.SqlRepo)
         {
-            _repositoryFactory = repositoryFactory;
+            this._repositoryFactory = repositoryFactory;
         }
 
         public override void Execute()
         {
-            _repositoryFactory.Create<BenchmarkEntity>()
+            this._repositoryFactory.Create<BenchmarkEntity>()
                 .Query()
                 .Top(1)
-                .Go(ConnectionString.Value);
+                .Go();
         }
 
-        public override string GetNotes() => "Select TOP 1 records";
+        public override string GetNotes()
+        {
+            return "Select TOP 1 records";
+        }
     }
 }

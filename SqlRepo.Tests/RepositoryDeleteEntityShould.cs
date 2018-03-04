@@ -12,7 +12,7 @@ namespace SqlRepo.Tests
         public void UseFactoryToCreateCommand()
         {
             this.AssumeDeleteEntityIsRequested();
-            this.CommandFactory.Received()
+            this.StatementFactory.Received()
                 .CreateDelete<TestEntity>();
         }
 
@@ -20,7 +20,7 @@ namespace SqlRepo.Tests
         public void UseForOnCommandToGeneratedSql()
         {
             this.AssumeDeleteEntityIsRequested();
-            this.DeleteCommand.Received()
+            this.DeleteStatement.Received()
                 .For(this.Entity);
         }
 
@@ -28,7 +28,7 @@ namespace SqlRepo.Tests
         public void ExecuteCommandImmediately()
         {
             this.AssumeDeleteEntityIsRequested();
-            this.DeleteCommand.Received()
+            this.DeleteStatement.Received()
                 .Go();
         }
     }

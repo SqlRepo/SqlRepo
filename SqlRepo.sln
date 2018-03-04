@@ -20,8 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		appveyor.yml = appveyor.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.Demo", "SqlRepo.SqlServer.Demo\SqlRepo.SqlServer.Demo.csproj", "{3CECDF69-DB69-4E9E-B451-A4367E566F3D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.NInject", "SqlRepo.SqlServer.NInject\SqlRepo.SqlServer.NInject.csproj", "{AF70042D-51B7-4F03-AA82-97D0218D266D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.ServiceCollection", "SqlRepo.SqlServer.ServiceCollection\SqlRepo.SqlServer.ServiceCollection.csproj", "{BF895150-957D-4356-95A9-FE0FEB12FB21}"
@@ -32,7 +30,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Benchmark", "SqlRep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Benchmark.Tests", "SqlRepo.Benchmark.Tests\SqlRepo.Benchmark.Tests.csproj", "{B98F24AB-E304-4BEE-BF03-DC291DA165B8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Testing.FluentAssertions", "SqlRepo.Testing.FluentAssertions\SqlRepo.Testing.FluentAssertions.csproj", "{3A2DF27E-8613-4A26-A56C-4289E551B7AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Testing.NSubstitute", "SqlRepo.Testing.NSubstitute\SqlRepo.Testing.NSubstitute.csproj", "{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.IntegrationTests", "SqlRepo.SqlServer.IntegrationTests\SqlRepo.SqlServer.IntegrationTests.csproj", "{C090C6B6-CA18-4708-88C5-15AB9576C33C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,10 +64,6 @@ Global
 		{201582B4-5F26-4BBC-B202-F121E38CB4C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{201582B4-5F26-4BBC-B202-F121E38CB4C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{201582B4-5F26-4BBC-B202-F121E38CB4C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3CECDF69-DB69-4E9E-B451-A4367E566F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3CECDF69-DB69-4E9E-B451-A4367E566F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3CECDF69-DB69-4E9E-B451-A4367E566F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3CECDF69-DB69-4E9E-B451-A4367E566F3D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AF70042D-51B7-4F03-AA82-97D0218D266D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AF70042D-51B7-4F03-AA82-97D0218D266D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF70042D-51B7-4F03-AA82-97D0218D266D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -88,10 +84,14 @@ Global
 		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A2DF27E-8613-4A26-A56C-4289E551B7AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A2DF27E-8613-4A26-A56C-4289E551B7AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A2DF27E-8613-4A26-A56C-4289E551B7AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A2DF27E-8613-4A26-A56C-4289E551B7AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C090C6B6-CA18-4708-88C5-15AB9576C33C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C090C6B6-CA18-4708-88C5-15AB9576C33C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C090C6B6-CA18-4708-88C5-15AB9576C33C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C090C6B6-CA18-4708-88C5-15AB9576C33C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
