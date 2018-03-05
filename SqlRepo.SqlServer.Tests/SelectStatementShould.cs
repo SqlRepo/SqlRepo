@@ -89,7 +89,7 @@ namespace SqlRepo.SqlServer.Tests
             const string ExpectedSql = "SELECT [dbo].[TestEntity].[IntProperty]"
                                        + "\n, [dbo].[TestEntity].[StringProperty]"
                                        + "\nFROM [dbo].[TestEntity];";
-            this.Statement.Select(e => e.IntProperty, null, e => e.StringProperty)
+            this.Statement.Select(e => e.IntProperty, e => e.StringProperty)
                 .Sql()
                 .Should()
                 .Be(ExpectedSql);

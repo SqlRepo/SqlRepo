@@ -206,11 +206,17 @@ namespace SqlRepo.Abstractions
             string tableSchema = null);
 
         ISelectStatement<TEntity> Select(Expression<Func<TEntity, object>> selector,
-            string alias = null,
+            string @alias,
             params Expression<Func<TEntity, object>>[] additionalSelectors);
 
         ISelectStatement<TEntity> Select<T>(Expression<Func<T, object>> selector,
-            string alias = null,
+            string @alias,
+            params Expression<Func<T, object>>[] additionalSelectors);
+
+        ISelectStatement<TEntity> Select(Expression<Func<TEntity, object>> selector,
+            params Expression<Func<TEntity, object>>[] additionalSelectors);
+
+        ISelectStatement<TEntity> Select<T>(Expression<Func<T, object>> selector,
             params Expression<Func<T, object>>[] additionalSelectors);
 
         ISelectStatement<TEntity> SelectAll(string alias = null);

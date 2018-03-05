@@ -55,7 +55,7 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void AddColumnSelectionForMultipleColumnsWithNoAlias()
         {
-            this.Statement.Select(e => e.StringProperty, null, e => e.ByteProperty, e => e.DecimalProperty);
+            this.Statement.Select(e => e.StringProperty, e => e.ByteProperty, e => e.DecimalProperty);
             this.AssertColumSelectionIsValid(0, "StringProperty", typeof(TestEntity));
             this.AssertColumSelectionIsValid(1, "ByteProperty", typeof(TestEntity));
             this.AssertColumSelectionIsValid(2, "DecimalProperty", typeof(TestEntity));

@@ -267,12 +267,22 @@ namespace SqlRepo.Testing.NSubstitute
         public static ISelectStatement<TEntity> ReceivedSelect<TEntity>(
             this ISelectStatement<TEntity> selectStatement,
             string property,
-            string alias = null) where TEntity: class, new()
+            string alias) where TEntity: class, new()
         {
             return selectStatement.Received()
                                 .Select(
                                     Arg.Is<Expression<Func<TEntity, object>>>(e => e.HasMemberName(property)),
                                     alias);
+        }
+
+        public static ISelectStatement<TEntity> ReceivedSelect<TEntity>(
+            this ISelectStatement<TEntity> selectStatement,
+            string property)
+            where TEntity: class, new()
+        {
+            return selectStatement.Received()
+                                  .Select(Arg.Is<Expression<Func<TEntity, object>>>(
+                                          e => e.HasMemberName(property)));
         }
 
         public static ISelectStatement<TEntity> ReceivedSelectAll<TEntity>(

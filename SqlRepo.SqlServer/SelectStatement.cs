@@ -558,18 +558,28 @@ namespace SqlRepo.SqlServer
         }
 
         public ISelectStatement<TEntity> Select(Expression<Func<TEntity, object>> selector,
-            string @alias = null,
+            string @alias,
             params Expression<Func<TEntity, object>>[] additionalSelectors)
         {
             return this.Select<TEntity>(selector, @alias, additionalSelectors);
         }
 
         public ISelectStatement<TEntity> Select<T>(Expression<Func<T, object>> selector,
-            string @alias = null,
+            string @alias,
             params Expression<Func<T, object>>[] additionalSelectors)
         {
             this.AddColumnSelection(selector, @alias, additionalSelectors);
             return this;
+        }
+
+        public ISelectStatement<TEntity> Select(Expression<Func<TEntity, object>> selector, params Expression<Func<TEntity, object>>[] additionalSelectors)
+        {
+            return this.Select(selector, null, additionalSelectors);
+        }
+
+        public ISelectStatement<TEntity> Select<T>(Expression<Func<T, object>> selector, params Expression<Func<T, object>>[] additionalSelectors)
+        {
+            return this.Select<T>(selector, null, additionalSelectors);
         }
 
         public ISelectStatement<TEntity> SelectAll(string @alias = null)

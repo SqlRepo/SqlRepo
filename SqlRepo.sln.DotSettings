@@ -243,9 +243,12 @@
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/ALIGN_MULTILINE_PARAMETER/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/ALIGN_MULTIPLE_DECLARATION/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/ALIGN_TERNARY/@EntryValue">ALIGN_ALL</s:String>
-	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/EMPTY_BLOCK_STYLE/@EntryValue">TOGETHER</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/CONTROL_STATEMENTS_BRACES/@EntryValue">NEXT_LINE</s:String>
+	
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/FORCE_CONTROL_STATEMENTS_BRACES/@EntryValue">ALWAYS_ADD</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/FORCE_LINEBREAKS_INSIDE_COMPLEX_LITERALS/@EntryValue">False</s:Boolean>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/FUNCTION_BRACES/@EntryValue">NEXT_LINE</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/FUNCTION_IN_INVOCATION_BRACES/@EntryValue">NEXT_LINE</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/INDENT_CASE_FROM_SWITCH/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/INDENT_LEFT_PAR_INSIDE_EXPRESSION/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/INDENT_PARS/@EntryValue">OUTSIDE_AND_INSIDE</s:String>
@@ -272,17 +275,18 @@
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/PLACE_EACH_DECORATOR_ON_NEW_LINE/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/PLACE_ELSE_ON_NEW_LINE/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/PLACE_FINALLY_ON_NEW_LINE/@EntryValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/PLACE_WHILE_ON_NEW_LINE/@EntryValue">True</s:Boolean>
+	
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/QUOTE_STYLE/@EntryValue">SingleQuoted</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/SIMPLE_EMBEDDED_STATEMENT_STYLE/@EntryValue">LINE_BREAK</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/SINGLE_STATEMENT_FUNCTION_STYLE/@EntryValue">LINE_BREAK</s:String>
-	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/SPACE_BEFORE_PROPERTY_COLON/@EntryValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/SPACE_BEFORE_TERNARY_COLON/@EntryValue">False</s:Boolean>
+	
+	
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/STICK_COMMENT/@EntryValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/USE_INDENT_FROM_VS/@EntryValue">False</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/WRAP_ARGUMENTS_STYLE/@EntryValue">WRAP_IF_LONG</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/WRAP_ARRAY_LITERALS/@EntryValue">WRAP_IF_LONG</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/WRAP_ENUM_STYLE/@EntryValue">LINE_BREAK</s:String>
-	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/WRAP_OBJECT_LITERALS/@EntryValue">CHOP_ALWAYS</s:String>
+	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/WRAP_OBJECT_LITERALS/@EntryValue">WRAP_IF_LONG</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/JavaScriptCodeFormatting/WRAP_PARAMETERS_STYLE/@EntryValue">WRAP_IF_LONG</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/XmlDocFormatter/ProcessingInstructionAttributesFormat/@EntryValue">OnSingleLine</s:String>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/XmlDocFormatter/TagAttributeIndenting/@EntryValue">ByFirstAttr</s:String>
@@ -297,7 +301,7 @@
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/WrapInsideText/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/CodeStyle/CSharpFileLayoutPatterns/Pattern/@EntryValue">&lt;?xml version="1.0" encoding="utf-16"?&gt;&#xD;
 &lt;Patterns xmlns="urn:schemas-jetbrains-com:member-reordering-patterns"&gt;&#xD;
-  &lt;TypePattern DisplayName="COM interfaces or structs"&gt;&#xD;
+  &lt;TypePattern Priority="100" DisplayName="Type Pattern"&gt;&#xD;
     &lt;TypePattern.Match&gt;&#xD;
       &lt;Or&gt;&#xD;
         &lt;And&gt;&#xD;
@@ -307,21 +311,18 @@
             &lt;HasAttribute Name="System.Runtime.InteropServices.ComImport" /&gt;&#xD;
           &lt;/Or&gt;&#xD;
         &lt;/And&gt;&#xD;
-        &lt;Kind Is="Struct" /&gt;&#xD;
+        &lt;HasAttribute Name="System.Runtime.InteropServices.StructLayoutAttribute" /&gt;&#xD;
       &lt;/Or&gt;&#xD;
     &lt;/TypePattern.Match&gt;&#xD;
   &lt;/TypePattern&gt;&#xD;
-  &lt;TypePattern DisplayName="NUnit Test Fixtures" RemoveRegions="All" Priority="150"&gt;&#xD;
+  &lt;TypePattern Priority="100" DisplayName="Type Pattern"&gt;&#xD;
     &lt;TypePattern.Match&gt;&#xD;
       &lt;And&gt;&#xD;
         &lt;Kind Is="Class" /&gt;&#xD;
-        &lt;Or&gt;&#xD;
-          &lt;HasAttribute Name="NUnit.Framework.TestFixtureAttribute" Inherited="True" /&gt;&#xD;
-          &lt;HasAttribute Name="NUnit.Framework.TestCaseFixtureAttribute" Inherited="True" /&gt;&#xD;
-        &lt;/Or&gt;&#xD;
+        &lt;HasAttribute Name="NUnit.Framework.TestFixtureAttribute" Inherited="True" /&gt;&#xD;
       &lt;/And&gt;&#xD;
     &lt;/TypePattern.Match&gt;&#xD;
-    &lt;Entry DisplayName="Setup/Teardown Methods" Priority="150"&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
       &lt;Entry.Match&gt;&#xD;
         &lt;And&gt;&#xD;
           &lt;Kind Is="Method" /&gt;&#xD;
@@ -334,149 +335,18 @@
         &lt;/And&gt;&#xD;
       &lt;/Entry.Match&gt;&#xD;
     &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Test Methods" Priority="150"&gt;&#xD;
-      &lt;Entry.Match&gt;&#xD;
-        &lt;And&gt;&#xD;
-          &lt;Kind Is="Member" /&gt;&#xD;
-          &lt;Or&gt;&#xD;
-            &lt;HasAttribute Name="NUnit.Framework.TestAttribute" /&gt;&#xD;
-            &lt;HasAttribute /&gt;&#xD;
-          &lt;/Or&gt;&#xD;
-        &lt;/And&gt;&#xD;
-      &lt;/Entry.Match&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="All other members"&gt;&#xD;
-      &lt;Entry.SortBy&gt;&#xD;
-        &lt;Kind Is="Member" /&gt;&#xD;
-        &lt;Access /&gt;&#xD;
-        &lt;Name Is="Enter Pattern Here" /&gt;&#xD;
-      &lt;/Entry.SortBy&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-  &lt;/TypePattern&gt;&#xD;
-  &lt;TypePattern DisplayName="MSTest Test Classes"&gt;&#xD;
-    &lt;TypePattern.Match&gt;&#xD;
-      &lt;And&gt;&#xD;
-        &lt;Kind Is="Class" /&gt;&#xD;
-        &lt;Or&gt;&#xD;
-          &lt;HasAttribute Name="Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute" Inherited="True" /&gt;&#xD;
-        &lt;/Or&gt;&#xD;
-      &lt;/And&gt;&#xD;
-    &lt;/TypePattern.Match&gt;&#xD;
-    &lt;Entry DisplayName="Setup/Teardown Methods" Priority="150"&gt;&#xD;
+    &lt;Entry Priority="100" DisplayName="Entry"&gt;&#xD;
       &lt;Entry.Match&gt;&#xD;
         &lt;And&gt;&#xD;
           &lt;Kind Is="Method" /&gt;&#xD;
-          &lt;Or&gt;&#xD;
-            &lt;HasAttribute Name="Microsoft.VisualStudio.TestTools.UnitTesting.TestInitialize" Inherited="True" /&gt;&#xD;
-            &lt;HasAttribute Name="Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanup" Inherited="True" /&gt;&#xD;
-          &lt;/Or&gt;&#xD;
-        &lt;/And&gt;&#xD;
-      &lt;/Entry.Match&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Test Methods" Priority="150"&gt;&#xD;
-      &lt;Entry.Match&gt;&#xD;
-        &lt;And&gt;&#xD;
-          &lt;Kind Is="Member" /&gt;&#xD;
-          &lt;Or&gt;&#xD;
-            &lt;HasAttribute Name="Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod" /&gt;&#xD;
-            &lt;HasAttribute /&gt;&#xD;
-          &lt;/Or&gt;&#xD;
-        &lt;/And&gt;&#xD;
-      &lt;/Entry.Match&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="All other members"&gt;&#xD;
-      &lt;Entry.SortBy&gt;&#xD;
-        &lt;Kind Is="Member" /&gt;&#xD;
-        &lt;Access /&gt;&#xD;
-        &lt;Name Is="Enter Pattern Here" /&gt;&#xD;
-      &lt;/Entry.SortBy&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-  &lt;/TypePattern&gt;&#xD;
-  &lt;TypePattern DisplayName="cAlgo"&gt;&#xD;
-    &lt;TypePattern.Match&gt;&#xD;
-      &lt;And&gt;&#xD;
-        &lt;Kind Is="Class" /&gt;&#xD;
-        &lt;Or&gt;&#xD;
-          &lt;HasAttribute Name="cAlgo.API.Indicator" Inherited="True" /&gt;&#xD;
-          &lt;HasAttribute Name="cAlgo.API.Robot" Inherited="True" /&gt;&#xD;
-        &lt;/Or&gt;&#xD;
-      &lt;/And&gt;&#xD;
-    &lt;/TypePattern.Match&gt;&#xD;
-    &lt;Entry DisplayName="Fields"&gt;&#xD;
-      &lt;Entry.Match&gt;&#xD;
-        &lt;And&gt;&#xD;
-          &lt;Kind Is="Field" /&gt;&#xD;
-          &lt;Not&gt;&#xD;
-            &lt;Static /&gt;&#xD;
-          &lt;/Not&gt;&#xD;
-        &lt;/And&gt;&#xD;
-      &lt;/Entry.Match&gt;&#xD;
-      &lt;Entry.SortBy&gt;&#xD;
-        &lt;Readonly /&gt;&#xD;
-        &lt;Access /&gt;&#xD;
-        &lt;Name /&gt;&#xD;
-      &lt;/Entry.SortBy&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Constructors"&gt;&#xD;
-      &lt;Entry.Match&gt;&#xD;
-        &lt;Kind Is="Constructor" /&gt;&#xD;
-      &lt;/Entry.Match&gt;&#xD;
-      &lt;Entry.SortBy&gt;&#xD;
-        &lt;Static /&gt;&#xD;
-      &lt;/Entry.SortBy&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Parameters" Priority="150"&gt;&#xD;
-      &lt;Entry.Match&gt;&#xD;
-        &lt;And&gt;&#xD;
-          &lt;Kind Is="Property" /&gt;&#xD;
-          &lt;Or&gt;&#xD;
-            &lt;HasAttribute Name="cAlgo.API.Parameter" Inherited="True" /&gt;&#xD;
-          &lt;/Or&gt;&#xD;
-        &lt;/And&gt;&#xD;
-      &lt;/Entry.Match&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Outputs" Priority="150"&gt;&#xD;
-      &lt;Entry.Match&gt;&#xD;
-        &lt;And&gt;&#xD;
-          &lt;Kind Is="Property" /&gt;&#xD;
-          &lt;Or&gt;&#xD;
-            &lt;HasAttribute Name="cAlgo.API.Output" Inherited="True" /&gt;&#xD;
-          &lt;/Or&gt;&#xD;
-        &lt;/And&gt;&#xD;
-      &lt;/Entry.Match&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="All other members"&gt;&#xD;
-      &lt;Entry.SortBy&gt;&#xD;
-        &lt;Access /&gt;&#xD;
-        &lt;Kind Is="Member" /&gt;&#xD;
-        &lt;Name /&gt;&#xD;
-      &lt;/Entry.SortBy&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-  &lt;/TypePattern&gt;&#xD;
-  &lt;TypePattern DisplayName="Default Pattern"&gt;&#xD;
-    &lt;Entry DisplayName="Public Delegates" Priority="100"&gt;&#xD;
-      &lt;Entry.Match&gt;&#xD;
-        &lt;And&gt;&#xD;
-          &lt;Access Is="Public" /&gt;&#xD;
-          &lt;Kind Is="Delegate" /&gt;&#xD;
+          &lt;HasAttribute Name="NUnit.Framework.TestAttribute" /&gt;&#xD;
         &lt;/And&gt;&#xD;
       &lt;/Entry.Match&gt;&#xD;
       &lt;Entry.SortBy&gt;&#xD;
         &lt;Name /&gt;&#xD;
       &lt;/Entry.SortBy&gt;&#xD;
     &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Public Enums" Priority="100"&gt;&#xD;
-      &lt;Entry.Match&gt;&#xD;
-        &lt;And&gt;&#xD;
-          &lt;Access Is="Public" /&gt;&#xD;
-          &lt;Kind Is="Enum" /&gt;&#xD;
-        &lt;/And&gt;&#xD;
-      &lt;/Entry.Match&gt;&#xD;
-      &lt;Entry.SortBy&gt;&#xD;
-        &lt;Name /&gt;&#xD;
-      &lt;/Entry.SortBy&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Static Fields and Constants"&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
       &lt;Entry.Match&gt;&#xD;
         &lt;Or&gt;&#xD;
           &lt;Kind Is="Constant" /&gt;&#xD;
@@ -488,9 +358,10 @@
       &lt;/Entry.Match&gt;&#xD;
       &lt;Entry.SortBy&gt;&#xD;
         &lt;Kind Order="Constant Field" /&gt;&#xD;
+        &lt;Access /&gt;&#xD;
       &lt;/Entry.SortBy&gt;&#xD;
     &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Fields"&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
       &lt;Entry.Match&gt;&#xD;
         &lt;And&gt;&#xD;
           &lt;Kind Is="Field" /&gt;&#xD;
@@ -501,18 +372,11 @@
       &lt;/Entry.Match&gt;&#xD;
       &lt;Entry.SortBy&gt;&#xD;
         &lt;Readonly /&gt;&#xD;
+        &lt;Access /&gt;&#xD;
         &lt;Name /&gt;&#xD;
       &lt;/Entry.SortBy&gt;&#xD;
     &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Constructors"&gt;&#xD;
-      &lt;Entry.Match&gt;&#xD;
-        &lt;Kind Is="Constructor" /&gt;&#xD;
-      &lt;/Entry.Match&gt;&#xD;
-      &lt;Entry.SortBy&gt;&#xD;
-        &lt;Static /&gt;&#xD;
-      &lt;/Entry.SortBy&gt;&#xD;
-    &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Properties, Indexers"&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
       &lt;Entry.Match&gt;&#xD;
         &lt;Or&gt;&#xD;
           &lt;Kind Is="Property" /&gt;&#xD;
@@ -520,37 +384,117 @@
         &lt;/Or&gt;&#xD;
       &lt;/Entry.Match&gt;&#xD;
       &lt;Entry.SortBy&gt;&#xD;
-        &lt;Abstract /&gt;&#xD;
         &lt;Access /&gt;&#xD;
-        &lt;Readonly /&gt;&#xD;
-        &lt;Name Is="Enter Pattern Here" /&gt;&#xD;
+        &lt;Name /&gt;&#xD;
       &lt;/Entry.SortBy&gt;&#xD;
     &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Collection Properties"&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
+      &lt;Entry.SortBy&gt;&#xD;
+        &lt;Access /&gt;&#xD;
+        &lt;Abstract /&gt;&#xD;
+        &lt;Name /&gt;&#xD;
+      &lt;/Entry.SortBy&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+  &lt;/TypePattern&gt;&#xD;
+  &lt;TypePattern DisplayName="Type Pattern"&gt;&#xD;
+    &lt;Entry Priority="100" DisplayName="Entry"&gt;&#xD;
       &lt;Entry.Match&gt;&#xD;
         &lt;And&gt;&#xD;
-          &lt;Kind Is="Property" /&gt;&#xD;
-          &lt;Name Is="*s" /&gt;&#xD;
+          &lt;Access Is="Public" /&gt;&#xD;
+          &lt;Kind Is="Delegate" /&gt;&#xD;
         &lt;/And&gt;&#xD;
       &lt;/Entry.Match&gt;&#xD;
       &lt;Entry.SortBy&gt;&#xD;
+        &lt;Name /&gt;&#xD;
+      &lt;/Entry.SortBy&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &lt;Entry Priority="100" DisplayName="Entry"&gt;&#xD;
+      &lt;Entry.Match&gt;&#xD;
+        &lt;And&gt;&#xD;
+          &lt;Access Is="Public" /&gt;&#xD;
+          &lt;Kind Is="Enum" /&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Entry.Match&gt;&#xD;
+      &lt;Entry.SortBy&gt;&#xD;
+        &lt;Name /&gt;&#xD;
+      &lt;/Entry.SortBy&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
+      &lt;Entry.Match&gt;&#xD;
+        &lt;Or&gt;&#xD;
+          &lt;Kind Is="Constant" /&gt;&#xD;
+          &lt;And&gt;&#xD;
+            &lt;Kind Is="Field" /&gt;&#xD;
+            &lt;Static /&gt;&#xD;
+          &lt;/And&gt;&#xD;
+        &lt;/Or&gt;&#xD;
+      &lt;/Entry.Match&gt;&#xD;
+      &lt;Entry.SortBy&gt;&#xD;
+        &lt;Kind Order="Constant Field" /&gt;&#xD;
+        &lt;Access /&gt;&#xD;
+      &lt;/Entry.SortBy&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
+      &lt;Entry.Match&gt;&#xD;
+        &lt;And&gt;&#xD;
+          &lt;Kind Is="Field" /&gt;&#xD;
+          &lt;Not&gt;&#xD;
+            &lt;Static /&gt;&#xD;
+          &lt;/Not&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Entry.Match&gt;&#xD;
+      &lt;Entry.SortBy&gt;&#xD;
+        &lt;Readonly /&gt;&#xD;
         &lt;Access /&gt;&#xD;
         &lt;Name /&gt;&#xD;
       &lt;/Entry.SortBy&gt;&#xD;
     &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="All other members"&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
+      &lt;Entry.Match&gt;&#xD;
+        &lt;Kind Is="Constructor" /&gt;&#xD;
+      &lt;/Entry.Match&gt;&#xD;
       &lt;Entry.SortBy&gt;&#xD;
         &lt;Static /&gt;&#xD;
+      &lt;/Entry.SortBy&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
+      &lt;Entry.Match&gt;&#xD;
+        &lt;Or&gt;&#xD;
+          &lt;Kind Is="Property" /&gt;&#xD;
+          &lt;Kind Is="Indexer" /&gt;&#xD;
+        &lt;/Or&gt;&#xD;
+      &lt;/Entry.Match&gt;&#xD;
+      &lt;Entry.SortBy&gt;&#xD;
         &lt;Access /&gt;&#xD;
-        &lt;Abstract /&gt;&#xD;
-        &lt;Virtual /&gt;&#xD;
         &lt;Name /&gt;&#xD;
       &lt;/Entry.SortBy&gt;&#xD;
     &lt;/Entry&gt;&#xD;
-    &lt;Entry DisplayName="Nested Types"&gt;&#xD;
+    &lt;Entry Priority="100" DisplayName="Entry"&gt;&#xD;
+      &lt;Entry.Match&gt;&#xD;
+        &lt;And&gt;&#xD;
+          &lt;Kind Is="Member" /&gt;&#xD;
+          &lt;ImplementsInterface /&gt;&#xD;
+        &lt;/And&gt;&#xD;
+      &lt;/Entry.Match&gt;&#xD;
+      &lt;Entry.SortBy&gt;&#xD;
+        &lt;ImplementsInterface Immediate="True" /&gt;&#xD;
+        &lt;Name /&gt;&#xD;
+      &lt;/Entry.SortBy&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
+      &lt;Entry.SortBy&gt;&#xD;
+        &lt;Access /&gt;&#xD;
+        &lt;Abstract /&gt;&#xD;
+        &lt;Name /&gt;&#xD;
+      &lt;/Entry.SortBy&gt;&#xD;
+    &lt;/Entry&gt;&#xD;
+    &lt;Entry DisplayName="Entry"&gt;&#xD;
       &lt;Entry.Match&gt;&#xD;
         &lt;Kind Is="Type" /&gt;&#xD;
       &lt;/Entry.Match&gt;&#xD;
+      &lt;Entry.SortBy&gt;&#xD;
+        &lt;Name /&gt;&#xD;
+      &lt;/Entry.SortBy&gt;&#xD;
     &lt;/Entry&gt;&#xD;
   &lt;/TypePattern&gt;&#xD;
 &lt;/Patterns&gt;</s:String>
@@ -897,7 +841,22 @@ II.2.12 &lt;HandlesEvent /&gt;&#xD;
 	<s:String x:Key="/Default/Environment/PerformanceGuide/SwitchBehaviour/=VCS/@EntryIndexedValue">LIVE_MONITOR</s:String>
 	<s:String x:Key="/Default/Environment/PerformanceGuide/SwitchBehaviour/=VsBulb/@EntryIndexedValue">DO_NOTHING</s:String>
 	<s:String x:Key="/Default/Environment/PerformanceGuide/SwitchBehaviour/=XAML_0020Designer/@EntryIndexedValue">LIVE_MONITOR</s:String>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpAttributeForSingleLineMethodUpgrade/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpFileLayoutPatternsUpgrade/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpKeepExistingMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpPlaceEmbeddedOnSameLineMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpRenamePlacementToArrangementMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EAddAccessorOwnerDeclarationBracesMigration/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EAlwaysTreatStructAsNotReorderableMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002ECSharpPlaceAttributeOnSameLineMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateBlankLinesAroundFieldToBlankLinesAroundProperty/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateThisQualifierSettings/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EFormat_002ESettingsUpgrade_002EAlignmentTabFillStyleMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EJavaScript_002ECodeStyle_002ESettingsUpgrade_002EJsCodeFormatterSettingsUpgrader/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EJavaScript_002ECodeStyle_002ESettingsUpgrade_002EJsParsFormattingSettingsUpgrader/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EJavaScript_002ECodeStyle_002ESettingsUpgrade_002EJsWrapperSettingsUpgrader/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EJavaScript_002ECodeStyle_002ETypeScript_002ESettingsUpgrade_002ETsModuleAliasesSettingsUpgrader/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002EXml_002ECodeStyle_002EFormatSettingsUpgrade_002EXmlMoveToCommonFormatterSettingsUpgrade/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C0C0151ABFAA04DBD421490EA9AC851/@KeyIndexDefined">True</s:Boolean>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C0C0151ABFAA04DBD421490EA9AC851/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0C0C0151ABFAA04DBD421490EA9AC851/Description/@EntryValue">Creates a Node.js module</s:String>
