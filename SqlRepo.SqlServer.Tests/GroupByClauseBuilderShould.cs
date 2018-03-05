@@ -3,6 +3,7 @@ using NUnit.Framework;
 using SqlRepo.Testing;
 using FluentAssertions;
 using System.Linq.Expressions;
+using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.Tests
 {

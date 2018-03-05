@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq.Expressions;
 using NSubstitute;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Testing.NSubstitute
 {
-    public static class InsertCommandSubstituteExtensions
+    public static class InsertStatementSubstituteExtensions
     {
-        public static IInsertCommand<TEntity> ReceivedWith<TEntity, TMember>(
-            this IInsertCommand<TEntity> command,
+        public static IInsertStatement<TEntity> ReceivedWith<TEntity, TMember>(
+            this IInsertStatement<TEntity> command,
             string property,
             TMember value) where TEntity: class, new()
         {
@@ -16,8 +17,8 @@ namespace SqlRepo.Testing.NSubstitute
                               value);
         }
 
-        public static IInsertCommand<TEntity> ReceivedWith<TEntity, TMember>(
-            this IInsertCommand<TEntity> command,
+        public static IInsertStatement<TEntity> ReceivedWith<TEntity, TMember>(
+            this IInsertStatement<TEntity> command,
             string property,
             TMember value,
             int expectedCalls) where TEntity: class, new()

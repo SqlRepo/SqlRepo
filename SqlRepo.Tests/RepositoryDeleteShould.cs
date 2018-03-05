@@ -13,7 +13,7 @@ namespace SqlRepo.Tests
         public void UseFactoryToCreateCommandtOnFirstCall()
         {
             this.AssumeDeleteIsRequested();
-            this.CommandFactory.Received()
+            this.StatementFactory.Received()
                 .CreateDelete<TestEntity>();
         }
 
@@ -22,7 +22,7 @@ namespace SqlRepo.Tests
         {
             this.AssumeDeleteIsRequested()
                 .Should()
-                .Be(this.DeleteCommand);
+                .Be(this.DeleteStatement);
         }
     }
 }

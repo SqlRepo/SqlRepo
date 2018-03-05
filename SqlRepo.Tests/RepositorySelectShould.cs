@@ -13,7 +13,7 @@ namespace SqlRepo.Tests
         public void UseFactoryToCreateCommandtOnFirstCall()
         {
             this.AssumeSelectIsRequested();
-            this.CommandFactory.Received()
+            this.StatementFactory.Received()
                 .CreateSelect<TestEntity>();
         }
 
@@ -22,7 +22,7 @@ namespace SqlRepo.Tests
         {
             this.AssumeSelectIsRequested()
                 .Should()
-                .Be(this.SelectCommand);
+                .Be(this.SelectStatement);
         }
     }
 }

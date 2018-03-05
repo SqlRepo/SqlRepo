@@ -13,7 +13,7 @@ namespace SqlRepo.Tests
         public void UseFactoryToCreateCommandtOnFirstCall()
         {
             this.AssumeInsertIsRequested();
-            this.CommandFactory.Received()
+            this.StatementFactory.Received()
                 .CreateInsert<TestEntity>();
         }
 
@@ -22,7 +22,7 @@ namespace SqlRepo.Tests
         {
             this.AssumeInsertIsRequested()
                 .Should()
-                .Be(this.InsertCommand);
+                .Be(this.InsertStatement);
         }
     }
 }
