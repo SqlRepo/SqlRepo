@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using FluentAssertions;
+using SqlRepo.SqlServer.Abstractions;
 using SqlRepo.Testing;
 
 namespace SqlRepo.SqlServer.Tests

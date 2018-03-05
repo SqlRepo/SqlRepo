@@ -12,7 +12,7 @@ namespace SqlRepo.Tests
         public void UseFactoryToCreateCommandtOnFirstCall()
         {
             this.AssumeUpdateEntityIsRequested();
-            this.CommandFactory.Received()
+            this.StatementFactory.Received()
                 .CreateUpdate<TestEntity>();
         }
 
@@ -20,7 +20,7 @@ namespace SqlRepo.Tests
         public void UseForOnCommandToGeneratedSql()
         {
             this.AssumeUpdateEntityIsRequested();
-            this.UpdateCommand.Received()
+            this.UpdateStatement.Received()
                 .For(this.Entity);
         }
 
@@ -28,7 +28,7 @@ namespace SqlRepo.Tests
         public void ExecuteCommandImmediately()
         {
             this.AssumeUpdateEntityIsRequested();
-            this.UpdateCommand.Received()
+            this.UpdateStatement.Received()
                 .Go();
         }
     }

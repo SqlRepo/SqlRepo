@@ -1,4 +1,5 @@
 ﻿using System;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo
 {

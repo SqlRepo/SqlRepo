@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.SqlServer
 {
