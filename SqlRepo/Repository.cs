@@ -26,6 +26,26 @@ namespace SqlRepo
                        .Go();
         }
 
+        public IExecuteStatement<int> ExecuteNonQueryProcedure()
+        {
+            return this.statementFactory.CreateExecuteNonQuery();
+        }
+
+        public IExecuteSqlStatement<int> ExecuteNonQuerySql()
+        {
+            return this.statementFactory.CreateExecuteSqlNonQuery();
+        }
+
+        public IExecuteStatement<TEntity> ExecuteProcedure()
+        {
+            return this.statementFactory.CreateExecute<TEntity>();
+        }
+
+        public IExecuteSqlStatement<TEntity> ExecuteSql()
+        {
+            return this.statementFactory.CreateExecuteSql<TEntity>();
+        }
+
         public IInsertStatement<TEntity> Insert()
         {
             return this.statementFactory.CreateInsert<TEntity>();

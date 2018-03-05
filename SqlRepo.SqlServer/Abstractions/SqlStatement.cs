@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using SqlRepo.Abstractions;
-using SqlRepo.SqlServer.Abstractions;
 
-namespace SqlRepo.SqlServer
+namespace SqlRepo.SqlServer.Abstractions
 {
     public abstract class SqlStatement<TEntity, TResult> : ClauseBuilder, ISqlStatement<TResult>
         where TEntity: class, new()

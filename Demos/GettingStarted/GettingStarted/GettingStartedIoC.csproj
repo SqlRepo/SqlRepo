@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac">
-      <HintPath>..\..\..\..\..\Users\gmeh\.nuget\packages\autofac\4.6.2\lib\netstandard1.1\Autofac.dll</HintPath>
+      <HintPath>..\..\..\..\..\Users\Mike\.nuget\packages\autofac\4.6.2\lib\netstandard1.1\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

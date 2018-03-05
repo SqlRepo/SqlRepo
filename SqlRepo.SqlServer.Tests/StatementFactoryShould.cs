@@ -100,6 +100,30 @@ namespace SqlRepo.SqlServer.Tests
                   .BeAssignableTo<UpdateStatement<TestEntity>>();
         }
 
+        [Test]
+        public void ReturnExecuteProcedureOnRequest()
+        {
+            var result = this.statementFactory.CreateExecute<TestEntity>();
+            result.Should()
+                  .NotBeNull();
+            result.Should()
+                  .BeAssignableTo<IExecuteProcedureStatement<TestEntity>>();
+            result.Should()
+                  .BeAssignableTo<ExecuteProcedureStatement<TestEntity>>();
+        }
+
+        [Test]
+        public void ReturnExecuteNonQueryProcedureOnRequest()
+        {
+            var result = this.statementFactory.CreateExecuteNonQuery();
+            result.Should()
+                  .NotBeNull();
+            result.Should()
+                  .BeAssignableTo<IExecuteNonQueryProcedureStatement>();
+            result.Should()
+                  .BeAssignableTo<ExecuteNonQueryProcedureStatementBase>();
+        }
+
         private IConnectionProvider connectionProvider;
         private IEntityMapper entityMapper;
         private ISqlLogger sqlLogger;
