@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
 {
-    public class ExecuteSqlStatement<TEntity> : ExecuteSqlStatementBase<IEnumerable<TEntity>>
+    public class ExecuteQuerySqlStatement<TEntity> : ExecuteSqlStatement<IEnumerable<TEntity>>, IExecuteQuerySqlStatement<TEntity>
         where TEntity: class, new()
     {
         private readonly IEntityMapper entityMapper;
 
-        public ExecuteSqlStatement(IStatementExecutor commandExecutor, IEntityMapper entityMapper)
+        public ExecuteQuerySqlStatement(IStatementExecutor commandExecutor, IEntityMapper entityMapper)
             : base(commandExecutor)
         {
             this.entityMapper = entityMapper;
@@ -27,8 +28,6 @@ namespace SqlRepo.SqlServer
             {
                 return this.entityMapper.Map<TEntity>(reader);
             }
-
-            ;
         }
 
         public override async Task<IEnumerable<TEntity>> GoAsync()
@@ -42,8 +41,6 @@ namespace SqlRepo.SqlServer
             {
                 return this.entityMapper.Map<TEntity>(reader);
             }
-
-            ;
         }
     }
 }

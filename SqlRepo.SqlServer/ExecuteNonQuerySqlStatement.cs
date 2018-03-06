@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
 {
-    public class ExecuteNonQuerySqlStatement : ExecuteSqlStatementBase<int>
+    public class ExecuteNonQuerySqlStatement : ExecuteSqlStatement<int>, IExecuteNonQuerySqlStatement
     {
         public ExecuteNonQuerySqlStatement(IStatementExecutor statementExecutor)
             : base(statementExecutor) { }

@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
 {
-    public class ExecuteProcedureStatement<TEntity> : ExecuteStatementBase<IEnumerable<TEntity>>
+    public class ExecuteQueryProcedureStatement<TEntity> : ExecuteProcedureStatement<IEnumerable<TEntity>>, IExecuteQueryProcedureStatement<TEntity>
         where TEntity: class, new()
     {
         private readonly IEntityMapper entityMapper;
 
-        public ExecuteProcedureStatement(IStatementExecutor commandExecutor, IEntityMapper entityMapper)
+        public ExecuteQueryProcedureStatement(IStatementExecutor commandExecutor, IEntityMapper entityMapper)
             : base(commandExecutor)
         {
             this.entityMapper = entityMapper;

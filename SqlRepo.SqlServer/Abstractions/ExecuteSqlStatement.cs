@@ -4,14 +4,14 @@ using SqlRepo.Abstractions;
 
 namespace SqlRepo.SqlServer.Abstractions
 {
-    public abstract class ExecuteSqlStatementBase<TResult> : IExecuteSqlStatement<TResult>
+    public abstract class ExecuteSqlStatement<TResult> : IExecuteSqlStatement<TResult>
     {
-        protected ExecuteSqlStatementBase(IStatementExecutor statementExecutor)
+        protected ExecuteSqlStatement(IStatementExecutor statementExecutor)
         {
             this.StatementExecutor = statementExecutor;
         }
 
-        public string Sql { get; private set; }
+        protected string Sql { get; private set; }
         protected IStatementExecutor StatementExecutor { get; }
 
         public abstract TResult Go();

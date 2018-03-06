@@ -5,9 +5,9 @@ using SqlRepo.Abstractions;
 
 namespace SqlRepo.SqlServer.Abstractions
 {
-    public abstract class ExecuteStatementBase<TResult> : IExecuteStatement<TResult>
+    public abstract class ExecuteProcedureStatement<TResult> : IExecuteProcedureStatement<TResult>
     {
-        protected ExecuteStatementBase(IStatementExecutor statementExecutor)
+        protected ExecuteProcedureStatement(IStatementExecutor statementExecutor)
         {
             this.StatementExecutor = statementExecutor;
             this.ParameterDefinitions = new List<ParameterDefinition>();
@@ -22,19 +22,19 @@ namespace SqlRepo.SqlServer.Abstractions
 
         public IList<ParameterDefinition> ParameterDefinitions { get; }
 
-        public IExecuteStatement<TResult> UseConnectionProvider(IConnectionProvider connectionProvider)
+        public IExecuteProcedureStatement<TResult> UseConnectionProvider(IConnectionProvider connectionProvider)
         {
             this.StatementExecutor.UseConnectionProvider(connectionProvider);
             return this;
         }
 
-        public IExecuteStatement<TResult> WithName(string procedureName)
+        public IExecuteProcedureStatement<TResult> WithName(string procedureName)
         {
             this.ProcedureName = procedureName;
             return this;
         }
 
-        public IExecuteStatement<TResult> WithParameter(string name, object value)
+        public IExecuteProcedureStatement<TResult> WithParameter(string name, object value)
         {
             this.ParameterDefinitions.Add(new ParameterDefinition
                                           {
@@ -44,7 +44,7 @@ namespace SqlRepo.SqlServer.Abstractions
             return this;
         }
 
-        public IExecuteStatement<TResult> WithSchema(string schemaName)
+        public IExecuteProcedureStatement<TResult> WithSchema(string schemaName)
         {
             this.SchemaName = schemaName;
             return this;

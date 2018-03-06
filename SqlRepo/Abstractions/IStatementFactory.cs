@@ -7,15 +7,15 @@ namespace SqlRepo.Abstractions
         IDeleteStatement<TEntity> CreateDelete<TEntity>()
             where TEntity: class, new();
 
-        IExecuteStatement<TEntity> CreateExecute<TEntity>()
+        IExecuteQueryProcedureStatement<TEntity> CreateExecuteQueryProcedure<TEntity>()
             where TEntity: class, new();
 
-        IExecuteStatement<int> CreateExecuteNonQuery();
+        IExecuteNonQueryProcedureStatement CreateExecuteNonQueryProcedure();
 
-        IExecuteSqlStatement<TEntity> CreateExecuteSql<TEntity>()
+        IExecuteQuerySqlStatement<TEntity> CreateExecuteQuerySql<TEntity>()
             where TEntity: class, new();
 
-        IExecuteSqlStatement<int> CreateExecuteSqlNonQuery();
+        IExecuteNonQuerySqlStatement CreateExecuteNonQuerySql();
 
         IInsertStatement<TEntity> CreateInsert<TEntity>()
             where TEntity: class, new();

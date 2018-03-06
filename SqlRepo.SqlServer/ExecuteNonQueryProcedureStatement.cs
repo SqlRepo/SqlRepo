@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
 {
-    public class ExecuteNonQueryProcedureStatementBase : ExecuteStatementBase<int>
+    public class ExecuteNonQueryProcedureStatement : ExecuteProcedureStatement<int>, IExecuteNonQueryProcedureStatement
     {
-        public ExecuteNonQueryProcedureStatementBase(IStatementExecutor statementExecutor)
+        public ExecuteNonQueryProcedureStatement(IStatementExecutor statementExecutor)
             : base(statementExecutor) { }
 
         public override int Go()
