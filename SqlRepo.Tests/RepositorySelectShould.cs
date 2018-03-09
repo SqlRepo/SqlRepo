@@ -10,7 +10,7 @@ namespace SqlRepo.Tests
     public class RepositorySelectShould : RepositoryTestBase
     {
         [Test]
-        public void UseFactoryToCreateCommandtOnFirstCall()
+        public void UseFactoryToCreateStatement()
         {
             this.AssumeSelectIsRequested();
             this.StatementFactory.Received()
@@ -18,7 +18,7 @@ namespace SqlRepo.Tests
         }
 
         [Test]
-        public void ReturnTheCommand()
+        public void ReturnTheStatement()
         {
             this.AssumeSelectIsRequested()
                 .Should()

@@ -10,7 +10,7 @@ namespace SqlRepo.Tests
     public class RepositoryDeleteShould : RepositoryTestBase
     {
         [Test]
-        public void UseFactoryToCreateCommandtOnFirstCall()
+        public void UseFactoryToCreateStatement()
         {
             this.AssumeDeleteIsRequested();
             this.StatementFactory.Received()
@@ -18,7 +18,7 @@ namespace SqlRepo.Tests
         }
 
         [Test]
-        public void ReturnTheCommand()
+        public void ReturnTheStatement()
         {
             this.AssumeDeleteIsRequested()
                 .Should()

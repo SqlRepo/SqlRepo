@@ -3,7 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-namespace SqlRepo.SqlServer.Abstractions {
+namespace SqlRepo.SqlServer.Abstractions
+{
     public class SqlCommandAdapter : ISqlCommand
     {
         private readonly SqlCommand command;
@@ -17,26 +18,28 @@ namespace SqlRepo.SqlServer.Abstractions {
         public SqlCommandAdapter(SqlCommand command)
         {
             this.command = command;
+            this.Parameters = new SqlParameterCollectionAdapter(this.command.Parameters);
         }
 
-
-        public void Dispose() { }
-        public int CommandTimeout
-        {
-            get => this.command.CommandTimeout;
-            set => this.command.CommandTimeout = value;
-        }
-        public CommandType CommandType
-        {
-            get => this.command.CommandType;
-            set => this.command.CommandType = value;
-        }
         public string CommandText
         {
             get => this.command.CommandText;
             set => this.command.CommandText = value;
         }
-        public ISqlParameterCollection Parameters { get; }
+
+        public int CommandTimeout
+        {
+            get => this.command.CommandTimeout;
+            set => this.command.CommandTimeout = value;
+        }
+
+        public CommandType CommandType
+        {
+            get => this.command.CommandType;
+            set => this.command.CommandType = value;
+        }
+
+        public void Dispose() { }
 
         public int ExecuteNonQuery()
         {
@@ -57,5 +60,7 @@ namespace SqlRepo.SqlServer.Abstractions {
         {
             return await this.command.ExecuteReaderAsync(commandBehavior);
         }
+
+        public ISqlParameterCollection Parameters { get; }
     }
 }

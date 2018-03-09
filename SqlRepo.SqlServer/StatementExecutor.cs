@@ -50,6 +50,46 @@ namespace SqlRepo.SqlServer
             }
         }
 
+        public int ExecuteNonQueryStoredProcedure(string name,
+            params ParameterDefinition[] parameterDefinitions)
+        {
+            this.LogExecuteProc(name);
+            var connection = this.connectionProvider.Provide<ISqlConnection>();
+            connection.Open();
+            using(var command = connection.CreateCommand())
+            {
+                command.CommandTimeout = CommandTimeout;
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = name;
+                foreach(var parameterDefinition in parameterDefinitions)
+                {
+                    command.Parameters.AddWithValue(parameterDefinition.Name, parameterDefinition.Value);
+                }
+
+                return command.ExecuteNonQuery();
+            }
+        }
+
+        public async Task<int> ExecuteNonQueryStoredProcedureAsync(string name,
+            params ParameterDefinition[] parameterDefinitions)
+        {
+            this.LogExecuteProc(name);
+            var connection = this.connectionProvider.Provide<ISqlConnection>();
+            await connection.OpenAsync();
+            using(var command = connection.CreateCommand())
+            {
+                command.CommandTimeout = CommandTimeout;
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = name;
+                foreach(var parameterDefinition in parameterDefinitions)
+                {
+                    command.Parameters.AddWithValue(parameterDefinition.Name, parameterDefinition.Value);
+                }
+
+                return await command.ExecuteNonQueryAsync();
+            }
+        }
+
         public IDataReader ExecuteReader(string sql)
         {
             this.LogQuery(sql);
@@ -81,7 +121,7 @@ namespace SqlRepo.SqlServer
         public IDataReader ExecuteStoredProcedure(string name,
             params ParameterDefinition[] parametersDefinitions)
         {
-            this.logger.Log($"Executing SP: {name}");
+            this.LogExecuteProc(name);
             var connection = this.connectionProvider.Provide<ISqlConnection>();
             connection.Open();
             using(var command = connection.CreateCommand())
@@ -93,6 +133,7 @@ namespace SqlRepo.SqlServer
                 {
                     command.Parameters.AddWithValue(parametersDefinition.Name, parametersDefinition.Value);
                 }
+
                 return command.ExecuteReader(CommandBehavior.CloseConnection);
             }
         }
@@ -100,7 +141,7 @@ namespace SqlRepo.SqlServer
         public async Task<IDataReader> ExecuteStoredProcedureAsync(string name,
             params ParameterDefinition[] parametersDefinitions)
         {
-            this.logger.Log($"Executing SP: {name}");
+            this.LogExecuteProc(name);
             var connection = this.connectionProvider.Provide<ISqlConnection>();
             await connection.OpenAsync();
             using(var command = connection.CreateCommand())
@@ -112,6 +153,7 @@ namespace SqlRepo.SqlServer
                 {
                     command.Parameters.AddWithValue(parametersDefinition.Name, parametersDefinition.Value);
                 }
+
                 return await command.ExecuteReaderAsync(CommandBehavior.CloseConnection);
             }
         }
@@ -120,6 +162,11 @@ namespace SqlRepo.SqlServer
         {
             this.connectionProvider = connectionProvider;
             return this;
+        }
+
+        private void LogExecuteProc(string name)
+        {
+            this.logger.Log($"Executing SP: {name}");
         }
 
         private void LogQuery(string sql)
