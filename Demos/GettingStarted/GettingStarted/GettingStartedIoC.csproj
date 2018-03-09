@@ -89,11 +89,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="GettingStarted.mdf" />
+    <None Include="GettingStarted.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="GettingStarted_log.ldf">
       <DependentUpon>GettingStarted.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

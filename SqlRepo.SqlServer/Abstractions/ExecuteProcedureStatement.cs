@@ -13,8 +13,8 @@ namespace SqlRepo.SqlServer.Abstractions
             this.ParameterDefinitions = new List<ParameterDefinition>();
         }
 
-        public string ProcedureName { get; private set; }
-        public string SchemaName { get; private set; } = "dbo";
+        protected string ProcedureName { get; private set; }
+        protected string SchemaName { get; private set; } = "dbo";
         protected IStatementExecutor StatementExecutor { get; }
 
         public abstract TResult Go();
