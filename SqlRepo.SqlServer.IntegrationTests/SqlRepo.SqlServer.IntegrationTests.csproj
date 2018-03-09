@@ -16,10 +16,6 @@
     <StartupObject />
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="SqlRepo.SqlServer.IntegrationTests.v3.ncrunchproject" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
