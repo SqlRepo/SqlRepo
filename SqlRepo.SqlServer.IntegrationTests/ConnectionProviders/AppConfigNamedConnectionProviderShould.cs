@@ -60,9 +60,11 @@ namespace SqlRepo.SqlServer.IntegrationTests.ConnectionProviders
         [Test]
         public void ProvideASqlConnection()
         {
-            var connection = this.target.Provide<ISqlConnection>();
-            connection.Should()
-                      .BeAssignableTo<ISqlConnection>();
+            using(var connection = this.target.Provide<ISqlConnection>())
+            {
+                connection.Should()
+                          .BeAssignableTo<ISqlConnection>();
+            }
         }
 
         private ISqlLogger logger;
