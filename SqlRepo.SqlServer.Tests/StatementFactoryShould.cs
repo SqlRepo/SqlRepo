@@ -65,6 +65,54 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
+        public void ReturnExecuteNonQueryProcedureOnRequest()
+        {
+            var result = this.statementFactory.CreateExecuteNonQueryProcedure();
+            result.Should()
+                  .NotBeNull();
+            result.Should()
+                  .BeAssignableTo<IExecuteNonQueryProcedureStatement>();
+            result.Should()
+                  .BeAssignableTo<ExecuteNonQueryProcedureStatement>();
+        }
+
+        [Test]
+        public void ReturnExecuteNonQuerySqlOnRequest()
+        {
+            var result = this.statementFactory.CreateExecuteNonQuerySql();
+            result.Should()
+                  .NotBeNull();
+            result.Should()
+                  .BeAssignableTo<IExecuteNonQuerySqlStatement>();
+            result.Should()
+                  .BeAssignableTo<ExecuteNonQuerySqlStatement>();
+        }
+
+        [Test]
+        public void ReturnExecuteQueryProcedureOnRequest()
+        {
+            var result = this.statementFactory.CreateExecuteQueryProcedure<TestEntity>();
+            result.Should()
+                  .NotBeNull();
+            result.Should()
+                  .BeAssignableTo<IExecuteQueryProcedureStatement<TestEntity>>();
+            result.Should()
+                  .BeAssignableTo<ExecuteQueryProcedureStatement<TestEntity>>();
+        }
+
+        [Test]
+        public void ReturnExecuteQuerySqlOnRequest()
+        {
+            var result = this.statementFactory.CreateExecuteQuerySql<TestEntity>();
+            result.Should()
+                  .NotBeNull();
+            result.Should()
+                  .BeAssignableTo<IExecuteQuerySqlStatement<TestEntity>>();
+            result.Should()
+                  .BeAssignableTo<ExecuteQuerySqlStatement<TestEntity>>();
+        }
+
+        [Test]
         public void ReturnInsertOnRequest()
         {
             var result = this.statementFactory.CreateInsert<TestEntity>();

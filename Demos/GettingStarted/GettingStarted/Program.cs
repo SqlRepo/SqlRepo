@@ -26,7 +26,7 @@ namespace GettingStartedIoC
             var container = containerBuilder.Build();
 
             var gettingStarted = container.Resolve<IGettingStarted>();
-            //gettingStarted.DoIt();
+            gettingStarted.DoIt();
         }
     }
 }

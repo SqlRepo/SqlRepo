@@ -8,6 +8,10 @@ namespace SqlRepo.Abstractions
     {
         IDeleteStatement<TEntity> Delete();
         int Delete(TEntity entity);
+        IExecuteNonQueryProcedureStatement ExecuteNonQueryProcedure();
+        IExecuteNonQuerySqlStatement ExecuteNonQuerySql();
+        IExecuteQueryProcedureStatement<TEntity> ExecuteQueryProcedure();
+        IExecuteQuerySqlStatement<TEntity> ExecuteQuerySql();
         IInsertStatement<TEntity> Insert();
         TEntity Insert(TEntity entity);
         ISelectStatement<TEntity> Query();

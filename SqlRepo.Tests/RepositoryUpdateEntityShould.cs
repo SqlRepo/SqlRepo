@@ -9,7 +9,7 @@ namespace SqlRepo.Tests
     public class RepositoryUpdateEntityShould : RepositoryTestBase
     {
         [Test]
-        public void UseFactoryToCreateCommandtOnFirstCall()
+        public void UseFactoryToCreateStatement()
         {
             this.AssumeUpdateEntityIsRequested();
             this.StatementFactory.Received()
@@ -17,7 +17,7 @@ namespace SqlRepo.Tests
         }
 
         [Test]
-        public void UseForOnCommandToGeneratedSql()
+        public void UseForOnStatementToGeneratedSql()
         {
             this.AssumeUpdateEntityIsRequested();
             this.UpdateStatement.Received()

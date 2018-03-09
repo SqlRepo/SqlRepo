@@ -30,7 +30,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Testing.NSubstitute
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.IntegrationTests", "SqlRepo.SqlServer.IntegrationTests\SqlRepo.SqlServer.IntegrationTests.csproj", "{C090C6B6-CA18-4708-88C5-15AB9576C33C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Testing.NSubstitute", "SqlRepo.Testing.NSubstitute\SqlRepo.Testing.NSubstitute.csproj", "{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}"
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{342408F0-6D7A-44D2-A002-D1730A7DBB81}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GettingStarted", "GettingStarted", "{D58D61C5-3D97-45CF-A3B0-3968E3407EFF}"
@@ -81,14 +80,6 @@ Global
 		{D4AA77F6-9D07-4EBE-A05A-5492A115249E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4AA77F6-9D07-4EBE-A05A-5492A115249E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4AA77F6-9D07-4EBE-A05A-5492A115249E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{397A9C66-0BBE-48B7-8CFD-1C9813BFDAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{397A9C66-0BBE-48B7-8CFD-1C9813BFDAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{397A9C66-0BBE-48B7-8CFD-1C9813BFDAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{397A9C66-0BBE-48B7-8CFD-1C9813BFDAD1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B98F24AB-E304-4BEE-BF03-DC291DA165B8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CA85FB4-37BD-415C-82E2-BF0252D0EAD1}.Release|Any CPU.ActiveCfg = Release|Any CPU

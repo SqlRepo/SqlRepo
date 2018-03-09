@@ -16,6 +16,10 @@
     <StartupObject />
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="SqlRepo.SqlServer.IntegrationTests.v3.ncrunchproject" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
@@ -37,6 +41,12 @@
 
   <ItemGroup>
     <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Testing.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Testing_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

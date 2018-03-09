@@ -30,6 +30,29 @@ namespace SqlRepo.SqlServer
                 new WhereClauseBuilder());
         }
 
+        public IExecuteNonQueryProcedureStatement CreateExecuteNonQueryProcedure()
+        {
+            return new ExecuteNonQueryProcedureStatement(this.CreateStatementExecutor());
+        }
+
+        public IExecuteNonQuerySqlStatement CreateExecuteNonQuerySql()
+        {
+            return new ExecuteNonQuerySqlStatement(this.CreateStatementExecutor());
+        }
+
+        public IExecuteQueryProcedureStatement<TEntity> CreateExecuteQueryProcedure<TEntity>()
+            where TEntity: class, new()
+        {
+            return new ExecuteQueryProcedureStatement<TEntity>(this.CreateStatementExecutor(),
+                this.entityMapper);
+        }
+
+        public IExecuteQuerySqlStatement<TEntity> CreateExecuteQuerySql<TEntity>()
+            where TEntity: class, new()
+        {
+            return new ExecuteQuerySqlStatement<TEntity>(this.CreateStatementExecutor(), this.entityMapper);
+        }
+
         public IInsertStatement<TEntity> CreateInsert<TEntity>()
             where TEntity: class, new()
         {
