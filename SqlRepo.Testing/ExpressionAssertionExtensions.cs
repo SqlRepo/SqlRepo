@@ -27,5 +27,24 @@ namespace SqlRepo.Testing
             var expressionValue = helper.GetExpressionValue(expression);
             return memberName == member && actualOperator == @operator && expressionValue.ToString() == @value;
         }
+
+        public static bool AreEqual<TEntity>(this Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, bool>> compareTo)
+        {
+            if(expression.Equals(compareTo) || ReferenceEquals(expression, compareTo))
+            {
+                return true;
+            }
+
+            if(compareTo == null)
+            {
+                return false;
+            }
+
+            var memberNameMatches = helper.GetMemberName(expression) == helper.GetMemberName(compareTo);
+            var operatorMatches = helper.GetOperator(expression) == helper.GetOperator(compareTo);
+            var valueMatches = helper.GetExpressionValue(expression).Equals(helper.GetExpressionValue(compareTo));
+
+            return memberNameMatches && operatorMatches && valueMatches;
+        }
     }
 }

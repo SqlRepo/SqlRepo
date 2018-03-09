@@ -159,7 +159,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Invoking(b => b.From<TestEntity>()
                                         .InnerJoin<TestEntity, TestEntity>())
-                .ShouldThrow<AliasRequiredException>();
+                .Should().Throw<AliasRequiredException>();
         }
 
         [Test]
@@ -167,7 +167,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Invoking(b => b.From<TestEntity>()
                                         .InnerJoin<TestEntity, InnerEntity>())
-                .ShouldNotThrow<AliasRequiredException>();
+                .Should().NotThrow<AliasRequiredException>();
         }
 
         [Test]
@@ -175,7 +175,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Invoking(b => b.From<TestEntity>()
                                         .LeftOuterJoin<TestEntity, TestEntity>())
-                .ShouldThrow<AliasRequiredException>();
+                .Should().Throw<AliasRequiredException>();
         }
 
         [Test]
@@ -183,7 +183,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Invoking(b => b.From<TestEntity>()
                                         .RightOuterJoin<TestEntity, TestEntity>())
-                .ShouldThrow<AliasRequiredException>();
+                .Should().Throw<AliasRequiredException>();
         }
 
         [Test]
@@ -191,7 +191,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Invoking(b => b.From<TestEntity>("a")
                                        .InnerJoin<TestEntity, InnerEntity>(rightTableAlias: "a"))
-               .ShouldThrow<DuplicateAliasException>();
+               .Should().Throw<DuplicateAliasException>();
         }
 
         [Test]
@@ -199,7 +199,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Invoking(b => b.From<TestEntity>("a")
                                        .LeftOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "a"))
-               .ShouldThrow<DuplicateAliasException>();
+               .Should().Throw<DuplicateAliasException>();
         }
 
         [Test]
@@ -207,7 +207,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Invoking(b => b.From<TestEntity>("a")
                                        .RightOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "a"))
-               .ShouldThrow<DuplicateAliasException>();
+               .Should().Throw<DuplicateAliasException>();
         }
 
         [Test]

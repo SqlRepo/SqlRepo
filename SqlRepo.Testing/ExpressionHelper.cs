@@ -8,6 +8,7 @@ namespace SqlRepo.Testing
 {
     public class ExpressionHelper
     {
+   
         public Expression<Func<T, object>> ConvertExpression<T, TMember>(Expression<Func<T, TMember>> selector)
         {
             Expression converted = Expression.Convert(selector.Body, typeof(object));

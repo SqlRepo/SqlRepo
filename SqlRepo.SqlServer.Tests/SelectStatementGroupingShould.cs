@@ -14,7 +14,7 @@ namespace SqlRepo.SqlServer.Tests
             const string ExpectedMessage =
                 "A table specification for the entity type and alias must be set using From or one of the Join methods before filtering, sorting or grouping can be applied.";
             this.Statement.Invoking(c => c.GroupBy<InnerEntity>(e => e.IntProperty))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
         }
 
@@ -58,22 +58,22 @@ namespace SqlRepo.SqlServer.Tests
             const string ExpectedMessage =
                 "Grouping has not been initialised, pluase a GroupBy method before any Having method.";
             this.Statement.Invoking(c => c.HavingAvg(e => e.IntProperty > 5))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
             this.Statement.Invoking(c => c.HavingCount(e => e.IntProperty > 5))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
             this.Statement.Invoking(c => c.HavingMax(e => e.IntProperty > 5))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
             this.Statement.Invoking(c => c.HavingMin(e => e.IntProperty > 5))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
             this.Statement.Invoking(c => c.HavingSum(e => e.IntProperty > 5))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
             this.Statement.Invoking(c => c.HavingCountAll(Comparison.GreaterThan, 5))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
         }
 
