@@ -35,7 +35,8 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Where<TestEntity>(e => e.IntProperty == 2)
                 .Invoking(b => b.And<TestEntity>(e => e.IntProperty == 1))
-                .Should().NotThrow<InvalidOperationException>();
+                .Should()
+                .NotThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -43,7 +44,8 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Where<TestEntity>(e => e.IntProperty == 2)
                 .Invoking(b => b.NestedAnd<TestEntity>(e => e.IntProperty == 1))
-                .Should().NotThrow<InvalidOperationException>();
+                .Should()
+                .NotThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -51,7 +53,8 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Where<TestEntity>(e => e.IntProperty == 2)
                 .Invoking(b => b.NestedOr<TestEntity>(e => e.IntProperty == 1))
-                .Should().NotThrow<InvalidOperationException>();
+                .Should()
+                .NotThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -59,89 +62,93 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Where<TestEntity>(e => e.IntProperty == 2)
                 .Invoking(b => b.Or<TestEntity>(e => e.IntProperty == 1))
-                .Should().NotThrow<InvalidOperationException>();
-        }
-
-        [Test]
-        public void ReturnCorrectSqlForAndBetween()
-        {
-            const string expected =
-                "WHERE ([dbo].[TestEntity].[StringProperty] = 'Something' AND [dbo].[TestEntity].[IntProperty] >= 1 AND [dbo].[TestEntity].[IntProperty] <= 10)";
-            this.builder.Where<TestEntity>(e => e.StringProperty == "Something")
-                .AndBetween<TestEntity, int>(e => e.IntProperty, 1, 10)
-                .Sql()
                 .Should()
-                .Be(expected);
-        }
-        
-        [Test]
-        public void NotThrowForAndedConditionsOnStringProperty()
-        {
-            string stringProperty = "TestString";
-            builder.Where<TestEntity>(e => e.StringProperty == "TestString")
-                .Or<TestEntity>(e => e.StringProperty == stringProperty)
-                .Invoking(e => e.Sql())
-                .Should().NotThrow();
-        }
-
-        [Test]
-        public void NotThrowForAndedConditionsOnIntProperty()
-        {
-            var intProperty = 10;
-            builder.Where<TestEntity>(e => e.IntProperty > 2)
-                .And<TestEntity>(e => e.IntProperty < intProperty)
-                .Invoking(e => e.Sql())
-                .Should().NotThrow();
+                .NotThrow<InvalidOperationException>();
         }
 
         [Test]
         public void NotThrowForAndedConditionsOnDateTimeProperty()
         {
-            builder.Where<TestEntity>(e => e.DateTimeProperty > DateTime.UtcNow)
+            this.builder.Where<TestEntity>(e => e.DateTimeProperty > DateTime.UtcNow)
                 .And<TestEntity>(e => e.DateTimeProperty < DateTime.UtcNow)
                 .Invoking(e => e.Sql())
-                .Should().NotThrow();
+                .Should()
+                .NotThrow();
+        }
+
+        [Test]
+        public void NotThrowForAndedConditionsOnIntProperty()
+        {
+            const int IntProperty = 10;
+            this.builder.Where<TestEntity>(e => e.IntProperty > 2)
+                .And<TestEntity>(e => e.IntProperty < IntProperty)
+                .Invoking(e => e.Sql())
+                .Should()
+                .NotThrow();
+        }
+
+        [Test]
+        public void NotThrowForAndedConditionsOnStringProperty()
+        {
+            const string StringProperty = "TestString";
+            this.builder.Where<TestEntity>(e => e.StringProperty == "TestString")
+                .Or<TestEntity>(e => e.StringProperty == StringProperty)
+                .Invoking(e => e.Sql())
+                .Should()
+                .NotThrow();
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForAndBetween()
+        {
+            const string Expected =
+                "WHERE ([dbo].[TestEntity].[StringProperty] = 'Something' AND [dbo].[TestEntity].[IntProperty] >= 1 AND [dbo].[TestEntity].[IntProperty] <= 10)";
+            this.builder.Where<TestEntity>(e => e.StringProperty == "Something")
+                .AndBetween<TestEntity, int>(e => e.IntProperty, 1, 10)
+                .Sql()
+                .Should()
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForAndedConditionsOnIntProperty()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[IntProperty] >= 1 AND [dbo].[TestEntity].[IntProperty] <= 5)";
             this.builder.Where<TestEntity>(e => e.IntProperty >= 1)
                 .And<TestEntity>(e => e.IntProperty <= 5)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForAndIn()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[StringProperty] = 'Something' AND [dbo].[TestEntity].[StringProperty] IN ('My String', 'My Name'))";
             this.builder.Where<TestEntity>(e => e.StringProperty == "Something")
                 .AndIn<TestEntity, string>(e => e.StringProperty, new[] {"My String", "My Name"})
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
-        
+
         [Test]
         public void ReturnCorrectSqlForBetween()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[IntProperty] >= 1 AND [dbo].[TestEntity].[IntProperty] <= 10)";
             this.builder.WhereBetween<TestEntity, int>(e => e.IntProperty, 1, 10)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForMultiLevelNesting()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[IntProperty] < 100 AND ([dbo].[TestEntity].[DecimalProperty] >= 5 OR [dbo].[TestEntity].[DecimalProperty] <= 50 AND ([dbo].[TestEntity].[SingleProperty] >= 2 AND [dbo].[TestEntity].[SingleProperty] <= 10)))";
             this.builder.Where<TestEntity>(e => e.IntProperty < 100)
                 .NestedAnd<TestEntity>(e => e.DecimalProperty >= 5)
@@ -150,13 +157,13 @@ namespace SqlRepo.SqlServer.Tests
                 .And<TestEntity>(e => e.SingleProperty <= 10)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForMultiLevelNestingWithAliases()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([a].[IntProperty] < 100 AND ([a].[DecimalProperty] >= 5 OR [a].[DecimalProperty] <= 50 AND ([b].[SingleProperty] >= 2 AND [b].[SingleProperty] <= 10)))";
             this.builder.Where<TestEntity>(e => e.IntProperty < 100, "a")
                 .NestedAnd<TestEntity>(e => e.DecimalProperty >= 5, "a")
@@ -165,156 +172,156 @@ namespace SqlRepo.SqlServer.Tests
                 .And<TestEntity>(e => e.SingleProperty <= 10, "b")
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForNestedAndWithSingleConditionOnIntProperty()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[IntProperty] < 100 AND ([dbo].[TestEntity].[DecimalProperty] >= 5 OR [dbo].[TestEntity].[DecimalProperty] <= 50))";
             this.builder.Where<TestEntity>(e => e.IntProperty < 100)
                 .NestedAnd<TestEntity>(e => e.DecimalProperty >= 5)
                 .Or<TestEntity>(e => e.DecimalProperty <= 50)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForNestedOrWithSingleConditionOnIntProperty()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[IntProperty] < 100 OR ([dbo].[TestEntity].[DecimalProperty] >= 5 AND [dbo].[TestEntity].[DecimalProperty] <= 50))";
             this.builder.Where<TestEntity>(e => e.IntProperty < 100)
                 .NestedOr<TestEntity>(e => e.DecimalProperty >= 5)
                 .And<TestEntity>(e => e.DecimalProperty <= 50)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForOrBetween()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[StringProperty] = 'Something' OR [dbo].[TestEntity].[IntProperty] >= 1 AND [dbo].[TestEntity].[IntProperty] <= 10)";
             this.builder.Where<TestEntity>(e => e.StringProperty == "Something")
                 .OrBetween<TestEntity, int>(e => e.IntProperty, 1, 10)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForOredConditionsOnIntProperty()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[IntProperty] <= 1 OR [dbo].[TestEntity].[IntProperty] >= 5)";
             this.builder.Where<TestEntity>(e => e.IntProperty <= 1)
                 .Or<TestEntity>(e => e.IntProperty >= 5)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForOrIn()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[StringProperty] = 'Something' OR [dbo].[TestEntity].[StringProperty] IN ('My String', 'My Name'))";
             this.builder.Where<TestEntity>(e => e.StringProperty == "Something")
                 .OrIn<TestEntity, string>(e => e.StringProperty, new[] {"My String", "My Name"})
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForSingleEqualityConditionOnStringProperty()
         {
-            const string expected = "WHERE ([dbo].[TestEntity].[StringProperty] = 'My String')";
+            const string Expected = "WHERE ([dbo].[TestEntity].[StringProperty] = 'My String')";
             this.builder.Where<TestEntity>(e => e.StringProperty == "My String")
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForSingleEqualityConditionOnTestEnumProperty()
         {
-            const string expected = "WHERE ([dbo].[TestEntity].[TestEnumProperty] = 1)";
+            const string Expected = "WHERE ([dbo].[TestEntity].[TestEnumProperty] = 1)";
             this.builder.Where<TestEntity>(e => e.TestEnumProperty == TestEnum.One)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForSingleGreaterThanConditionOnIntProperty()
         {
-            const string expected = "WHERE ([dbo].[TestEntity].[IntProperty] > 1)";
+            const string Expected = "WHERE ([dbo].[TestEntity].[IntProperty] > 1)";
             this.builder.Where<TestEntity>(e => e.IntProperty > 1)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForSingleGreaterThanOrEqualConditionOnDoubleProperty()
         {
-            const string expected = "WHERE ([dbo].[TestEntity].[DoubleProperty] >= 1.01)";
+            const string Expected = "WHERE ([dbo].[TestEntity].[DoubleProperty] >= 1.01)";
             this.builder.Where<TestEntity>(e => e.DoubleProperty >= 1.01)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForSingleLessThanConditionOnDecimalProperty()
         {
-            const string expected = "WHERE ([dbo].[TestEntity].[DecimalProperty] < 2.02)";
+            const string Expected = "WHERE ([dbo].[TestEntity].[DecimalProperty] < 2.02)";
             this.builder.Where<TestEntity>(e => e.DecimalProperty < 2.02M)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForSingleLessThanOrEqualConditionOnSingleProperty()
         {
-            const string expected = "WHERE ([dbo].[TestEntity].[SingleProperty] <= 2.02)";
+            const string Expected = "WHERE ([dbo].[TestEntity].[SingleProperty] <= 2.02)";
             this.builder.Where<TestEntity>(e => e.SingleProperty <= 2.02)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForSingleNoneEqualityConditionOnGuidProperty()
         {
-            const string expected = "WHERE ([dbo].[TestEntity].[GuidProperty] <> '{0}')";
+            const string Expected = "WHERE ([dbo].[TestEntity].[GuidProperty] <> '{0}')";
             var guid = Guid.NewGuid();
             this.builder.Where<TestEntity>(e => e.GuidProperty != guid)
                 .Sql()
                 .Should()
-                .Be(string.Format(expected, guid));
+                .Be(string.Format(Expected, guid));
         }
 
         [Test]
         public void ReturnCorrectSqlForStringContains()
         {
-            const string expected = "WHERE ([dbo].[TestEntity].[StringProperty] LIKE '%My%')";
+            const string Expected = "WHERE ([dbo].[TestEntity].[StringProperty] LIKE '%My%')";
             this.builder.Where<TestEntity>(e => e.StringProperty.Contains("My"))
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForTwoNestedAndsAtRoot()
         {
-            const string expected =
+            const string Expected =
                 "WHERE ([dbo].[TestEntity].[IntProperty] < 100 AND ([dbo].[TestEntity].[DecimalProperty] >= 5 OR [dbo].[TestEntity].[DecimalProperty] <= 50) AND ([dbo].[TestEntity].[SingleProperty] >= 2 AND [dbo].[TestEntity].[SingleProperty] <= 10))";
             this.builder.Where<TestEntity>(e => e.IntProperty < 100)
                 .NestedAnd<TestEntity>(e => e.DecimalProperty >= 5)
@@ -324,17 +331,17 @@ namespace SqlRepo.SqlServer.Tests
                 .And<TestEntity>(e => e.SingleProperty <= 10)
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
         public void ReturnCorrectSqlForWhereIn()
         {
-            const string expected = "WHERE ([dbo].[TestEntity].[StringProperty] IN ('My String', 'My Name'))";
+            const string Expected = "WHERE ([dbo].[TestEntity].[StringProperty] IN ('My String', 'My Name'))";
             this.builder.WhereIn<TestEntity, string>(e => e.StringProperty, new[] {"My String", "My Name"})
                 .Sql()
                 .Should()
-                .Be(expected);
+                .Be(Expected);
         }
 
         [Test]
@@ -367,28 +374,32 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowExceptionIfAndIsUsedBeforeWhere()
         {
             this.builder.Invoking(b => b.And<TestEntity>(e => e.IntProperty == 1))
-                .Should().Throw<InvalidOperationException>();
+                .Should()
+                .Throw<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfNestedAndIsUsedBeforeWhere()
         {
             this.builder.Invoking(b => b.NestedAnd<TestEntity>(e => e.IntProperty == 1))
-                .Should().Throw<InvalidOperationException>();
+                .Should()
+                .Throw<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfNestedOrIsUsedBeforeWhere()
         {
             this.builder.Invoking(b => b.NestedOr<TestEntity>(e => e.IntProperty == 1))
-                .Should().Throw<InvalidOperationException>();
+                .Should()
+                .Throw<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfOrIsUsedBeforeWhere()
         {
             this.builder.Invoking(b => b.Or<TestEntity>(e => e.IntProperty == 1))
-                .Should().Throw<InvalidOperationException>();
+                .Should()
+                .Throw<InvalidOperationException>();
         }
 
         private IWhereClauseBuilder builder;

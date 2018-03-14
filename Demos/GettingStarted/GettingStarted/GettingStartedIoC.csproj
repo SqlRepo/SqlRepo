@@ -75,20 +75,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SqlRepo.SqlServer.Autofac\SqlRepo.SqlServer.Autofac.csproj">
-      <Project>{e356200b-8442-4a1a-87cc-c59306d4b37f}</Project>
-      <Name>SqlRepo.SqlServer.Autofac</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj">
-      <Project>{26d0a1c0-0cd6-4074-b4b6-053e669a7b49}</Project>
-      <Name>SqlRepo.SqlServer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\SqlRepo\SqlRepo.csproj">
-      <Project>{9773f144-2310-4b6f-9702-cf67bdbb165e}</Project>
-      <Name>SqlRepo</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="GettingStarted.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -110,6 +96,20 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SqlRepo.SqlServer.Autofac\SqlRepo.SqlServer.Autofac.csproj">
+      <Project>{e356200b-8442-4a1a-87cc-c59306d4b37f}</Project>
+      <Name>SqlRepo.SqlServer.Autofac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj">
+      <Project>{26d0a1c0-0cd6-4074-b4b6-053e669a7b49}</Project>
+      <Name>SqlRepo.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\SqlRepo\SqlRepo.csproj">
+      <Project>{9773f144-2310-4b6f-9702-cf67bdbb165e}</Project>
+      <Name>SqlRepo</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

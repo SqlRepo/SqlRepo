@@ -20,13 +20,13 @@ namespace SqlRepo.SqlServer
         }
 
         public IList<ColumnSpecification> Columns { get; }
+        public IList<FilterGroup> Filters { get; }
         public IList<GroupSpecification> Groupings { get; }
         public IList<SelectStatementHavingSpecification> Havings { get; }
         public IList<JoinSpecification> Joins { get; }
+        public bool NoLocks { private get; set; }
         public IList<OrderSpecification> Orderings { get; }
         public IList<SelectStatementTableSpecification> Tables { get; }
-        public IList<FilterGroup> Filters { get; private set; }
-        public bool NoLocks { private get; set; }
         public int? Top { get; internal set; }
         public bool UseTopPercent { get; internal set; }
 
@@ -88,13 +88,13 @@ namespace SqlRepo.SqlServer
         {
             const string ClauseTemplate = "SELECT {0}{1}";
 
-            var top = Top.HasValue ? $"TOP ({Top}) " : string.Empty;
+            var top = this.Top.HasValue? $"TOP ({this.Top}) ": string.Empty;
 
             var selections = string.Join("\n, ",
                 this.Columns.Select(c => c.ToString())
                     .ToArray());
 
-            return string.Format(ClauseTemplate, top, string.IsNullOrEmpty(selections) ? "*" : selections);
+            return string.Format(ClauseTemplate, top, string.IsNullOrEmpty(selections)? "*": selections);
         }
 
         private string BuildWhereClause()

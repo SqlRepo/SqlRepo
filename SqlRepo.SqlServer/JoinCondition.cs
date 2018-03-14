@@ -1,3 +1,5 @@
+using System;
+
 namespace SqlRepo.SqlServer
 {
     internal class JoinCondition
@@ -16,18 +18,18 @@ namespace SqlRepo.SqlServer
 
         public override string ToString()
         {
-            var actualOperator = LogicalOperator == LogicalOperator.NotSet
-                ? "ON"
-                : LogicalOperator.ToString()
-                    .ToUpperInvariant();
-            var leftIdentifier = string.IsNullOrWhiteSpace(LeftTableAlias)
-                ? $"[{LeftTableSchema}].[{LeftTableName}].[{LeftIdentifier}]"
-                : $"[{LeftTableAlias}].[{LeftIdentifier}]";
+            var actualOperator = this.LogicalOperator == LogicalOperator.NotSet
+                                     ? "ON"
+                                     : this.LogicalOperator.ToString()
+                                           .ToUpperInvariant();
+            var leftIdentifier = string.IsNullOrWhiteSpace(this.LeftTableAlias)
+                                     ? $"[{this.LeftTableSchema}].[{this.LeftTableName}].[{this.LeftIdentifier}]"
+                                     : $"[{this.LeftTableAlias}].[{this.LeftIdentifier}]";
 
-            var rightIdentifier = string.IsNullOrWhiteSpace(RightTableAlias)
-                ? $"[{RightTableSchema}].[{RightTableName}].[{RightIdentifier}]"
-                : $"[{RightTableAlias}].[{RightIdentifier}]";
-            return string.Format(Template, actualOperator, leftIdentifier, Operator, rightIdentifier);
+            var rightIdentifier = string.IsNullOrWhiteSpace(this.RightTableAlias)
+                                      ? $"[{this.RightTableSchema}].[{this.RightTableName}].[{this.RightIdentifier}]"
+                                      : $"[{this.RightTableAlias}].[{this.RightIdentifier}]";
+            return string.Format(Template, actualOperator, leftIdentifier, this.Operator, rightIdentifier);
         }
     }
 }

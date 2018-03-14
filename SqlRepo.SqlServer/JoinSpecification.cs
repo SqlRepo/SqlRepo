@@ -19,23 +19,23 @@ namespace SqlRepo.SqlServer
 
         public override string ToString()
         {
-            var leftPrefix = string.IsNullOrEmpty(LeftTableAlias)
-                ? $"[{LeftSchema}].[{LeftTableName}]"
-                : $"[{LeftTableAlias}]";
+            var leftPrefix = string.IsNullOrEmpty(this.LeftTableAlias)
+                                 ? $"[{this.LeftSchema}].[{this.LeftTableName}]"
+                                 : $"[{this.LeftTableAlias}]";
 
-            var rightPrefix = string.IsNullOrEmpty(RightTableAlias)
-                ? $"[{RightSchema}].[{RightTableName}]"
-                : $"[{RightTableAlias}]";
+            var rightPrefix = string.IsNullOrEmpty(this.RightTableAlias)
+                                  ? $"[{this.RightSchema}].[{this.RightTableName}]"
+                                  : $"[{this.RightTableAlias}]";
 
-            var prefix = GetPrefix();
+            var prefix = this.GetPrefix();
 
             return
-                $"\n{prefix} {leftPrefix}.[{LeftIdentifier}] {Operator} {rightPrefix}.[{RightIdentifier}]";
+                $"\n{prefix} {leftPrefix}.[{this.LeftIdentifier}] {this.Operator} {rightPrefix}.[{this.RightIdentifier}]";
         }
 
         private string GetPrefix()
         {
-            switch (LogicalOperator)
+            switch(this.LogicalOperator)
             {
                 case LogicalOperator.And:
                     return "AND";

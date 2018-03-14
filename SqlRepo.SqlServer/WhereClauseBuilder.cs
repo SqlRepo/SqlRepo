@@ -15,8 +15,8 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            ThrowIfNotInitialised();
-            return AddConditionToCurrentGroup(expression,
+            this.ThrowIfNotInitialised();
+            return this.AddConditionToCurrentGroup(expression,
                 LogicalOperator.And,
                 alias,
                 tableName,
@@ -30,7 +30,7 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            AddBetweenConditionToCurrentGroup(selector,
+            this.AddBetweenConditionToCurrentGroup(selector,
                 start,
                 end,
                 LogicalOperator.And,
@@ -46,9 +46,9 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            ThrowIfNotInitialised();
+            this.ThrowIfNotInitialised();
 
-            AddInConditionToCurrentGroup(selector,
+            this.AddInConditionToCurrentGroup(selector,
                 values,
                 LogicalOperator.And,
                 alias,
@@ -60,10 +60,11 @@ namespace SqlRepo.SqlServer
 
         public IWhereClauseBuilder EndNesting()
         {
-            if (currentGroup != null && currentGroup.Parent != null)
+            if(this.currentGroup != null && this.currentGroup.Parent != null)
             {
-                currentGroup = currentGroup.Parent;
+                this.currentGroup = this.currentGroup.Parent;
             }
+
             return this;
         }
 
@@ -72,7 +73,7 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            return AddNestedGroupToCurrentGroup(expression,
+            return this.AddNestedGroupToCurrentGroup(expression,
                 WhereClauseGroupType.And,
                 alias,
                 tableName,
@@ -84,7 +85,7 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            return AddNestedGroupToCurrentGroup(expression,
+            return this.AddNestedGroupToCurrentGroup(expression,
                 WhereClauseGroupType.Or,
                 alias,
                 tableName,
@@ -96,7 +97,7 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            return AddConditionToCurrentGroup(expression,
+            return this.AddConditionToCurrentGroup(expression,
                 LogicalOperator.Or,
                 alias,
                 tableName,
@@ -110,7 +111,7 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            AddBetweenConditionToCurrentGroup(selector,
+            this.AddBetweenConditionToCurrentGroup(selector,
                 start,
                 end,
                 LogicalOperator.Or,
@@ -126,9 +127,9 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            ThrowIfNotInitialised();
+            this.ThrowIfNotInitialised();
 
-            AddInConditionToCurrentGroup(selector,
+            this.AddInConditionToCurrentGroup(selector,
                 values,
                 LogicalOperator.Or,
                 alias,
@@ -140,7 +141,7 @@ namespace SqlRepo.SqlServer
 
         public override string Sql()
         {
-            return rootGroup?.ToString() ?? string.Empty;
+            return this.rootGroup?.ToString() ?? string.Empty;
         }
 
         public IWhereClauseBuilder Where<TEntity>(Expression<Func<TEntity, bool>> expression,
@@ -148,9 +149,13 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            Initialise();
-            AddConditionToCurrentGroup(expression, LogicalOperator.NotSet, alias, tableName, tableSchema);
-            IsClean = false;
+            this.Initialise();
+            this.AddConditionToCurrentGroup(expression,
+                LogicalOperator.NotSet,
+                alias,
+                tableName,
+                tableSchema);
+            this.IsClean = false;
             return this;
         }
 
@@ -161,8 +166,8 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            Initialise();
-            AddBetweenConditionToCurrentGroup(selector,
+            this.Initialise();
+            this.AddBetweenConditionToCurrentGroup(selector,
                 start,
                 end,
                 LogicalOperator.NotSet,
@@ -178,8 +183,8 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            Initialise();
-            AddInConditionToCurrentGroup(selector,
+            this.Initialise();
+            this.AddInConditionToCurrentGroup(selector,
                 values,
                 LogicalOperator.NotSet,
                 alias,
@@ -197,39 +202,52 @@ namespace SqlRepo.SqlServer
             string tableName,
             string tableSchema)
         {
-            currentGroup.Conditions.Add(new WhereClauseCondition
-            {
-                Alias = alias,
-                LocigalOperator = locigalOperator,
-                LeftTable =
-                    string.IsNullOrWhiteSpace(tableName)
-                        ? TableNameFromType<TEntity>()
-                        : tableName,
-                LeftSchema =
-                    string.IsNullOrWhiteSpace(tableSchema)
-                        ? DefaultSchema
-                        : tableSchema,
-                Left = GetMemberName(ConvertExpression(selector)),
-                Operator = ">=",
-                Right = FormatValue(start)
-            });
-            currentGroup.Conditions.Add(new WhereClauseCondition
-            {
-                Alias = alias,
-                LocigalOperator = LogicalOperator.And,
-                LeftTable =
-                    string.IsNullOrWhiteSpace(tableName)
-                        ? TableNameFromType<TEntity>()
-                        : tableName,
-                LeftSchema =
-                    string.IsNullOrWhiteSpace(tableSchema)
-                        ? DefaultSchema
-                        : tableSchema,
-                Left = GetMemberName(ConvertExpression(selector)),
-                Operator = "<=",
-                Right = FormatValue(end)
-            });
-            IsClean = false;
+            this.currentGroup.Conditions.Add(new WhereClauseCondition
+                                             {
+                                                 Alias = alias,
+                                                 LocigalOperator = locigalOperator,
+                                                 LeftTable =
+                                                     string.IsNullOrWhiteSpace(
+                                                         tableName)
+                                                         ? this
+                                                             .TableNameFromType<
+                                                                 TEntity>()
+                                                         : tableName,
+                                                 LeftSchema =
+                                                     string.IsNullOrWhiteSpace(
+                                                         tableSchema)
+                                                         ? DefaultSchema
+                                                         : tableSchema,
+                                                 Left = this.GetMemberName(
+                                                     this.ConvertExpression(
+                                                         selector)),
+                                                 Operator = ">=",
+                                                 Right = this.FormatValue(start)
+                                             });
+            this.currentGroup.Conditions.Add(new WhereClauseCondition
+                                             {
+                                                 Alias = alias,
+                                                 LocigalOperator =
+                                                     LogicalOperator.And,
+                                                 LeftTable =
+                                                     string.IsNullOrWhiteSpace(
+                                                         tableName)
+                                                         ? this
+                                                             .TableNameFromType<
+                                                                 TEntity>()
+                                                         : tableName,
+                                                 LeftSchema =
+                                                     string.IsNullOrWhiteSpace(
+                                                         tableSchema)
+                                                         ? DefaultSchema
+                                                         : tableSchema,
+                                                 Left = this.GetMemberName(
+                                                     this.ConvertExpression(
+                                                         selector)),
+                                                 Operator = "<=",
+                                                 Right = this.FormatValue(end)
+                                             });
+            this.IsClean = false;
         }
 
         private IWhereClauseBuilder AddConditionToCurrentGroup<TEntity>(
@@ -239,28 +257,33 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            ThrowIfNotInitialised();
-            IsClean = false;
+            this.ThrowIfNotInitialised();
+            this.IsClean = false;
 
-            var operatorString = GetOperator(expression);
-            var @value = FormatValue(GetExpressionValue(expression));
-            var actualOperator = GetActualOperator(operatorString, @value);
-            currentGroup.Conditions.Add(new WhereClauseCondition
-            {
-                Alias = alias,
-                LocigalOperator = locigalOperator,
-                LeftTable =
-                    string.IsNullOrWhiteSpace(tableName)
-                        ? TableNameFromType<TEntity>()
-                        : tableName,
-                LeftSchema =
-                    string.IsNullOrWhiteSpace(tableSchema)
-                        ? ClauseBuilder.DefaultSchema
-                        : tableSchema,
-                Left = GetMemberName(expression),
-                Operator = actualOperator,
-                Right = @value
-            });
+            var operatorString = this.GetOperator(expression);
+            var @value = this.FormatValue(this.GetExpressionValue(expression));
+            var actualOperator = this.GetActualOperator(operatorString, @value);
+            this.currentGroup.Conditions.Add(new WhereClauseCondition
+                                             {
+                                                 Alias = alias,
+                                                 LocigalOperator = locigalOperator,
+                                                 LeftTable =
+                                                     string.IsNullOrWhiteSpace(
+                                                         tableName)
+                                                         ? this
+                                                             .TableNameFromType<
+                                                                 TEntity>()
+                                                         : tableName,
+                                                 LeftSchema =
+                                                     string.IsNullOrWhiteSpace(
+                                                         tableSchema)
+                                                         ? DefaultSchema
+                                                         : tableSchema,
+                                                 Left = this.GetMemberName(
+                                                     expression),
+                                                 Operator = actualOperator,
+                                                 Right = @value
+                                             });
             return this;
         }
 
@@ -272,29 +295,37 @@ namespace SqlRepo.SqlServer
             string tableName,
             string tableSchema)
         {
-            if (values != null && values.Any())
+            if(values != null && values.Any())
             {
-                currentGroup.Conditions.Add(new WhereClauseCondition
-                {
-                    Alias = alias,
-                    LocigalOperator = locigalOperator,
-                    LeftTable =
-                        string.IsNullOrWhiteSpace(tableName)
-                            ? TableNameFromType<TEntity>()
-                            : tableName,
-                    LeftSchema =
-                        string.IsNullOrWhiteSpace(tableSchema)
-                            ? ClauseBuilder.DefaultSchema
-                            : tableSchema,
-                    Left =
-                        GetMemberName(ConvertExpression(selector)),
-                    Operator = "IN",
-                    Right =
-                        "("
-                        + string.Join(", ",
-                            values.Select(v => FormatValue(v))) + ")"
-                });
-                IsClean = false;
+                this.currentGroup.Conditions.Add(new WhereClauseCondition
+                                                 {
+                                                     Alias = alias,
+                                                     LocigalOperator =
+                                                         locigalOperator,
+                                                     LeftTable =
+                                                         string.IsNullOrWhiteSpace(
+                                                             tableName)
+                                                             ? this
+                                                                 .TableNameFromType<
+                                                                     TEntity>()
+                                                             : tableName,
+                                                     LeftSchema =
+                                                         string.IsNullOrWhiteSpace(
+                                                             tableSchema)
+                                                             ? DefaultSchema
+                                                             : tableSchema,
+                                                     Left = this.GetMemberName(
+                                                         this.ConvertExpression(
+                                                             selector)),
+                                                     Operator = "IN",
+                                                     Right = "(" + string.Join(", ",
+                                                                     values.Select(
+                                                                         v => this
+                                                                             .FormatValue(
+                                                                                 v)))
+                                                                 + ")"
+                                                 });
+                this.IsClean = false;
             }
         }
 
@@ -305,15 +336,15 @@ namespace SqlRepo.SqlServer
             string tableName = null,
             string tableSchema = null)
         {
-            ThrowIfNotInitialised();
+            this.ThrowIfNotInitialised();
             var newGroup = new WhereClauseGroup
-            {
-                GroupType = groupType,
-                Parent = currentGroup
-            };
-            currentGroup.Groups.Add(newGroup);
-            currentGroup = newGroup;
-            return AddConditionToCurrentGroup(expression,
+                           {
+                               GroupType = groupType,
+                               Parent = this.currentGroup
+                           };
+            this.currentGroup.Groups.Add(newGroup);
+            this.currentGroup = newGroup;
+            return this.AddConditionToCurrentGroup(expression,
                 LogicalOperator.NotSet,
                 alias,
                 tableName,
@@ -322,21 +353,21 @@ namespace SqlRepo.SqlServer
 
         private string GetActualOperator(string operatorString, string @value)
         {
-            return @value != "NULL" ? operatorString : (operatorString == "=" ? "IS" : "IS NOT");
+            return @value != "NULL"? operatorString: (operatorString == "="? "IS": "IS NOT");
         }
 
         private void Initialise()
         {
-            rootGroup = new WhereClauseGroup
-            {
-                GroupType = WhereClauseGroupType.Where
-            };
-            currentGroup = rootGroup;
+            this.rootGroup = new WhereClauseGroup
+                             {
+                                 GroupType = WhereClauseGroupType.Where
+                             };
+            this.currentGroup = this.rootGroup;
         }
 
         private void ThrowIfNotInitialised()
         {
-            if (rootGroup == null)
+            if(this.rootGroup == null)
             {
                 throw new InvalidOperationException(
                     "Where must be used before any additional conditions can be applied.");

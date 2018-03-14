@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using FluentAssertions;
@@ -14,33 +15,42 @@ namespace SqlRepo.SqlServer.Tests
         [SetUp]
         public void Setup()
         {
-            dataReaderEntityMapper = new DataReaderEntityMapper();
-            dataReader = Substitute.For<IDataReader>();
-            dataReader.FieldCount.Returns(1);
-            dataReader.GetName(0).Returns("StringProperty");
-            dataReader.GetString(0).Returns("Test String 123");
-            dataReader.Read().Returns(true, false);
-        }
-
-        private DataReaderEntityMapper dataReaderEntityMapper;
-        private IDataReader dataReader;
-
-        private List<TestEntity> AssumeTargetIsExecuted()
-        {
-            return dataReaderEntityMapper.Map<TestEntity>(dataReader).ToList();
+            this.dataReaderEntityMapper = new DataReaderEntityMapper();
+            this.dataReader = Substitute.For<IDataReader>();
+            this.dataReader.FieldCount.Returns(1);
+            this.dataReader.GetName(0)
+                .Returns("StringProperty");
+            this.dataReader.GetString(0)
+                .Returns("Test String 123");
+            this.dataReader.Read()
+                .Returns(true, false);
         }
 
         [Test]
         public void GetStringValueFromDataReader()
         {
-            AssumeTargetIsExecuted();
-            dataReader.Received().GetString(0);
+            this.AssumeTargetIsExecuted();
+            this.dataReader.Received()
+                .GetString(0);
         }
 
         [Test]
         public void SetStringValue()
         {
-            AssumeTargetIsExecuted().First().StringProperty.Should().Be("Test String 123");
+            this.AssumeTargetIsExecuted()
+                .First()
+                .StringProperty.Should()
+                .Be("Test String 123");
+        }
+
+        private IDataReader dataReader;
+
+        private DataReaderEntityMapper dataReaderEntityMapper;
+
+        private List<TestEntity> AssumeTargetIsExecuted()
+        {
+            return this.dataReaderEntityMapper.Map<TestEntity>(this.dataReader)
+                       .ToList();
         }
     }
 }
