@@ -43,6 +43,12 @@ namespace SqlRepo.Testing
                 {
                     return this.GetExpressionValue(callExpression);
                 }
+
+                var bodyExpression = lambdaExpression.Body as MemberExpression;
+                if(bodyExpression != null)
+                {
+                    return this.ResolveValue((dynamic)bodyExpression.Member, null);
+                }
             }
 
             var memberExpression = expression as MemberExpression;
@@ -57,16 +63,16 @@ namespace SqlRepo.Testing
 
         public string GetExpressionValue(MethodCallExpression callExpression)
         {
-            const string template = "{0}{1}{2}";
+            const string Template = "{0}{1}{2}";
             var value = (string)this.GetExpressionValue(callExpression.Arguments.First());
             switch(callExpression.Method.Name)
             {
                 case MethodName.EndsWith:
-                    return string.Format(template, "%", value, string.Empty);
+                    return string.Format(Template, "%", value, string.Empty);
                 case MethodName.StartsWith:
-                    return string.Format(template, string.Empty, value, "%");
+                    return string.Format(Template, string.Empty, value, "%");
                 default:
-                    return string.Format(template, "%", value, "%");
+                    return string.Format(Template, "%", value, "%");
             }
         }
 

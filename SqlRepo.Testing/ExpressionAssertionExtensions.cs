@@ -5,30 +5,30 @@ namespace SqlRepo.Testing
 {
     public static class ExpressionAssertionExtensions
     {
-        private static readonly ExpressionHelper helper = new ExpressionHelper();
+        private static readonly ExpressionHelper Helper = new ExpressionHelper();
 
         public static bool HasMemberName<TEntity, TMember>(this Expression<Func<TEntity, TMember>> expression,
             string expected)
         {
-            return helper.GetMemberName(expression) == expected;
+            return Helper.GetMemberName(expression) == expected;
         }
 
         public static bool HasValue<TEntity, TMember>(this Expression<Func<TEntity, TMember>> expression,
             object expected)
         {
-            return helper.GetExpressionValue(expression) == expected;
+            return Helper.GetExpressionValue(expression) == expected;
         }
         
         public static bool IsComparisonWith<TEntity, TMember>(this Expression<Func<TEntity, TMember>> expression,
             string member, string @operator, string @value)
         {
-            var memberName = helper.GetMemberName(expression);
-            var actualOperator = helper.GetOperator(expression);
-            var expressionValue = helper.GetExpressionValue(expression);
+            var memberName = Helper.GetMemberName(expression);
+            var actualOperator = Helper.GetOperator(expression);
+            var expressionValue = Helper.GetExpressionValue(expression);
             return memberName == member && actualOperator == @operator && expressionValue.ToString() == @value;
         }
 
-        public static bool AreEqual<TEntity>(this Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, bool>> compareTo)
+        public static bool AreEqual<TEntity, TMember>(this Expression<Func<TEntity, TMember>> expression, Expression<Func<TEntity, TMember>> compareTo)
         {
             if(expression.Equals(compareTo) || ReferenceEquals(expression, compareTo))
             {
@@ -40,11 +40,18 @@ namespace SqlRepo.Testing
                 return false;
             }
 
-            var memberNameMatches = helper.GetMemberName(expression) == helper.GetMemberName(compareTo);
-            var operatorMatches = helper.GetOperator(expression) == helper.GetOperator(compareTo);
-            var valueMatches = helper.GetExpressionValue(expression).Equals(helper.GetExpressionValue(compareTo));
+            var memberNameMatches = Helper.GetMemberName(expression) == Helper.GetMemberName(compareTo);
+            var operatorMatches = Helper.GetOperator(expression) == Helper.GetOperator(compareTo);
+            var valueMatches = expression.Body.NodeType == ExpressionType.MemberAccess || Helper.GetExpressionValue(expression).Equals(Helper.GetExpressionValue(compareTo));
 
             return memberNameMatches && operatorMatches && valueMatches;
+        }
+
+
+        public static bool AreEqual<TEntity>(this Expression<Func<TEntity, bool>> expression,
+            Expression<Func<TEntity, bool>> compareTo)
+        {
+            return expression.AreEqual<TEntity, bool>(compareTo);
         }
     }
 }

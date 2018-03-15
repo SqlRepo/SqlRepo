@@ -88,11 +88,11 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void BuildCorrectStatementWithOnlyStringPropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([StringProperty])\nVALUES('My Name');";
+            const string Expected = "INSERT [dbo].[TestEntity]([StringProperty])\nVALUES('My Name');";
             this.Statement.With(e => e.StringProperty, "My Name")
                 .Sql()
                 .Should()
-                .StartWith(expected);
+                .StartWith(Expected);
         }
 
         [Test]
@@ -109,147 +109,147 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void BuildCorrectStatementWithOnlyNullableDateTimePropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([NullableDateTimeProperty])\nVALUES('{0}');";
+            const string Expected = "INSERT [dbo].[TestEntity]([NullableDateTimeProperty])\nVALUES('{0}');";
             var now = DateTime.UtcNow;
             this.Statement.With(e => e.NullableDateTimeProperty, now)
                 .Sql()
                 .Should()
-                .StartWith(string.Format(expected, now.ToString(FormatString.DateTime)));
+                .StartWith(string.Format(Expected, now.ToString(FormatString.DateTime)));
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlyDateTimeOffsetPropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([DateTimeOffsetProperty])\nVALUES('{0}');";
+            const string Expected = "INSERT [dbo].[TestEntity]([DateTimeOffsetProperty])\nVALUES('{0}');";
             var now = DateTimeOffset.UtcNow;
             this.Statement.With(e => e.DateTimeOffsetProperty, now)
                 .Sql()
                 .Should()
-                .StartWith(string.Format(expected, now.ToString(FormatString.DateTimeOffset)));
+                .StartWith(string.Format(Expected, now.ToString(FormatString.DateTimeOffset)));
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlyNullableDateTimeOffsetPropertySet()
         {
-            const string expected =
+            const string Expected =
                 "INSERT [dbo].[TestEntity]([NullableDateTimeOffsetProperty])\nVALUES('{0}');";
             var now = DateTimeOffset.UtcNow;
             this.Statement.With(e => e.NullableDateTimeOffsetProperty, now)
                 .Sql()
                 .Should()
-                .StartWith(string.Format(expected, now.ToString(FormatString.DateTimeOffset)));
+                .StartWith(string.Format(Expected, now.ToString(FormatString.DateTimeOffset)));
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlyIntPropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([IntProperty])\nVALUES(1);";
+            const string Expected = "INSERT [dbo].[TestEntity]([IntProperty])\nVALUES(1);";
             this.Statement.With(e => e.IntProperty, 1)
                 .Sql()
                 .Should()
-                .StartWith(expected);
+                .StartWith(Expected);
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlyDoublePropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([DoubleProperty])\nVALUES(1.01);";
+            const string Expected = "INSERT [dbo].[TestEntity]([DoubleProperty])\nVALUES(1.01);";
             this.Statement.With(e => e.DoubleProperty, 1.01)
                 .Sql()
                 .Should()
-                .StartWith(expected);
+                .StartWith(Expected);
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlyDecimalPropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([DecimalProperty])\nVALUES(1.01);";
+            const string Expected = "INSERT [dbo].[TestEntity]([DecimalProperty])\nVALUES(1.01);";
             this.Statement.With(e => e.DecimalProperty, 1.01M)
                 .Sql()
                 .Should()
-                .StartWith(expected);
+                .StartWith(Expected);
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlySinglePropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([SingleProperty])\nVALUES(1.01);";
+            const string Expected = "INSERT [dbo].[TestEntity]([SingleProperty])\nVALUES(1.01);";
             this.Statement.With(e => e.SingleProperty, 1.01)
                 .Sql()
                 .Should()
-                .StartWith(expected);
+                .StartWith(Expected);
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlyBytePropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([ByteProperty])\nVALUES(1);";
+            const string Expected = "INSERT [dbo].[TestEntity]([ByteProperty])\nVALUES(1);";
             this.Statement.With(e => e.ByteProperty, 1)
                 .Sql()
                 .Should()
-                .StartWith(expected);
+                .StartWith(Expected);
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlyShortPropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([ShortProperty])\nVALUES(1);";
+            const string Expected = "INSERT [dbo].[TestEntity]([ShortProperty])\nVALUES(1);";
             this.Statement.With(e => e.ShortProperty, 1)
                 .Sql()
                 .Should()
-                .StartWith(expected);
+                .StartWith(Expected);
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlyGuidPropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([GuidProperty])\nVALUES('{0}');";
+            const string Expected = "INSERT [dbo].[TestEntity]([GuidProperty])\nVALUES('{0}');";
             var guid = Guid.NewGuid();
             this.Statement.With(e => e.GuidProperty, guid)
                 .Sql()
                 .Should()
-                .StartWith(string.Format(expected, guid));
+                .StartWith(string.Format(Expected, guid));
         }
 
         [Test]
         public void BuildCorrectStatementWithOnlyEnumPropertySet()
         {
-            const string expected = "INSERT [dbo].[TestEntity]([TestEnumProperty])\nVALUES(1);";
+            const string Expected = "INSERT [dbo].[TestEntity]([TestEnumProperty])\nVALUES(1);";
             this.Statement.With(e => e.TestEnumProperty, TestEnum.One)
                 .Sql()
                 .Should()
-                .StartWith(expected);
+                .StartWith(Expected);
         }
 
         [Test]
         public void AlwaysAppendSelectStatementToReturnInsertedRow()
         {
-            const string expected = "SELECT *\nFROM [dbo].[TestEntity]\nWHERE [Id] = SCOPE_IDENTITY();";
+            const string Expected = "SELECT *\nFROM [dbo].[TestEntity]\nWHERE [Id] = SCOPE_IDENTITY();";
 
             this.Statement.With(e => e.StringProperty, "My Name")
                 .Sql()
                 .Should()
-                .EndWith(expected);
+                .EndWith(Expected);
         }
 
         [Test]
         public void ReplaceSingleQuoteWithDoubleQuote()
         {
-            const string expected = @"'The Formatted ''teststring'' string'''";
+            const string Expected = @"'The Formatted ''teststring'' string'''";
             this.Statement.With(e => e.StringProperty, "The Formatted 'teststring' string'")
                 .Sql()
                 .Should()
-                .Contain(expected);
+                .Contain(Expected);
         }
 
         [Test]
         public void NotReplaceDoubleQuote()
         {
-            const string expected = @"'''teststring'''";
+            const string Expected = @"'''teststring'''";
             this.Statement.With(e => e.StringProperty, "''teststring''")
                 .Sql()
                 .Should()
-                .Contain(expected);
+                .Contain(Expected);
         }
 
         [Test]
@@ -257,8 +257,8 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.AssumeTestEntityIsInitialised();
             var expected =
-                "INSERT [dbo].[TestEntity]([DateTimeOffsetProperty], [NullableDateTimeOffsetProperty], [DateTimeProperty], [NullableDateTimeProperty], [DoubleProperty], [IntProperty], [IntProperty2], [StringProperty], [TestEnumProperty], [DecimalProperty], [ByteProperty], [ShortProperty], [SingleProperty], [GuidProperty])\n"
-                + $"VALUES('{this.Entity.DateTimeOffsetProperty.ToString(FormatString.DateTimeOffset)}', '{this.Entity.NullableDateTimeOffsetProperty.Value.ToString(FormatString.DateTimeOffset)}', '{this.Entity.DateTimeProperty.ToString(FormatString.DateTime)}', '{this.Entity.NullableDateTimeProperty.Value.ToString(FormatString.DateTime)}', {this.Entity.DoubleProperty}, {this.Entity.IntProperty}, {this.Entity.IntProperty2}, '{this.Entity.StringProperty}', {(int)this.Entity.TestEnumProperty}, {this.Entity.DecimalProperty}, {this.Entity.ByteProperty}, {this.Entity.ShortProperty}, {this.Entity.SingleProperty}, '{this.Entity.GuidProperty}');";
+                "INSERT [dbo].[TestEntity]([BooleanProperty], [BooleanProperty2], [ByteProperty], [DateTimeOffsetProperty], [DateTimeProperty], [DecimalProperty], [DoubleProperty], [GuidProperty], [IntProperty], [IntProperty2], [NullableDateTimeOffsetProperty], [NullableDateTimeProperty], [ShortProperty], [SingleProperty], [StringProperty], [TestEnumProperty])\n"
+                + $"VALUES(0, 0, 1, '{this.Entity.DateTimeOffsetProperty.ToString(FormatString.DateTimeOffset)}', '{this.Entity.DateTimeProperty.ToString(FormatString.DateTime)}', {this.Entity.DecimalProperty}, {this.Entity.DoubleProperty}, '{this.Entity.GuidProperty}', {this.Entity.IntProperty}, {this.Entity.IntProperty2}, '{this.Entity.NullableDateTimeOffsetProperty.Value.ToString(FormatString.DateTimeOffset)}', '{this.Entity.NullableDateTimeProperty.Value.ToString(FormatString.DateTime)}', {this.Entity.ShortProperty}, {this.Entity.SingleProperty}, '{this.Entity.StringProperty}', {(int)this.Entity.TestEnumProperty});";
             this.Statement.For(this.Entity)
                 .Sql()
                 .Should()

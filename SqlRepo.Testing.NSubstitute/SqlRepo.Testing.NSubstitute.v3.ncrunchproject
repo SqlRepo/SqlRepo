@@ -1,0 +1,7 @@
+﻿<ProjectConfiguration>
+  <Settings>
+    <MSTestThreadApartmentState>MTA</MSTestThreadApartmentState>
+    <NUnit3Enabled>False</NUnit3Enabled>
+    <XUnit2Enabled>False</XUnit2Enabled>
+  </Settings>
+</ProjectConfiguration>

@@ -421,6 +421,34 @@ namespace SqlRepo.Testing.NSubstitute
             return selectStatement.ReceivedWhereLessThan(property, value.ToString(), alias);
         }
 
+        public static ISelectStatement<TEntity> ReceivedWhere<TEntity>(this ISelectStatement<TEntity> selectStatement,
+            Expression<Func<TEntity, bool>> expression)
+            where TEntity: class, new()
+        {
+            return selectStatement.Received()
+                                  .Where(Arg.Is<Expression<Func<TEntity, bool>>>(e => e.AreEqual(expression)));
+        }
+
+        public static ISelectStatement<TEntity> DidNotReceiveWhere<TEntity>(
+            this ISelectStatement<TEntity> selectStatement,
+            Expression<Func<TEntity, bool>> expression)
+            where TEntity: class, new()
+        {
+            return selectStatement.DidNotReceive()
+                                  .Where(
+                                      Arg.Is<Expression<Func<TEntity, bool>>>(e => e.AreEqual(expression)));
+        }
+
+        public static ISelectStatement<TEntity> ReceivedSelect<TEntity>(
+            this ISelectStatement<TEntity> selectStatement,
+            Expression<Func<TEntity, object>> expression)
+            where TEntity: class, new()
+        {
+            return selectStatement.Received()
+                                  .Select<TEntity>(
+                                      Arg.Is<Expression<Func<TEntity, object>>>(e => e.AreEqual(expression)));
+        }
+
         private static bool AssertMatch<T>(IReadOnlyCollection<T> expected, IReadOnlyList<T> actual)
         {
             if(expected.Count != actual.Count)

@@ -42,6 +42,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Testing.Moq", "SqlR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepo.Testing.Tests", "SqlRepo.Testing.Tests\SqlRepo.Testing.Tests.csproj", "{83CEDF6D-5BF3-464D-9C58-82B3343D75C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepo.Testing.NSubstitute.Sample.Tests", "SqlRepo.Testing.NSubstitute.Sample.Tests\SqlRepo.Testing.NSubstitute.Sample.Tests.csproj", "{D18B54AB-B689-4720-B18D-593434279CE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,10 @@ Global
 		{83CEDF6D-5BF3-464D-9C58-82B3343D75C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83CEDF6D-5BF3-464D-9C58-82B3343D75C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83CEDF6D-5BF3-464D-9C58-82B3343D75C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D18B54AB-B689-4720-B18D-593434279CE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D18B54AB-B689-4720-B18D-593434279CE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D18B54AB-B689-4720-B18D-593434279CE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D18B54AB-B689-4720-B18D-593434279CE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

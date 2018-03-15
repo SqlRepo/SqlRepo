@@ -5,19 +5,21 @@ namespace SqlRepo.Testing
 {
     public class TestEntity : Entity<int>
     {
+        public bool BooleanProperty { get; set; }
+        public bool BooleanProperty2 { get; set; }
+        public byte ByteProperty { get; set; }
         public DateTimeOffset DateTimeOffsetProperty { get; set; }
-        public DateTimeOffset? NullableDateTimeOffsetProperty { get; set; }
         public DateTime DateTimeProperty { get; set; }
-        public DateTime? NullableDateTimeProperty { get; set; }
+        public decimal DecimalProperty { get; set; }
         public double DoubleProperty { get; set; }
+        public Guid GuidProperty { get; set; }
         public int IntProperty { get; set; }
         public int IntProperty2 { get; set; }
-        public string StringProperty { get; set; }
-        public TestEnum TestEnumProperty { get; set; }
-        public decimal DecimalProperty { get; set; }
-        public byte ByteProperty { get; set; }
+        public DateTimeOffset? NullableDateTimeOffsetProperty { get; set; }
+        public DateTime? NullableDateTimeProperty { get; set; }
         public short ShortProperty { get; set; }
         public float SingleProperty { get; set; }
-        public Guid GuidProperty { get; set; }
+        public string StringProperty { get; set; }
+        public TestEnum TestEnumProperty { get; set; }
     }
 }

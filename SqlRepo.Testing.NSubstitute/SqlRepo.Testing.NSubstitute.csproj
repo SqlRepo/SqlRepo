@@ -13,16 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\SqlRepo.Testing\ExpressionAssertionExtensions.cs" Link="ExpressionAssertionExtensions.cs" />
-    <Compile Include="..\SqlRepo.Testing\ExpressionHelper.cs" Link="ExpressionHelper.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NSubstitute" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
+    <ProjectReference Include="..\SqlRepo.Testing\SqlRepo.Testing.csproj" />
     <ProjectReference Include="..\SqlRepo\SqlRepo.csproj" />
   </ItemGroup>
 
