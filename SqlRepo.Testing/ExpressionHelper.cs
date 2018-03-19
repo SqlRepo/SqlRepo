@@ -49,6 +49,12 @@ namespace SqlRepo.Testing
                 {
                     return this.ResolveValue((dynamic)bodyExpression.Member, null);
                 }
+
+                var bodyUnaryExpression = lambdaExpression.Body as UnaryExpression;
+                if(bodyUnaryExpression != null)
+                {
+                    
+                }
             }
 
             var memberExpression = expression as MemberExpression;

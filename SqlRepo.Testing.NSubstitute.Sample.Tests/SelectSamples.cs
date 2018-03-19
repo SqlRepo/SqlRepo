@@ -42,6 +42,13 @@ namespace SqlRepo.Testing.NSubstitute.Sample.Tests
             this.target.ReceivedSelect(e => e.StringProperty);
         }
 
+        [Test]
+        public void SelectMultipleMembersSample()
+        {
+            this.builder.BuildMultipleMemberSelect();
+            this.target.ReceivedSelect(e => e.ByteProperty, e => e.DecimalProperty);
+        }
+
         private ISelectStatement<TestEntity> target;
         private SampleSelectBuilder builder;
     }

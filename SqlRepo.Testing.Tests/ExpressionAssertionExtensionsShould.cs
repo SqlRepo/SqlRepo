@@ -12,7 +12,7 @@ namespace SqlRepo.Testing.Tests
         public void MatchTheSameEqualityExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 3;
-            expression.AreEqual(e => e.Id == 3)
+            expression.IsEqual(e => e.Id == 3)
                       .Should()
                       .BeTrue();
         }
@@ -21,7 +21,7 @@ namespace SqlRepo.Testing.Tests
         public void NotMatchDifferentEqualityExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 3;
-            expression.AreEqual(e => e.Id == 4)
+            expression.IsEqual(e => e.Id == 4)
                       .Should()
                       .BeFalse();
         }
@@ -30,7 +30,7 @@ namespace SqlRepo.Testing.Tests
         public void MatchTheSameInequalityExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id != 3;
-            expression.AreEqual(e => e.Id != 3)
+            expression.IsEqual(e => e.Id != 3)
                       .Should()
                       .BeTrue();
         }
@@ -39,7 +39,7 @@ namespace SqlRepo.Testing.Tests
         public void NotMatchDifferentInequalityExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id != 3;
-            expression.AreEqual(e => e.Id != 4)
+            expression.IsEqual(e => e.Id != 4)
                       .Should()
                       .BeFalse();
         }
@@ -48,7 +48,7 @@ namespace SqlRepo.Testing.Tests
         public void MatchTheSameGreaterThanExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id > 3;
-            expression.AreEqual(e => e.Id > 3)
+            expression.IsEqual(e => e.Id > 3)
                       .Should()
                       .BeTrue();
         }
@@ -57,7 +57,7 @@ namespace SqlRepo.Testing.Tests
         public void NotMatchDifferentGreaterThanExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id > 3;
-            expression.AreEqual(e => e.Id > 4)
+            expression.IsEqual(e => e.Id > 4)
                       .Should()
                       .BeFalse();
         }
@@ -66,7 +66,7 @@ namespace SqlRepo.Testing.Tests
         public void MatchTheSameGreaterThanOrEqualExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id >= 3;
-            expression.AreEqual(e => e.Id >= 3)
+            expression.IsEqual(e => e.Id >= 3)
                       .Should()
                       .BeTrue();
         }
@@ -75,7 +75,7 @@ namespace SqlRepo.Testing.Tests
         public void NotMatchDifferentGreaterThanOrEqualExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id >= 3;
-            expression.AreEqual(e => e.Id >= 4)
+            expression.IsEqual(e => e.Id >= 4)
                       .Should()
                       .BeFalse();
         }
@@ -84,7 +84,7 @@ namespace SqlRepo.Testing.Tests
         public void MatchTheSameLessThanExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id < 3;
-            expression.AreEqual(e => e.Id < 3)
+            expression.IsEqual(e => e.Id < 3)
                       .Should()
                       .BeTrue();
         }
@@ -93,7 +93,7 @@ namespace SqlRepo.Testing.Tests
         public void NotMatchDifferentLessThanExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id < 3;
-            expression.AreEqual(e => e.Id < 4)
+            expression.IsEqual(e => e.Id < 4)
                       .Should()
                       .BeFalse();
         }
@@ -102,7 +102,7 @@ namespace SqlRepo.Testing.Tests
         public void MatchTheSameLessThanOrEqualExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id <= 3;
-            expression.AreEqual(e => e.Id <= 3)
+            expression.IsEqual(e => e.Id <= 3)
                       .Should()
                       .BeTrue();
         }
@@ -111,7 +111,7 @@ namespace SqlRepo.Testing.Tests
         public void NotMatchDifferentLessThanOrEqualExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id <= 3;
-            expression.AreEqual(e => e.Id <= 4)
+            expression.IsEqual(e => e.Id <= 4)
                       .Should()
                       .BeFalse();
         }
@@ -120,7 +120,7 @@ namespace SqlRepo.Testing.Tests
         public void MatchSameBooleanMemberExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.BooleanProperty;
-            expression.AreEqual(e => e.BooleanProperty2)
+            expression.IsEqual(e => e.BooleanProperty2)
                       .Should()
                       .BeFalse();
         }
@@ -129,7 +129,7 @@ namespace SqlRepo.Testing.Tests
         public void NotMatchDifferentBooleanMemberExpressions()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.BooleanProperty;
-            expression.AreEqual(e => e.BooleanProperty2)
+            expression.IsEqual(e => e.BooleanProperty2)
                       .Should()
                       .BeFalse();
         }

@@ -426,7 +426,7 @@ namespace SqlRepo.Testing.NSubstitute
             where TEntity: class, new()
         {
             return selectStatement.Received()
-                                  .Where(Arg.Is<Expression<Func<TEntity, bool>>>(e => e.AreEqual(expression)));
+                                  .Where(Arg.Is<Expression<Func<TEntity, bool>>>(e => e.IsEqual(expression)));
         }
 
         public static ISelectStatement<TEntity> DidNotReceiveWhere<TEntity>(
@@ -436,17 +436,26 @@ namespace SqlRepo.Testing.NSubstitute
         {
             return selectStatement.DidNotReceive()
                                   .Where(
-                                      Arg.Is<Expression<Func<TEntity, bool>>>(e => e.AreEqual(expression)));
+                                      Arg.Is<Expression<Func<TEntity, bool>>>(e => e.IsEqual(expression)));
         }
 
         public static ISelectStatement<TEntity> ReceivedSelect<TEntity>(
             this ISelectStatement<TEntity> selectStatement,
-            Expression<Func<TEntity, object>> expression)
+            Expression<Func<TEntity, object>> expression,
+            params Expression<Func<TEntity, object>>[] additionalExpressions)
             where TEntity: class, new()
         {
+            if(additionalExpressions == null)
+            {
+                return selectStatement.Received()
+                                      .Select(Arg.Is<Expression<Func<TEntity, object>>>(
+                                          e => e.IsEqual(expression)));
+            }
+
             return selectStatement.Received()
-                                  .Select<TEntity>(
-                                      Arg.Is<Expression<Func<TEntity, object>>>(e => e.AreEqual(expression)));
+                                  .Select(Arg.Is<Expression<Func<TEntity, object>>>(
+                                      e => e.IsEqual(expression)),
+                                      Arg.Is<Expression<Func<TEntity, object>>[]>(e => e.AreAllEqual(additionalExpressions)));
         }
 
         private static bool AssertMatch<T>(IReadOnlyCollection<T> expected, IReadOnlyList<T> actual)

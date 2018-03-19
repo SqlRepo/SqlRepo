@@ -28,5 +28,10 @@ namespace SqlRepo.Testing.NSubstitute.Sample.Tests
         {
             this.selectStatement.Select(e => e.StringProperty);
         }
+
+        public void BuildMultipleMemberSelect()
+        {
+            this.selectStatement.Select(e => e.ByteProperty, e => e.DecimalProperty);
+        }
     }
 }
