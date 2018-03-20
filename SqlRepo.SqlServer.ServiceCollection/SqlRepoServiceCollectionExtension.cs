@@ -12,6 +12,7 @@ namespace SqlRepo.SqlServer.ServiceCollection
             serviceCollection.AddTransient<IStatementFactoryProvider, StatementFactoryProvider>();
             serviceCollection.AddTransient<IEntityMapper, DataReaderEntityMapper>();
             serviceCollection.AddTransient<IWritablePropertyMatcher, WritablePropertyMatcher>();
+            serviceCollection.AddTransient<ISqlLogger, NoOpSqlLogger>();
 
             return serviceCollection;
         }
