@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SqlRepo.Abstractions;
 
 namespace SqlRepo.SqlServer.Static
@@ -24,9 +25,18 @@ namespace SqlRepo.SqlServer.Static
             RepoFactory.connectionProvider = connectionProvider;
         }
 
-        public static void UseLogger(ISqlLogger sqlLogger)
+        public static void UseLogger(ISqlLogWriter sqlLogWriter)
         {
-            RepoFactory.sqlLogger = sqlLogger;
+            sqlLogger = new SqlLogger(new List<ISqlLogWriter>
+                                      {
+                                          sqlLogWriter
+                                      });
+            EnsureRepositoryFactoryInstance();
+        }
+
+        public static void UseLoggers(IList<ISqlLogWriter> sqlLogWriters)
+        {
+            sqlLogger = new SqlLogger(sqlLogWriters);
             EnsureRepositoryFactoryInstance();
         }
 
@@ -43,15 +53,11 @@ namespace SqlRepo.SqlServer.Static
                     "Create cannot be used until an IConnectionProvider has been set, have you forgotten to call UseConnectionProvider(...)");
             }
 
-            if(sqlLogger == null)
-            {
-                sqlLogger = new NoOpSqlLogger();
-            }
-
             var statementFactoryProvider = new StatementFactoryProvider(DataReaderEntityMapper,
                 WritablePropertyMatcher,
                 connectionProvider,
                 sqlLogger);
+
             repositoryFactory = new RepositoryFactory(statementFactoryProvider);
         }
     }

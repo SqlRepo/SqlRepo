@@ -16,6 +16,8 @@ namespace SqlRepo.SqlServer.NInject
                 .To<DataReaderEntityMapper>();
             this.Bind<IWritablePropertyMatcher>()
                 .To<WritablePropertyMatcher>();
+            this.Bind<ISqlLogger>()
+                .To<SqlLogger>();
         }
     }
 }
