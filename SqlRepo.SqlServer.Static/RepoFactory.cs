@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SqlRepo.Abstractions;
 
 namespace SqlRepo.SqlServer.Static
@@ -10,7 +11,7 @@ namespace SqlRepo.SqlServer.Static
             new WritablePropertyMatcher();
         private static readonly DataReaderEntityMapper DataReaderEntityMapper = new DataReaderEntityMapper();
         private static IRepositoryFactory repositoryFactory;
-        private static ISqlLogWriter sqlLogWriter;
+        private static ISqlLogger sqlLogger;
         private static IConnectionProvider connectionProvider;
 
         public static IRepository<TEntity> Create<TEntity>()
@@ -27,7 +28,16 @@ namespace SqlRepo.SqlServer.Static
 
         public static void UseLogger(ISqlLogWriter sqlLogWriter)
         {
-            RepoFactory.sqlLogWriter = sqlLogWriter;
+            sqlLogger = new SqlLogger(new List<ISqlLogWriter>
+                                      {
+                                          sqlLogWriter
+                                      });
+            EnsureRepositoryFactoryInstance();
+        }
+
+        public static void UseLoggers(IList<ISqlLogWriter> sqlLogWriters)
+        {
+            sqlLogger = new SqlLogger(sqlLogWriters.ToList());
             EnsureRepositoryFactoryInstance();
         }
 
@@ -44,18 +54,10 @@ namespace SqlRepo.SqlServer.Static
                     "Create cannot be used until an IConnectionProvider has been set, have you forgotten to call UseConnectionProvider(...)");
             }
 
-            if(sqlLogWriter == null)
-            {
-                sqlLogWriter = new NoOpSqlLogger();
-            }
-
             var statementFactoryProvider = new StatementFactoryProvider(DataReaderEntityMapper,
                 WritablePropertyMatcher,
                 connectionProvider,
-                new SqlLogger(new List<ISqlLogWriter>
-                              {
-                                  sqlLogWriter
-                              }));
+                sqlLogger);
 
             repositoryFactory = new RepositoryFactory(statementFactoryProvider);
         }
