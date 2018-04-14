@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SqlRepo.Abstractions;
 
 namespace SqlRepo.SqlServer.Static
@@ -9,7 +10,7 @@ namespace SqlRepo.SqlServer.Static
             new WritablePropertyMatcher();
         private static readonly DataReaderEntityMapper DataReaderEntityMapper = new DataReaderEntityMapper();
         private static IRepositoryFactory repositoryFactory;
-        private static ISqlLogger sqlLogger;
+        private static ISqlLogWriter sqlLogWriter;
         private static IConnectionProvider connectionProvider;
 
         public static IRepository<TEntity> Create<TEntity>()
@@ -24,9 +25,9 @@ namespace SqlRepo.SqlServer.Static
             RepoFactory.connectionProvider = connectionProvider;
         }
 
-        public static void UseLogger(ISqlLogger sqlLogger)
+        public static void UseLogger(ISqlLogWriter sqlLogWriter)
         {
-            RepoFactory.sqlLogger = sqlLogger;
+            RepoFactory.sqlLogWriter = sqlLogWriter;
             EnsureRepositoryFactoryInstance();
         }
 
@@ -43,15 +44,19 @@ namespace SqlRepo.SqlServer.Static
                     "Create cannot be used until an IConnectionProvider has been set, have you forgotten to call UseConnectionProvider(...)");
             }
 
-            if(sqlLogger == null)
+            if(sqlLogWriter == null)
             {
-                sqlLogger = new NoOpSqlLogger();
+                sqlLogWriter = new NoOpSqlLogger();
             }
 
             var statementFactoryProvider = new StatementFactoryProvider(DataReaderEntityMapper,
                 WritablePropertyMatcher,
                 connectionProvider,
-                sqlLogger);
+                new SqlLogger(new List<ISqlLogWriter>
+                              {
+                                  sqlLogWriter
+                              }));
+
             repositoryFactory = new RepositoryFactory(statementFactoryProvider);
         }
     }
