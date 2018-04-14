@@ -17,6 +17,8 @@ namespace SqlRepo.SqlServer.Autofac
                             .As<IEntityMapper>();
             containerBuilder.RegisterType<WritablePropertyMatcher>()
                             .As<IWritablePropertyMatcher>();
+            containerBuilder.RegisterType<SqlLogger>()
+                            .As<ISqlLogger>();
         }
     }
 }

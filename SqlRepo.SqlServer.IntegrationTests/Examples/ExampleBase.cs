@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.ConnectionProviders;
 
 namespace SqlRepo.SqlServer.IntegrationTests.Examples
@@ -15,7 +17,10 @@ namespace SqlRepo.SqlServer.IntegrationTests.Examples
                 new DataReaderEntityMapper(),
                 new WritablePropertyMatcher(),
                 new AppConfigFirstConnectionProvider(),
-                new ConsoleSqlLogger()));
+                new SqlLogger(new List<ISqlLogWriter>
+                              {
+                                  new ConsoleSqlLogger()
+                              })));
         }
     }
 }
