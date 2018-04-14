@@ -6,9 +6,9 @@ namespace SqlRepo
 {
     public class SqlLogger : ISqlLogger
     {
-        private readonly List<ISqlLogWriter> sqlLogWriters;
+        private readonly IEnumerable<ISqlLogWriter> sqlLogWriters;
 
-        public SqlLogger(List<ISqlLogWriter> sqlLogWriters)
+        public SqlLogger(IEnumerable<ISqlLogWriter> sqlLogWriters)
         {
             this.sqlLogWriters = sqlLogWriters;
         }

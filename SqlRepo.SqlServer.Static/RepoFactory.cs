@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SqlRepo.Abstractions;
 
 namespace SqlRepo.SqlServer.Static
@@ -37,7 +36,7 @@ namespace SqlRepo.SqlServer.Static
 
         public static void UseLoggers(IList<ISqlLogWriter> sqlLogWriters)
         {
-            sqlLogger = new SqlLogger(sqlLogWriters.ToList());
+            sqlLogger = new SqlLogger(sqlLogWriters);
             EnsureRepositoryFactoryInstance();
         }
 
