@@ -27,6 +27,8 @@ namespace GettingStartedIoC
 
             var gettingStarted = container.Resolve<IGettingStarted>();
             gettingStarted.DoIt();
+            Console.ReadLine();
+
         }
     }
 }
