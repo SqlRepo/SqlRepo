@@ -28,28 +28,28 @@ namespace SqlRepo.SqlServer.Tests
         public void NotGenerateExceptionForMissingDependenciesOnRequestForDelete()
         {
             this.statementFactory.Invoking(e => e.CreateDelete<TestEntity>())
-                .ShouldNotThrow<ArgumentNullException>();
+                .Should().NotThrow<ArgumentNullException>();
         }
 
         [Test]
         public void NotGenerateExceptionForMissingDependenciesOnRequestForInsert()
         {
             this.statementFactory.Invoking(e => e.CreateInsert<TestEntity>())
-                .ShouldNotThrow<ArgumentNullException>();
+                .Should().NotThrow<ArgumentNullException>();
         }
 
         [Test]
         public void NotGenerateExceptionForMissingDependenciesOnRequestForSelect()
         {
             this.statementFactory.Invoking(e => e.CreateSelect<TestEntity>())
-                .ShouldNotThrow<ArgumentNullException>();
+                .Should().NotThrow<ArgumentNullException>();
         }
 
         [Test]
         public void NotGenerateExceptionForMissingDependenciesOnRequestForUpdate()
         {
             this.statementFactory.Invoking(e => e.CreateUpdate<TestEntity>())
-                .ShouldNotThrow<ArgumentNullException>();
+                .Should().NotThrow<ArgumentNullException>();
         }
 
         [Test]

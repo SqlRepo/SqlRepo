@@ -35,7 +35,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Where<TestEntity>(e => e.IntProperty == 2)
                 .Invoking(b => b.And<TestEntity>(e => e.IntProperty == 1))
-                .ShouldNotThrow<InvalidOperationException>();
+                .Should().NotThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Where<TestEntity>(e => e.IntProperty == 2)
                 .Invoking(b => b.NestedAnd<TestEntity>(e => e.IntProperty == 1))
-                .ShouldNotThrow<InvalidOperationException>();
+                .Should().NotThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Where<TestEntity>(e => e.IntProperty == 2)
                 .Invoking(b => b.NestedOr<TestEntity>(e => e.IntProperty == 1))
-                .ShouldNotThrow<InvalidOperationException>();
+                .Should().NotThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -59,7 +59,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.builder.Where<TestEntity>(e => e.IntProperty == 2)
                 .Invoking(b => b.Or<TestEntity>(e => e.IntProperty == 1))
-                .ShouldNotThrow<InvalidOperationException>();
+                .Should().NotThrow<InvalidOperationException>();
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace SqlRepo.SqlServer.Tests
             builder.Where<TestEntity>(e => e.StringProperty == "TestString")
                 .Or<TestEntity>(e => e.StringProperty == stringProperty)
                 .Invoking(e => e.Sql())
-                .ShouldNotThrow();
+                .Should().NotThrow();
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace SqlRepo.SqlServer.Tests
             builder.Where<TestEntity>(e => e.IntProperty > 2)
                 .And<TestEntity>(e => e.IntProperty < intProperty)
                 .Invoking(e => e.Sql())
-                .ShouldNotThrow();
+                .Should().NotThrow();
         }
 
         [Test]
@@ -100,7 +100,7 @@ namespace SqlRepo.SqlServer.Tests
             builder.Where<TestEntity>(e => e.DateTimeProperty > DateTime.UtcNow)
                 .And<TestEntity>(e => e.DateTimeProperty < DateTime.UtcNow)
                 .Invoking(e => e.Sql())
-                .ShouldNotThrow();
+                .Should().NotThrow();
         }
 
         [Test]
@@ -367,28 +367,28 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowExceptionIfAndIsUsedBeforeWhere()
         {
             this.builder.Invoking(b => b.And<TestEntity>(e => e.IntProperty == 1))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfNestedAndIsUsedBeforeWhere()
         {
             this.builder.Invoking(b => b.NestedAnd<TestEntity>(e => e.IntProperty == 1))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfNestedOrIsUsedBeforeWhere()
         {
             this.builder.Invoking(b => b.NestedOr<TestEntity>(e => e.IntProperty == 1))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfOrIsUsedBeforeWhere()
         {
             this.builder.Invoking(b => b.Or<TestEntity>(e => e.IntProperty == 1))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         private IWhereClauseBuilder builder;

@@ -271,7 +271,7 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeTestEntityIsInitialised();
             this.Statement.For(this.Entity);
             this.Statement.Invoking(s => s.With(e => e.ByteProperty, 1))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -280,14 +280,14 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeTestEntityIsInitialised();
             this.Statement.With(e => e.ByteProperty, 1);
             this.Statement.Invoking(s => s.For(this.Entity))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfBuildCalledWithoutInitialisingStatement()
         {
             this.Statement.Invoking(s => s.Sql())
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]

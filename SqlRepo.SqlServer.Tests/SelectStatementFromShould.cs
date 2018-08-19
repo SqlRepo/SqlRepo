@@ -59,13 +59,13 @@ namespace SqlRepo.SqlServer.Tests
             const string ExpectedMessage =
                 "The entity has already been joined into the query, you must use a unique alias, table name override or schema override to join it again.";
             this.Statement.Invoking(e => e.InnerJoin<TestEntity>())
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
             this.Statement.Invoking(e => e.LeftOuterJoin<TestEntity>())
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
             this.Statement.Invoking(e => e.RightOuterJoin<TestEntity>())
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
         }
 
@@ -189,13 +189,13 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowErrorIfOnUsedBeforeAnyJoin()
         {
             this.Statement.Invoking(e => e.On<TestEntity, InnerEntity>((l, r) => l.IntProperty == r.IntProperty))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage("On cannot be used before initialising a join with one of the Join methods.");
             this.Statement.Invoking(e => e.OrOn<TestEntity, InnerEntity>((l, r) => l.IntProperty == r.IntProperty))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage("On cannot be used before initialising a join with one of the Join methods.");
             this.Statement.Invoking(e => e.AndOn<TestEntity, InnerEntity>((l, r) => l.IntProperty == r.IntProperty))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage("On cannot be used before initialising a join with one of the Join methods.");
         }
 

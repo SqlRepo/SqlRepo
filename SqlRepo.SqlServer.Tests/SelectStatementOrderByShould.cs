@@ -14,10 +14,10 @@ namespace SqlRepo.SqlServer.Tests
             const string ExpectedMessage =
                 "A table specification for the entity type and alias must be set using From or one of the Join methods before filtering, sorting or grouping can be applied.";
             this.Statement.Invoking(c => c.OrderBy<InnerEntity>(e => e.IntProperty))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
             this.Statement.Invoking(c => c.OrderByDescending<InnerEntity>(e => e.IntProperty))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
         }
 

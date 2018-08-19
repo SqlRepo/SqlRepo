@@ -1,5 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System;
 using FluentAssertions;
+using NUnit.Framework;
 using SqlRepo.SqlServer.Abstractions;
 using SqlRepo.Testing;
 
@@ -30,6 +31,48 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
+        public void NotThrowErrorIfDifferentTypesJoinedWithoutAliasing()
+        {
+            this.builder.Invoking(b => b.From<TestEntity>()
+                                        .InnerJoin<TestEntity, InnerEntity>())
+                .Should()
+                .NotThrow<AliasRequiredException>();
+        }
+
+        [Test]
+        public void ReturnCorrectRootTableDefinitionOfJoinedTableWithoutOverrides()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .InnerJoin<TestEntity, InnerEntity>()
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "dbo", null);
+        }
+
+        [Test]
+        public void ReturnCorrectRootTableDefinitionWithAlias()
+        {
+            var result = this.builder.From<TestEntity>("a")
+                             .TableDefinition<TestEntity>();
+            this.AssertTableDefinitionIsCorrect<TestEntity>(result, "TestEntity", "dbo", "a");
+        }
+
+        [Test]
+        public void ReturnCorrectRootTableDefinitionWithNameOverride()
+        {
+            var result = this.builder.From<TestEntity>(tableName: "Table1")
+                             .TableDefinition<TestEntity>();
+            this.AssertTableDefinitionIsCorrect<TestEntity>(result, "Table1", "dbo", null);
+        }
+
+        [Test]
+        public void ReturnCorrectRootTableDefinitionWithSchemaOverride()
+        {
+            var result = this.builder.From<TestEntity>(tableSchema: "schema")
+                             .TableDefinition<TestEntity>();
+            this.AssertTableDefinitionIsCorrect<TestEntity>(result, "TestEntity", "schema", null);
+        }
+
+        [Test]
         public void ReturnCorrectSqlForFromWithNoOverridesOrAlias()
         {
             const string expected = "FROM [dbo].[TestEntity]";
@@ -50,6 +93,142 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
+        public void ReturnCorrectSqlForInnerJoinWithOverridesAndAlias()
+        {
+            const string expected =
+                "FROM [dbo].[TestEntity]\nINNER JOIN [dbo].[InnerEntity]\nON [dbo].[TestEntity].[Id] = [dbo].[InnerEntity].[TestEntityId]";
+            this.builder.From<TestEntity>()
+                .InnerJoin<TestEntity, InnerEntity>()
+                .On<TestEntity, InnerEntity>((l, r) => l.Id == r.TestEntityId)
+                .Sql()
+                .Should()
+                .StartWith(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForLeftOuterJoinWithOverridesAndAlias()
+        {
+            const string expected =
+                "FROM [dbo].[TestEntity]\nLEFT OUTER JOIN [dbo].[InnerEntity]\nON [dbo].[TestEntity].[Id] = [dbo].[InnerEntity].[TestEntityId]";
+            this.builder.From<TestEntity>()
+                .LeftOuterJoin<TestEntity, InnerEntity>()
+                .On<TestEntity, InnerEntity>((l, r) => l.Id == r.TestEntityId)
+                .Sql()
+                .Should()
+                .StartWith(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectSqlForRightOuterJoinWithoutOverridesAndAlias()
+        {
+            const string expected =
+                "FROM [dbo].[TestEntity]\nRIGHT OUTER JOIN [dbo].[InnerEntity]\nON [dbo].[TestEntity].[Id] = [dbo].[InnerEntity].[TestEntityId]";
+            this.builder.From<TestEntity>()
+                .RightOuterJoin<TestEntity, InnerEntity>()
+                .On<TestEntity, InnerEntity>((l, r) => l.Id == r.TestEntityId)
+                .Sql()
+                .Should()
+                .StartWith(expected);
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionByAlias()
+        {
+            this.builder.From<TestEntity>()
+                .RightOuterJoin<TestEntity, TestEntity>(rightTableAlias: "a");
+
+            this.AssertTableDefinitionIsCorrect<TestEntity>(this.builder.TableDefinition<TestEntity>(),
+                "TestEntity",
+                "dbo",
+                null);
+            this.AssertTableDefinitionIsCorrect<TestEntity>(this.builder.TableDefinition<TestEntity>("a"),
+                "TestEntity",
+                "dbo",
+                "a");
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionOfJoinedTableWithAlias()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .InnerJoin<TestEntity, InnerEntity>(rightTableAlias: "alias")
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "dbo", "alias");
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionOfJoinedTableWithoutNameOverride()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .InnerJoin<TestEntity, InnerEntity>(rightTableName: "Inner")
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "Inner", "dbo", null);
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionOfJoinedTableWithSchemaOverride()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .InnerJoin<TestEntity, InnerEntity>(rightTableSchema: "schema")
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "schema", null);
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionOfLeftJoinedTableWithAlias()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .LeftOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "alias")
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "dbo", "alias");
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionOfLeftJoinedTableWithoutNameOverride()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .LeftOuterJoin<TestEntity, InnerEntity>(rightTableName: "Inner")
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "Inner", "dbo", null);
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionOfLeftJoinedTableWithSchemaOverride()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .LeftOuterJoin<TestEntity, InnerEntity>(rightTableSchema: "schema")
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "schema", null);
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionOfRightJoinedTableWithAlias()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .RightOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "alias")
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "dbo", "alias");
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionOfRightJoinedTableWithoutNameOverride()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .RightOuterJoin<TestEntity, InnerEntity>(rightTableName: "Inner")
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "Inner", "dbo", null);
+        }
+
+        [Test]
+        public void ReturnCorrectTableDefinitionOfRightJoinedTableWithSchemaOverride()
+        {
+            var result = this.builder.From<TestEntity>()
+                             .RightOuterJoin<TestEntity, InnerEntity>(rightTableSchema: "schema")
+                             .TableDefinition<InnerEntity>();
+            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "schema", null);
+        }
+
+        [Test]
         public void ReturnCorrectTablesSqlForInnerJoinWithNoOverridesOrAlias()
         {
             const string expected = "FROM [dbo].[TestEntity]\nINNER JOIN [dbo].[InnerEntity]";
@@ -66,19 +245,6 @@ namespace SqlRepo.SqlServer.Tests
             const string expected = "FROM [Schema].[Left] AS [a]\nINNER JOIN [Schema].[Right] AS [b]";
             this.builder.From<TestEntity>("a", "Left", "Schema")
                 .InnerJoin<TestEntity, InnerEntity>("a", "b", "Right", "Schema")
-                .Sql()
-                .Should()
-                .StartWith(expected);
-        }
-
-        [Test]
-        public void ReturnCorrectSqlForInnerJoinWithOverridesAndAlias()
-        {
-            const string expected =
-                "FROM [dbo].[TestEntity]\nINNER JOIN [dbo].[InnerEntity]\nON [dbo].[TestEntity].[Id] = [dbo].[InnerEntity].[TestEntityId]";
-            this.builder.From<TestEntity>()
-                .InnerJoin<TestEntity, InnerEntity>()
-                .On<TestEntity, InnerEntity>((l, r) => l.Id == r.TestEntityId)
                 .Sql()
                 .Should()
                 .StartWith(expected);
@@ -107,19 +273,6 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void ReturnCorrectSqlForLeftOuterJoinWithOverridesAndAlias()
-        {
-            const string expected =
-                "FROM [dbo].[TestEntity]\nLEFT OUTER JOIN [dbo].[InnerEntity]\nON [dbo].[TestEntity].[Id] = [dbo].[InnerEntity].[TestEntityId]";
-            this.builder.From<TestEntity>()
-                .LeftOuterJoin<TestEntity, InnerEntity>()
-                .On<TestEntity, InnerEntity>((l, r) => l.Id == r.TestEntityId)
-                .Sql()
-                .Should()
-                .StartWith(expected);
-        }
-
-        [Test]
         public void ReturnCorrectTablesSqlForRightOuterJoinWithNoOverridesOrAlias()
         {
             const string expected = "FROM [dbo].[TestEntity]\nRIGHT OUTER JOIN [dbo].[InnerEntity]";
@@ -142,75 +295,6 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void ReturnCorrectSqlForRightOuterJoinWithoutOverridesAndAlias()
-        {
-            const string expected =
-                "FROM [dbo].[TestEntity]\nRIGHT OUTER JOIN [dbo].[InnerEntity]\nON [dbo].[TestEntity].[Id] = [dbo].[InnerEntity].[TestEntityId]";
-            this.builder.From<TestEntity>()
-                .RightOuterJoin<TestEntity, InnerEntity>()
-                .On<TestEntity, InnerEntity>((l, r) => l.Id == r.TestEntityId)
-                .Sql()
-                .Should()
-                .StartWith(expected);
-        }
-
-        [Test]
-        public void ThrowErrorIfSameTypeJoinedWithoutAliasing()
-        {
-            this.builder.Invoking(b => b.From<TestEntity>()
-                                        .InnerJoin<TestEntity, TestEntity>())
-                .ShouldThrow<AliasRequiredException>();
-        }
-
-        [Test]
-        public void NotThrowErrorIfDifferentTypesJoinedWithoutAliasing()
-        {
-            this.builder.Invoking(b => b.From<TestEntity>()
-                                        .InnerJoin<TestEntity, InnerEntity>())
-                .ShouldNotThrow<AliasRequiredException>();
-        }
-
-        [Test]
-        public void ThrowErrorIfSameTypeLeftJoinedWithoutAliasing()
-        {
-            this.builder.Invoking(b => b.From<TestEntity>()
-                                        .LeftOuterJoin<TestEntity, TestEntity>())
-                .ShouldThrow<AliasRequiredException>();
-        }
-
-        [Test]
-        public void ThrowErrorIfSameTypeRightJoinedWithoutAliasing()
-        {
-            this.builder.Invoking(b => b.From<TestEntity>()
-                                        .RightOuterJoin<TestEntity, TestEntity>())
-                .ShouldThrow<AliasRequiredException>();
-        }
-
-        [Test]
-        public void ThrowErrorIfTableIsJoinedWithDuplicateAlias()
-        {
-            this.builder.Invoking(b => b.From<TestEntity>("a")
-                                       .InnerJoin<TestEntity, InnerEntity>(rightTableAlias: "a"))
-               .ShouldThrow<DuplicateAliasException>();
-        }
-
-        [Test]
-        public void ThrowErrorIfTableIsLeftJoinedWithDuplicateAlias()
-        {
-            this.builder.Invoking(b => b.From<TestEntity>("a")
-                                       .LeftOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "a"))
-               .ShouldThrow<DuplicateAliasException>();
-        }
-
-        [Test]
-        public void ThrowErrorIfTableIsRightJoinedWithDuplicateAlias()
-        {
-            this.builder.Invoking(b => b.From<TestEntity>("a")
-                                       .RightOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "a"))
-               .ShouldThrow<DuplicateAliasException>();
-        }
-
-        [Test]
         public void ReturnDefaultRootTableDefinition()
         {
             var result = this.builder.From<TestEntity>()
@@ -219,127 +303,57 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void ReturnCorrectRootTableDefinitionWithAlias()
+        public void ThrowErrorIfSameTypeJoinedWithoutAliasing()
         {
-            var result = this.builder.From<TestEntity>("a")
-                            .TableDefinition<TestEntity>();
-            this.AssertTableDefinitionIsCorrect<TestEntity>(result, "TestEntity", "dbo", "a");
+            this.builder.Invoking(b => b.From<TestEntity>()
+                                        .InnerJoin<TestEntity, TestEntity>())
+                .Should()
+                .Throw<AliasRequiredException>();
         }
 
         [Test]
-        public void ReturnCorrectRootTableDefinitionWithNameOverride()
+        public void ThrowErrorIfSameTypeLeftJoinedWithoutAliasing()
         {
-            var result = this.builder.From<TestEntity>(tableName: "Table1")
-                            .TableDefinition<TestEntity>();
-            this.AssertTableDefinitionIsCorrect<TestEntity>(result, "Table1", "dbo", null);
+            this.builder.Invoking(b => b.From<TestEntity>()
+                                        .LeftOuterJoin<TestEntity, TestEntity>())
+                .Should()
+                .Throw<AliasRequiredException>();
         }
 
         [Test]
-        public void ReturnCorrectRootTableDefinitionWithSchemaOverride()
+        public void ThrowErrorIfSameTypeRightJoinedWithoutAliasing()
         {
-            var result = this.builder.From<TestEntity>(tableSchema: "schema")
-                            .TableDefinition<TestEntity>();
-            this.AssertTableDefinitionIsCorrect<TestEntity>(result, "TestEntity", "schema", null);
+            this.builder.Invoking(b => b.From<TestEntity>()
+                                        .RightOuterJoin<TestEntity, TestEntity>())
+                .Should()
+                .Throw<AliasRequiredException>();
         }
 
         [Test]
-        public void ReturnCorrectRootTableDefinitionOfJoinedTableWithoutOverrides()
+        public void ThrowErrorIfTableIsJoinedWithDuplicateAlias()
         {
-            var result = this.builder.From<TestEntity>()
-                           .InnerJoin<TestEntity, InnerEntity>()
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "dbo", null);
+            this.builder.Invoking(b => b.From<TestEntity>("a")
+                                        .InnerJoin<TestEntity, InnerEntity>(rightTableAlias: "a"))
+                .Should()
+                .Throw<DuplicateAliasException>();
         }
 
         [Test]
-        public void ReturnCorrectTableDefinitionOfJoinedTableWithoutNameOverride()
+        public void ThrowErrorIfTableIsLeftJoinedWithDuplicateAlias()
         {
-            var result = this.builder.From<TestEntity>()
-                           .InnerJoin<TestEntity, InnerEntity>(rightTableName: "Inner")
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "Inner", "dbo", null);
+            this.builder.Invoking(b => b.From<TestEntity>("a")
+                                        .LeftOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "a"))
+                .Should()
+                .Throw<DuplicateAliasException>();
         }
 
         [Test]
-        public void ReturnCorrectTableDefinitionOfJoinedTableWithSchemaOverride()
+        public void ThrowErrorIfTableIsRightJoinedWithDuplicateAlias()
         {
-            var result = this.builder.From<TestEntity>()
-                           .InnerJoin<TestEntity, InnerEntity>(rightTableSchema: "schema")
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "schema", null);
-        }
-
-        [Test]
-        public void ReturnCorrectTableDefinitionOfJoinedTableWithAlias()
-        {
-            var result = this.builder.From<TestEntity>()
-                           .InnerJoin<TestEntity, InnerEntity>(rightTableAlias: "alias")
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "dbo", "alias");
-        }
-
-        [Test]
-        public void ReturnCorrectTableDefinitionOfLeftJoinedTableWithoutNameOverride()
-        {
-            var result = this.builder.From<TestEntity>()
-                           .LeftOuterJoin<TestEntity, InnerEntity>(rightTableName: "Inner")
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "Inner", "dbo", null);
-        }
-
-        [Test]
-        public void ReturnCorrectTableDefinitionOfLeftJoinedTableWithSchemaOverride()
-        {
-            var result = this.builder.From<TestEntity>()
-                           .LeftOuterJoin<TestEntity, InnerEntity>(rightTableSchema: "schema")
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "schema", null);
-        }
-
-        [Test]
-        public void ReturnCorrectTableDefinitionOfLeftJoinedTableWithAlias()
-        {
-            var result = this.builder.From<TestEntity>()
-                           .LeftOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "alias")
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "dbo", "alias");
-        }
-
-        [Test]
-        public void ReturnCorrectTableDefinitionOfRightJoinedTableWithoutNameOverride()
-        {
-            var result = this.builder.From<TestEntity>()
-                           .RightOuterJoin<TestEntity, InnerEntity>(rightTableName: "Inner")
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "Inner", "dbo", null);
-        }
-
-        [Test]
-        public void ReturnCorrectTableDefinitionOfRightJoinedTableWithSchemaOverride()
-        {
-            var result = this.builder.From<TestEntity>()
-                           .RightOuterJoin<TestEntity, InnerEntity>(rightTableSchema: "schema")
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "schema", null);
-        }
-
-        [Test]
-        public void ReturnCorrectTableDefinitionOfRightJoinedTableWithAlias()
-        {
-            var result = this.builder.From<TestEntity>()
-                           .RightOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "alias")
-                           .TableDefinition<InnerEntity>();
-            this.AssertTableDefinitionIsCorrect<InnerEntity>(result, "InnerEntity", "dbo", "alias");
-        }
-
-        [Test]
-        public void ReturnCorrectTableDefinitionByAlias()
-        {
-            this.builder.From<TestEntity>()
-                .RightOuterJoin<TestEntity, TestEntity>(rightTableAlias: "a");
-
-            this.AssertTableDefinitionIsCorrect<TestEntity>(this.builder.TableDefinition<TestEntity>(), "TestEntity", "dbo", null);
-            this.AssertTableDefinitionIsCorrect<TestEntity>(this.builder.TableDefinition<TestEntity>("a"), "TestEntity", "dbo", "a");
+            this.builder.Invoking(b => b.From<TestEntity>("a")
+                                        .RightOuterJoin<TestEntity, InnerEntity>(rightTableAlias: "a"))
+                .Should()
+                .Throw<DuplicateAliasException>();
         }
 
         private IFromClauseBuilder builder;

@@ -124,7 +124,7 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeTestEntityIsInitialised();
             this.Statement.Where(e => e.ByteProperty == 1);
             this.Statement.Invoking(s => s.For(this.Entity))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeTestEntityIsInitialised();
             this.Statement.For(this.Entity);
             this.Statement.Invoking(s => s.Where(e => e.ByteProperty == 1))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]

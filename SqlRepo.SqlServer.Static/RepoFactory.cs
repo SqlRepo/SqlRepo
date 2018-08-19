@@ -31,13 +31,11 @@ namespace SqlRepo.SqlServer.Static
                                       {
                                           sqlLogWriter
                                       });
-            EnsureRepositoryFactoryInstance();
         }
 
         public static void UseLoggers(IList<ISqlLogWriter> sqlLogWriters)
         {
             sqlLogger = new SqlLogger(sqlLogWriters);
-            EnsureRepositoryFactoryInstance();
         }
 
         private static void EnsureRepositoryFactoryInstance()
@@ -51,6 +49,11 @@ namespace SqlRepo.SqlServer.Static
             {
                 throw new InvalidOperationException(
                     "Create cannot be used until an IConnectionProvider has been set, have you forgotten to call UseConnectionProvider(...)");
+            }
+
+            if(sqlLogger == null)
+            {
+                sqlLogger = new SqlLogger(new []  {new NoOpSqlLogger()});
             }
 
             var statementFactoryProvider = new StatementFactoryProvider(DataReaderEntityMapper,

@@ -1,0 +1,29 @@
+﻿using Ninject.Modules;
+using SqlRepo.Abstractions;
+using SqlRepo.SqlServer.Abstractions;
+
+namespace SqlRepo.SqlServer.NInject
+{
+    public class SqlRepoSqlServerNInjectModule: NinjectModule
+    {
+        public override void Load()
+        {
+            this.Bind<IRepositoryFactory>()
+                .To<RepositoryFactory>();
+<<<<<<< HEAD
+            this.Bind<ICommandExecutor>()
+                .To<CommandExecutor>();
+            this.Bind<ICommandFactory>()
+                .To<CommandFactory>();
+            this.Bind<IDataReaderEntityMapper>()
+=======
+            this.Bind<IStatementFactoryProvider>()
+                .To<StatementFactoryProvider>();
+            this.Bind<IEntityMapper>()
+>>>>>>> develop
+                .To<DataReaderEntityMapper>();
+            this.Bind<IWritablePropertyMatcher>()
+                .To<WritablePropertyMatcher>();
+        }
+    }
+}
