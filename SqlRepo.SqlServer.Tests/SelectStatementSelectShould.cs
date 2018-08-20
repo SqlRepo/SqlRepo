@@ -34,7 +34,7 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowErrorIfPercentIsCalledWithoutSettingTop()
         {
             this.Statement.Invoking(e => e.Percent())
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage("Please call Top to set a value before calling Percent");
         }
 

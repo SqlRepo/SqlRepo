@@ -314,7 +314,7 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowExceptionIfBuildCalledWithoutInitialisingStatement()
         {
             this.Statement.Invoking(s => s.Sql())
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -325,7 +325,7 @@ namespace SqlRepo.SqlServer.Tests
             this.Statement
                 .For(this.Entity);
             this.Statement.Invoking(s => s.Set(e => e.ByteProperty, 1))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -334,7 +334,7 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeTestEntityIsInitialised();
             this.Statement.Set(e => e.ByteProperty, 1);
             this.Statement.Invoking(s => s.For(this.Entity))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -343,7 +343,7 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeTestEntityIsInitialised();
             this.Statement.Where(e => e.ByteProperty == 1);
             this.Statement.Invoking(s => s.For(this.Entity))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -353,7 +353,7 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeTestEntityIsInitialised();
             this.Statement.For(this.Entity);
             this.Statement.Invoking(s => s.Where(e => e.ByteProperty == 1))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -364,7 +364,7 @@ namespace SqlRepo.SqlServer.Tests
             this.Statement.For(this.Entity);
             var intArray = new []{ 1, 2};
             this.Statement.Invoking(s => s.WhereIn(e => e.IntProperty, intArray))
-                .ShouldThrow<InvalidOperationException>();
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
