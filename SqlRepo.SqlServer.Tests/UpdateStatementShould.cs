@@ -4,31 +4,33 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using SqlRepo.Abstractions;
+using SqlRepo.SqlServer.Abstractions;
 using SqlRepo.Testing;
 
 namespace SqlRepo.SqlServer.Tests
 {
     [TestFixture]
-    public class UpdateStatementShould : SqlCommandTestBase<UpdateCommand<TestEntity>, int>
+    public class UpdateStatementShould : SqlStatementTestBase<UpdateStatement<TestEntity>, int>
     {
         [Test]
         public void DefaultSchemaToDbo()
         {
-            this.Command.TableSchema.Should()
+            this.Statement.TableSchema.Should()
                 .Be("dbo");
         }
 
         [Test]
         public void DefaultTableNameToNameOfType()
         {
-            this.Command.TableName.Should()
+            this.Statement.TableName.Should()
                 .Be("TestEntity");
         }
 
         [Test]
         public void ProduceCorrectDefaultTableSpecfication()
         {
-            this.Command.Set(e => e.IntProperty, 1)
+            this.Statement.Set(e => e.IntProperty, 1)
                 .Sql()
                 .Should()
                 .Contain(this.ExpectedTableSpecification("dbo", "TestEntity"));
@@ -37,7 +39,7 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void ProduceCorrectNonDefaultTableSpecfication()
         {
-            this.Command.Set(e => e.IntProperty, 1, OtherValue, OtherValue)
+            this.Statement.Set(e => e.IntProperty, 1, OtherValue, OtherValue)
                 .Sql()
                 .Should()
                 .Contain(this.ExpectedTableSpecification(OtherValue, OtherValue));
@@ -46,7 +48,7 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void BeCleanByDefault()
         {
-            this.Command.IsClean.Should()
+            this.Statement.IsClean.Should()
                 .BeTrue();
         }
 
@@ -54,7 +56,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildCorrectSetClauseWithOnlyStringPropertySet()
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [StringProperty] = 'My Name'";
-            this.Command.Set(e => e.StringProperty, "My Name")
+            this.Statement.Set(e => e.StringProperty, "My Name")
                 .Sql()
                 .Should()
                 .StartWith(expected);
@@ -65,7 +67,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [DateTimeProperty] = '{0}'";
             var now = DateTime.UtcNow;
-            this.Command.Set(e => e.DateTimeProperty, now)
+            this.Statement.Set(e => e.DateTimeProperty, now)
                 .Sql()
                 .Should()
                 .StartWith(string.Format(expected, now.ToString(FormatString.DateTime)));
@@ -76,7 +78,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [NullableDateTimeProperty] = '{0}'";
             var now = DateTime.UtcNow;
-            this.Command.Set(e => e.NullableDateTimeProperty, now)
+            this.Statement.Set(e => e.NullableDateTimeProperty, now)
                 .Sql()
                 .Should()
                 .StartWith(string.Format(expected, now.ToString(FormatString.DateTime)));
@@ -87,7 +89,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [DateTimeOffsetProperty] = '{0}'";
             var now = DateTimeOffset.UtcNow;
-            this.Command.Set(e => e.DateTimeOffsetProperty, now)
+            this.Statement.Set(e => e.DateTimeOffsetProperty, now)
                 .Sql()
                 .Should()
                 .StartWith(string.Format(expected, now.ToString(FormatString.DateTimeOffset)));
@@ -98,7 +100,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [NullableDateTimeOffsetProperty] = '{0}'";
             var now = DateTimeOffset.UtcNow;
-            this.Command.Set(e => e.NullableDateTimeOffsetProperty, now)
+            this.Statement.Set(e => e.NullableDateTimeOffsetProperty, now)
                 .Sql()
                 .Should()
                 .StartWith(string.Format(expected, now.ToString(FormatString.DateTimeOffset)));
@@ -108,7 +110,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildCorrectSetClauseWithOnlyIntPropertySet()
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [IntProperty] = 1";
-            this.Command.Set(e => e.IntProperty, 1)
+            this.Statement.Set(e => e.IntProperty, 1)
                 .Sql()
                 .Should()
                 .StartWith(expected);
@@ -118,7 +120,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildCorrectSetClauseWithOnlyDoublePropertySet()
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [DoubleProperty] = 1.01";
-            this.Command.Set(e => e.DoubleProperty, 1.01)
+            this.Statement.Set(e => e.DoubleProperty, 1.01)
                 .Sql()
                 .Should()
                 .StartWith(expected);
@@ -128,7 +130,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildCorrectSetClauseWithOnlyDecimalPropertySet()
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [DecimalProperty] = 2.01";
-            this.Command.Set(e => e.DecimalProperty, 2.01M)
+            this.Statement.Set(e => e.DecimalProperty, 2.01M)
                 .Sql()
                 .Should()
                 .StartWith(expected);
@@ -138,7 +140,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildCorrectSetClauseWithOnlySinglePropertySet()
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [SingleProperty] = 1.01";
-            this.Command.Set(e => e.SingleProperty, 1.01)
+            this.Statement.Set(e => e.SingleProperty, 1.01)
                 .Sql()
                 .Should()
                 .StartWith(expected);
@@ -148,7 +150,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildCorrectSetClauseWithOnlyShortPropertySet()
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [ShortProperty] = 1";
-            this.Command.Set(e => e.ShortProperty, 1)
+            this.Statement.Set(e => e.ShortProperty, 1)
                 .Sql()
                 .Should()
                 .StartWith(expected);
@@ -158,7 +160,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildCorrectSetClauseWithOnlyBytePropertySet()
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [ByteProperty] = 1";
-            this.Command.Set(e => e.ByteProperty, 1)
+            this.Statement.Set(e => e.ByteProperty, 1)
                 .Sql()
                 .Should()
                 .StartWith(expected);
@@ -169,7 +171,7 @@ namespace SqlRepo.SqlServer.Tests
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [GuidProperty] = '{0}'";
             var guid = Guid.NewGuid();
-            this.Command.Set(e => e.GuidProperty, guid)
+            this.Statement.Set(e => e.GuidProperty, guid)
                 .Sql()
                 .Should()
                 .StartWith(string.Format(expected, guid));
@@ -179,7 +181,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildCorrectSetClauseWithOnlyTestEnumPropertySet()
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [TestEnumProperty] = 1";
-            this.Command.Set(e => e.TestEnumProperty, TestEnum.One)
+            this.Statement.Set(e => e.TestEnumProperty, TestEnum.One)
                 .Sql()
                 .Should()
                 .StartWith(expected);
@@ -189,7 +191,7 @@ namespace SqlRepo.SqlServer.Tests
         public void BuildCorrectSetClauseWithMultipleSets()
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [IntProperty] = 1, [StringProperty] = 'My String'";
-            this.Command.Set(e => e.IntProperty, 1)
+            this.Statement.Set(e => e.IntProperty, 1)
                 .Set(e => e.StringProperty, "My String")
                 .Sql()
                 .Should()
@@ -200,7 +202,7 @@ namespace SqlRepo.SqlServer.Tests
         public void UserBuilderOnWhere()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            this.Command.Set(e => e.IntProperty, 1)
+            this.Statement.Set(e => e.IntProperty, 1)
                 .Where(expression);
             this.WhereClauseBuilder.Received()
                 .Where(expression);
@@ -210,7 +212,7 @@ namespace SqlRepo.SqlServer.Tests
         public void UserWhereBuilderOnAnd()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            this.Command.Set(e => e.IntProperty, 1)
+            this.Statement.Set(e => e.IntProperty, 1)
                 .Where(expression)
                 .And(expression);
             this.WhereClauseBuilder.Received()
@@ -221,7 +223,7 @@ namespace SqlRepo.SqlServer.Tests
         public void UserWhereBuilderOnOr()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            this.Command.Set(e => e.IntProperty, 1)
+            this.Statement.Set(e => e.IntProperty, 1)
                 .Where(expression)
                 .Or(expression);
             this.WhereClauseBuilder.Received()
@@ -232,7 +234,7 @@ namespace SqlRepo.SqlServer.Tests
         public void UserWhereBuilderOnNestedAnd()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            this.Command.Set(e => e.IntProperty, 1)
+            this.Statement.Set(e => e.IntProperty, 1)
                 .Where(expression)
                 .NestedAnd(expression);
             this.WhereClauseBuilder.Received()
@@ -243,7 +245,7 @@ namespace SqlRepo.SqlServer.Tests
         public void UserWhereBuilderOnNestedOr()
         {
             Expression<Func<TestEntity, bool>> expression = e => e.Id == 5;
-            this.Command.Set(e => e.IntProperty, 1)
+            this.Statement.Set(e => e.IntProperty, 1)
                 .Where(expression)
                 .NestedOr(expression);
             this.WhereClauseBuilder.Received()
@@ -253,7 +255,7 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void UseBuilderOnBuild()
         {
-            this.Command.Set(e => e.IntProperty, 1)
+            this.Statement.Set(e => e.IntProperty, 1)
                 .Set(e => e.StringProperty, "My String")
                 .Where(e => e.Id == 55)
                 .Sql();
@@ -269,7 +271,7 @@ namespace SqlRepo.SqlServer.Tests
                 "UPDATE [dbo].[TestEntity]\nSET [IntProperty] = 1, [StringProperty] = 'My String'\n" + whereClause + ";";
             this.WhereClauseBuilder.Sql()
                 .Returns(whereClause);
-            var result = this.Command.Set(e => e.IntProperty, 1)
+            var result = this.Statement.Set(e => e.IntProperty, 1)
                              .Set(e => e.StringProperty, "My String")
                              .Where(e => e.Id == 55)
                              .Sql();
@@ -285,7 +287,7 @@ namespace SqlRepo.SqlServer.Tests
             this.AssumeTestEntityIsInitialised();
             var expected =
                 $"UPDATE [dbo].[TestEntity]\nSET [DateTimeOffsetProperty] = '{this.Entity.DateTimeOffsetProperty.ToString(FormatString.DateTimeOffset)}', [NullableDateTimeOffsetProperty] = '{this.Entity.NullableDateTimeOffsetProperty.GetValueOrDefault().ToString(FormatString.DateTimeOffset)}', [DateTimeProperty] = '{this.Entity.DateTimeProperty.ToString(FormatString.DateTime)}', [NullableDateTimeProperty] = '{this.Entity.NullableDateTimeProperty.GetValueOrDefault().ToString(FormatString.DateTime)}', [DoubleProperty] = {this.Entity.DoubleProperty}, [IntProperty] = {this.Entity.IntProperty}, [IntProperty2] = {this.Entity.IntProperty2}, [StringProperty] = '{this.Entity.StringProperty}', [TestEnumProperty] = {(int)this.Entity.TestEnumProperty}, [DecimalProperty] = {this.Entity.DecimalProperty}, [ByteProperty] = {this.Entity.ByteProperty}, [ShortProperty] = {this.Entity.ShortProperty}, [SingleProperty] = {this.Entity.SingleProperty}, [GuidProperty] = '{this.Entity.GuidProperty}'\nWHERE [Id] = {this.Entity.Id};";
-            this.Command.For(this.Entity)
+            this.Statement.For(this.Entity)
                 .Sql()
                 .Should()
                 .Be(expected);
@@ -300,7 +302,7 @@ namespace SqlRepo.SqlServer.Tests
 
             const string ExpectedSql = "UPDATE [dbo].[TestEntity]" + "\nSET [StringProperty] = 'TestValue'"
                                        + "\n" + whereClause + ";";
-            this.Command
+            this.Statement
                 .Set(p => p.StringProperty, "TestValue")
                 .WhereIn(e => e.IntProperty, new[] { 1, 2, 3 })
                 .Sql()
@@ -311,8 +313,8 @@ namespace SqlRepo.SqlServer.Tests
         [Test]
         public void ThrowExceptionIfBuildCalledWithoutInitialisingStatement()
         {
-            this.Command.Invoking(s => s.Sql())
-                .ShouldThrow<InvalidOperationException>();
+            this.Statement.Invoking(s => s.Sql())
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -320,28 +322,28 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.AssumeTestEntityIsInitialised();
             this.AssumeWhereClauseBuilderReportsClean();
-            this.Command
+            this.Statement
                 .For(this.Entity);
-            this.Command.Invoking(s => s.Set(e => e.ByteProperty, 1))
-                .ShouldThrow<InvalidOperationException>();
+            this.Statement.Invoking(s => s.Set(e => e.ByteProperty, 1))
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfWithCalledAfterFor()
         {
             this.AssumeTestEntityIsInitialised();
-            this.Command.Set(e => e.ByteProperty, 1);
-            this.Command.Invoking(s => s.For(this.Entity))
-                .ShouldThrow<InvalidOperationException>();
+            this.Statement.Set(e => e.ByteProperty, 1);
+            this.Statement.Invoking(s => s.For(this.Entity))
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
         public void ThrowExceptionIfForCalledAfterWhere()
         {
             this.AssumeTestEntityIsInitialised();
-            this.Command.Where(e => e.ByteProperty == 1);
-            this.Command.Invoking(s => s.For(this.Entity))
-                .ShouldThrow<InvalidOperationException>();
+            this.Statement.Where(e => e.ByteProperty == 1);
+            this.Statement.Invoking(s => s.For(this.Entity))
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -349,9 +351,9 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.AssumeWhereClauseBuilderReportsClean();
             this.AssumeTestEntityIsInitialised();
-            this.Command.For(this.Entity);
-            this.Command.Invoking(s => s.Where(e => e.ByteProperty == 1))
-                .ShouldThrow<InvalidOperationException>();
+            this.Statement.For(this.Entity);
+            this.Statement.Invoking(s => s.Where(e => e.ByteProperty == 1))
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -359,10 +361,10 @@ namespace SqlRepo.SqlServer.Tests
         {
             this.AssumeWhereClauseBuilderReportsClean();
             this.AssumeTestEntityIsInitialised();
-            this.Command.For(this.Entity);
+            this.Statement.For(this.Entity);
             var intArray = new []{ 1, 2};
-            this.Command.Invoking(s => s.WhereIn(e => e.IntProperty, intArray))
-                .ShouldThrow<InvalidOperationException>();
+            this.Statement.Invoking(s => s.WhereIn(e => e.IntProperty, intArray))
+                .Should().Throw<InvalidOperationException>();
         }
 
         [Test]
@@ -370,8 +372,8 @@ namespace SqlRepo.SqlServer.Tests
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [StringProperty] = 'My Name';";
             this.AssumeGoIsRequested();
-            this.CommandExecutor.Received()
-                .ExecuteNonQuery(ConnectionString, expected);
+            this.StatementExecutor.Received()
+                .ExecuteNonQuery(expected);
         }
 
         [Test]
@@ -379,41 +381,41 @@ namespace SqlRepo.SqlServer.Tests
         {
             const string expected = "UPDATE [dbo].[TestEntity]\nSET [StringProperty] = 'My Name';";
             await this.AssumeGoAsyncIsRequested();
-            await this.CommandExecutor.Received()
-                .ExecuteNonQueryAsync(ConnectionString, expected);
+            await this.StatementExecutor.Received()
+                .ExecuteNonQueryAsync(expected);
         }
 
-        protected override UpdateCommand<TestEntity> CreateCommand(ICommandExecutor commandExecutor,
+        protected override UpdateStatement<TestEntity> CreateStatement(IStatementExecutor statementExecutor,
             IEntityMapper entityMapper,
             IWritablePropertyMatcher writablePropertyMatcher,
             ISelectClauseBuilder selectClauseBuilder,
             IFromClauseBuilder fromClauseBuilder,
             IWhereClauseBuilder whereClauseBuilder,
-            string connectionString)
+            ISqlConnectionProvider connectionProvider)
         {
-            var command = new UpdateCommand<TestEntity>(commandExecutor,
+            var statement = new UpdateStatement<TestEntity>(statementExecutor,
                 entityMapper,
                 writablePropertyMatcher,
                 whereClauseBuilder);
-            command.UseConnectionString(connectionString);
-            return command;
+            statement.UseConnectionProvider(connectionProvider);
+            return statement;
         }
 
         private void AssumeGoIsRequested()
         {
-            this.Command.Set(e => e.StringProperty, "My Name")
+            this.Statement.Set(e => e.StringProperty, "My Name")
                 .Go();
         }
 
         private async Task AssumeGoAsyncIsRequested()
         {
-            await this.Command.Set(e => e.StringProperty, "My Name")
+            await this.Statement.Set(e => e.StringProperty, "My Name")
                 .GoAsync();
         }
 
         private string ExpectedTableSpecification(string schema, string table)
         {
-            return string.Format("UPDATE [{0}].[{1}]\nSET", schema, table);
+            return $"UPDATE [{schema}].[{table}]\nSET";
         }
     }
 }

@@ -1,57 +1,58 @@
 ﻿using System;
 using NSubstitute;
 using NSubstitute.Extensions;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo.Testing.NSubstitute
 {
     public static class RepositoryTestExtensions
     {
-        public static IDeleteCommand<T> CreateDeleteCommandSubstitute<T>(this IRepository<T> repository)
+        public static IDeleteStatement<T> CreateDeleteStatementSubstitute<T>(this IRepository<T> repository)
             where T: class, new()
         {
-            var deleteCommand = Substitute.For<IDeleteCommand<T>>();
-            deleteCommand.ReturnsForAll(deleteCommand);
+            var deleteStatement = Substitute.For<IDeleteStatement<T>>();
+            deleteStatement.ReturnsForAll(deleteStatement);
 
             repository.Delete()
-                      .Returns(deleteCommand);
+                      .Returns(deleteStatement);
 
-            return deleteCommand;
+            return deleteStatement;
         }
 
-        public static IInsertCommand<T> CreateInsertCommandSubstitute<T>(this IRepository<T> repository)
+        public static IInsertStatement<T> CreateInsertStatementSubstitute<T>(this IRepository<T> repository)
             where T: class, new()
         {
-            var insertCommand = Substitute.For<IInsertCommand<T>>();
-            insertCommand.ReturnsForAll(insertCommand);
+            var insertStatement = Substitute.For<IInsertStatement<T>>();
+            insertStatement.ReturnsForAll(insertStatement);
 
             repository.Insert()
-                      .Returns(insertCommand);
+                      .Returns(insertStatement);
 
-            return insertCommand;
+            return insertStatement;
         }
 
-        public static ISelectCommand<T> CreateSelectCommandSubstitute<T>(this IRepository<T> repository)
+        public static ISelectStatement<T> CreateSelectStatementSubstitute<T>(this IRepository<T> repository)
             where T: class, new()
         {
-            var selectCommand = Substitute.For<ISelectCommand<T>>();
-            selectCommand.ReturnsForAll(selectCommand);
+            var selectStatement = Substitute.For<ISelectStatement<T>>();
+            selectStatement.ReturnsForAll(selectStatement);
 
             repository.Query()
-                      .Returns(selectCommand);
+                      .Returns(selectStatement);
 
-            return selectCommand;
+            return selectStatement;
         }
 
-        public static IUpdateCommand<T> CreateUpdateCommandSubstitute<T>(this IRepository<T> repository)
+        public static IUpdateStatement<T> CreateUpdateStatementSubstitute<T>(this IRepository<T> repository)
             where T: class, new()
         {
-            var updateCommand = Substitute.For<IUpdateCommand<T>>();
-            updateCommand.ReturnsForAll(updateCommand);
+            var updateStatement = Substitute.For<IUpdateStatement<T>>();
+            updateStatement.ReturnsForAll(updateStatement);
 
             repository.Update()
-                      .Returns(updateCommand);
+                      .Returns(updateStatement);
 
-            return updateCommand;
+            return updateStatement;
         }
     }
 }

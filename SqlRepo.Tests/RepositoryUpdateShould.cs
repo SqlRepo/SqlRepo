@@ -10,19 +10,19 @@ namespace SqlRepo.Tests
     public class RepositoryUpdateShould : RepositoryTestBase
     {
         [Test]
-        public void UseFactoryToCreateCommandtOnFirstCall()
+        public void UseFactoryToCreateStatement()
         {
             this.AssumeUpdateIsRequested();
-            this.CommandFactory.Received()
+            this.StatementFactory.Received()
                 .CreateUpdate<TestEntity>();
         }
 
         [Test]
-        public void ReturnTheCommand()
+        public void ReturnTheStatement()
         {
             this.AssumeUpdateIsRequested()
                 .Should()
-                .Be(this.UpdateCommand);
+                .Be(this.UpdateStatement);
         }
     }
 }

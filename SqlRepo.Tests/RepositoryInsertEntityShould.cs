@@ -9,18 +9,18 @@ namespace SqlRepo.Tests
     public class RepositoryInsertEntityShould : RepositoryTestBase
     {
         [Test]
-        public void UseFactoryToCreateCommandtOnFirstCall()
+        public void UseFactoryToCreateStatement()
         {
             this.AssumeInsertEntityIsRequested();
-            this.CommandFactory.Received()
+            this.StatementFactory.Received()
                 .CreateInsert<TestEntity>();
         }
 
         [Test]
-        public void UseForOnCommandToGeneratedSql()
+        public void UseForOnStatementToGeneratedSql()
         {
             this.AssumeInsertEntityIsRequested();
-            this.InsertCommand.Received()
+            this.InsertStatement.Received()
                 .For(this.Entity);
         }
 
@@ -28,7 +28,7 @@ namespace SqlRepo.Tests
         public void ExecuteCommandImmediately()
         {
             this.AssumeInsertEntityIsRequested();
-            this.InsertCommand.Received()
+            this.InsertStatement.Received()
                 .Go();
         }
     }

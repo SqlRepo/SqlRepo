@@ -10,19 +10,19 @@ namespace SqlRepo.Tests
     public class RepositoryDeleteShould : RepositoryTestBase
     {
         [Test]
-        public void UseFactoryToCreateCommandtOnFirstCall()
+        public void UseFactoryToCreateStatement()
         {
             this.AssumeDeleteIsRequested();
-            this.CommandFactory.Received()
+            this.StatementFactory.Received()
                 .CreateDelete<TestEntity>();
         }
 
         [Test]
-        public void ReturnTheCommand()
+        public void ReturnTheStatement()
         {
             this.AssumeDeleteIsRequested()
                 .Should()
-                .Be(this.DeleteCommand);
+                .Be(this.DeleteStatement);
         }
     }
 }

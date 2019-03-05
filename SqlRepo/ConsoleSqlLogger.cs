@@ -1,8 +1,9 @@
 ﻿using System;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo
 {
-    public class ConsoleSqlLogger : ISqlLogger
+    public class ConsoleSqlLogger : ISqlLogWriter
     {
         public void Log(string sql)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
+using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
 {
@@ -10,7 +11,8 @@ namespace SqlRepo.SqlServer
     {
         private static readonly Dictionary<string, object> EntityMapperDefinitions = new Dictionary<string, object>();
 
-        public virtual IEnumerable<TEntity> Map<TEntity>(IDataReader reader) where TEntity : class, new()
+        public virtual IEnumerable<TEntity> Map<TEntity>(IDataReader reader)
+            where TEntity: class, new()
         {
             var list = new List<TEntity>();
 
@@ -39,7 +41,7 @@ namespace SqlRepo.SqlServer
             var isFirst = true;
             var mappingInstructions = new Func<IDataReader, TEntity, TEntity>[reader.FieldCount];
 
-            while (reader.Read())
+            while(reader.Read())
             {
                 var entity = entityMapper.Activator();
 
