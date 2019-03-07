@@ -18,6 +18,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D7381234-9483-400D-8EC8-D08CB6341B58}"
 	ProjectSection(SolutionItems) = preProject
 		appveyor.yml = appveyor.yml
+		BumpVersion.ps1 = BumpVersion.ps1
+		Version.txt = Version.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.Ninject", "SqlRepo.SqlServer.NInject\SqlRepo.SqlServer.Ninject.csproj", "{AF70042D-51B7-4F03-AA82-97D0218D266D}"
@@ -40,9 +42,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.SqlServer.Sh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.SqlServer.Static", "Demos\GettingStarted\GettingStarted.SqlServer.Static\GettingStarted.SqlServer.Static.csproj", "{588797CE-7476-4D6B-8B8B-0974D7C6CFD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettingStarted.SqlServer.ServiceCollection", "GettingStarted.SqlServer.ServiceCollection\GettingStarted.SqlServer.ServiceCollection.csproj", "{882D0EB0-7704-4851-B176-DA12551E9D33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.SqlServer.ServiceCollection", "GettingStarted.SqlServer.ServiceCollection\GettingStarted.SqlServer.ServiceCollection.csproj", "{882D0EB0-7704-4851-B176-DA12551E9D33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GettingStarted.SqlServer.Ninject", "GettingStarted.SqlServer.Ninject\GettingStarted.SqlServer.Ninject.csproj", "{1829862F-1CC9-4216-B428-F3305E79C2F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.SqlServer.Ninject", "GettingStarted.SqlServer.Ninject\GettingStarted.SqlServer.Ninject.csproj", "{1829862F-1CC9-4216-B428-F3305E79C2F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
