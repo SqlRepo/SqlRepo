@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SqlRepo.SqlServer.ServiceCollection\SqlRepo.SqlServer.ServiceCollection.csproj" />
+    <ProjectReference Include="..\GettingStarted.SqlServer.Shared\GettingStarted.SqlServer.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
