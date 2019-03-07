@@ -10,7 +10,8 @@ namespace SqlRepo.Testing.NSubstitute
         public static IInsertStatement<TEntity> ReceivedWith<TEntity, TMember>(
             this IInsertStatement<TEntity> command,
             string property,
-            TMember value) where TEntity: class, new()
+            TMember value)
+            where TEntity: class, new()
         {
             return command.Received()
                           .With(Arg.Is<Expression<Func<TEntity, TMember>>>(e => e.HasMemberName(property)),
@@ -21,7 +22,8 @@ namespace SqlRepo.Testing.NSubstitute
             this IInsertStatement<TEntity> command,
             string property,
             TMember value,
-            int expectedCalls) where TEntity: class, new()
+            int expectedCalls)
+            where TEntity: class, new()
         {
             return command.Received(expectedCalls)
                           .With(Arg.Is<Expression<Func<TEntity, TMember>>>(e => e.HasMemberName(property)),
