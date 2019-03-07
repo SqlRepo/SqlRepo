@@ -14,10 +14,10 @@ namespace SqlRepo.SqlServer.Tests
             const string ExpectedMessage =
                 "A table specification for the entity type and alias must be set using From or one of the Join methods before filtering, sorting or grouping can be applied.";
             this.Statement.Invoking(c => c.Where(e => e.Id == 1, "a"))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
             this.Statement.Invoking(c => c.Where<InnerEntity>(e => e.Id == 1, "a"))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
         }
 
@@ -35,7 +35,7 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowErrorIfAndIsCalledBeforeWhere()
         {
             this.Statement.Invoking(c => c.And(e => e.IntProperty == 1))
-                .ShouldThrow<InvalidOperationException>()
+                .Should().Throw<InvalidOperationException>()
                 .WithMessage(
                     "Filtering has not been initialised, please use a Where method before any And or Or method.");
         }
@@ -168,17 +168,17 @@ namespace SqlRepo.SqlServer.Tests
         public void ThrowErrorIfNestingAttemptedWithoutWhere()
         {
             const string ExpectedMessage = "Filtering has not been initialised, please use a Where method before any And or Or method.";
-            this.Statement.Invoking(e => e.NestedAnd(e1 => e1.Id == 1)).ShouldThrow<InvalidOperationException>()
+            this.Statement.Invoking(e => e.NestedAnd(e1 => e1.Id == 1)).Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
-            this.Statement.Invoking(e => e.NestedOr(e1 => e1.Id == 1)).ShouldThrow<InvalidOperationException>()
+            this.Statement.Invoking(e => e.NestedOr(e1 => e1.Id == 1)).Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
-             this.Statement.Invoking(e => e.NestedAndIn(e1 => e1.Id, new [] {1, 2, 3})).ShouldThrow<InvalidOperationException>()
+             this.Statement.Invoking(e => e.NestedAndIn(e1 => e1.Id, new [] {1, 2, 3})).Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
-             this.Statement.Invoking(e => e.NestedOrIn(e1 => e1.Id, new [] {1, 2, 3})).ShouldThrow<InvalidOperationException>()
+             this.Statement.Invoking(e => e.NestedOrIn(e1 => e1.Id, new [] {1, 2, 3})).Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
-             this.Statement.Invoking(e => e.NestedAndBetween(e1 => e1.Id, 5, 10)).ShouldThrow<InvalidOperationException>()
+             this.Statement.Invoking(e => e.NestedAndBetween(e1 => e1.Id, 5, 10)).Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
-             this.Statement.Invoking(e => e.NestedOrBetween(e1 => e1.Id, 5, 10)).ShouldThrow<InvalidOperationException>()
+             this.Statement.Invoking(e => e.NestedOrBetween(e1 => e1.Id, 5, 10)).Should().Throw<InvalidOperationException>()
                 .WithMessage(ExpectedMessage);
         }
 

@@ -262,7 +262,7 @@ namespace SqlRepo.SqlServer.Tests
 
         private void AssertCommand(string sql)
         {
-            this.command.CommandType.ShouldBeEquivalentTo(CommandType.Text);
+            this.command.CommandType.Should().BeEquivalentTo(CommandType.Text);
             this.command.CommandTimeout.Should()
                 .Be(300000);
             this.command.CommandText.Should()
@@ -273,7 +273,7 @@ namespace SqlRepo.SqlServer.Tests
 
         private void AssertStoredProcedure(string sql)
         {
-            this.command.CommandType.ShouldBeEquivalentTo(CommandType.StoredProcedure);
+            this.command.CommandType.Should().BeEquivalentTo(CommandType.StoredProcedure);
             this.command.CommandTimeout.Should()
                 .Be(300000);
             this.command.CommandText.Should()

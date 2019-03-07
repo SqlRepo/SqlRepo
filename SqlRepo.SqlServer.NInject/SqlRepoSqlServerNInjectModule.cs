@@ -1,10 +1,11 @@
-﻿using Ninject.Modules;
+﻿using System;
+using Ninject.Modules;
 using SqlRepo.Abstractions;
 using SqlRepo.SqlServer.Abstractions;
 
-namespace SqlRepo.SqlServer.NInject
+namespace SqlRepo.SqlServer.Ninject
 {
-    public class SqlRepoSqlServerNInjectModule: NinjectModule
+    public class SqlRepoSqlServerNinjectModule: NinjectModule
     {
         public override void Load()
         {

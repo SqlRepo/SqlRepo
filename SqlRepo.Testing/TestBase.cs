@@ -1,9 +1,7 @@
 using System;
-using NUnit.Framework;
 
 namespace SqlRepo.Testing
 {
-    [TestFixture]
     public abstract class TestBase
     {
         protected const string OtherValue = "other";

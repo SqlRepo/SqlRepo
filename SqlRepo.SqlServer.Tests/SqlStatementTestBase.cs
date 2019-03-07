@@ -46,7 +46,7 @@ namespace SqlRepo.SqlServer.Tests
                             this.FromClauseBuilder,
                             this.WhereClauseBuilder,
                             this.ConnectionProvider))
-                .ShouldThrow<ArgumentException>();
+                .Should().Throw<ArgumentException>();
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace SqlRepo.SqlServer.Tests
                             this.FromClauseBuilder,
                             this.WhereClauseBuilder,
                             this.ConnectionProvider))
-                .ShouldThrow<ArgumentException>();
+                .Should().Throw<ArgumentException>();
         }
 
 
