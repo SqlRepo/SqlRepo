@@ -1,0 +1,75 @@
+CREATE TABLE Actor(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Name" NVARCHAR(256) NOT NULL,
+  "DateOfBirth" DATETIME NOT NULL,
+  "Gender" NVARCHAR(10)
+);
+CREATE TABLE "Director"(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Name" NVARCHAR(256) NOT NULL,
+  "DateOfBirth" DATETIME NOT NULL,
+  "Gender" NVARCHAR(10) NULL
+);
+CREATE TABLE "Classification"(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Code" NVARCHAR(5) NOT NULL
+);
+CREATE TABLE "Country"(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Name" NVARCHAR(256) NOT NULL
+);
+CREATE TABLE "Genre"(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Name" NVARCHAR(256) NOT NULL
+);
+CREATE TABLE "Language"(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Name" NVARCHAR(256) NOT NULL
+);
+CREATE TABLE "Studio"(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Name" NVARCHAR(256) NOT NULL
+);
+CREATE TABLE "Movie"(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "Title" NVARCHAR(500) NOT NULL,
+  "ReleaseDate" DATETIME NOT NULL,
+  "ClassificationId" INTEGER NOT NULL REFERENCES "Classification"("Id"),
+  "CountryId" INTEGER NOT NULL REFERENCES "Country"("Id"),
+  "DirectorId" INTEGER NOT NULL REFERENCES "Directory"("Id"),
+  "LanguageId" INTEGER NOT NULL REFERENCES "Language"("Id"),
+  "StudioId" INTEGER NOT NULL REFERENCES "Studio"("Id"),
+  "Synopsis" TEXT NOT NULL,
+  "RunTimeMinutes" INTEGER NOT NULL,
+  "BudgetDollars" NUMERIC NOT NULL DEFAULT 0,
+  "BoxOfficeDollars" NUMERIC NOT NULL DEFAULT 0,
+  "OscarNominations" INTEGER NOT NULL DEFAULT 0,
+  "OscarWins" INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE "Cast"(
+  "MovieId" INTEGER NOT NULL REFERENCES "Movie"("Id"),
+  "ActorID" INTEGER NOT NULL REFERENCES "Actor"("Id"),
+  "CharacterName" NVARCHAR(256) NOT NULL
+);
+CREATE TABLE "Rating"(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "MovieId" INTEGER NOT NULL REFERENCES "Movie"("Id"),
+  "Stars" INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE "Review"(
+  "Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "MovieId" INTEGER NOT NULL REFERENCES "Movie"("Id"),
+  "Reviewer" NVARCHAR(256) NULL,
+  "Reviewed" DATETIME NOT NULL DEFAULT (datetime('now')),
+  "Content" TEXT NOT NULL
+);
+
+CREATE INDEX "IX_Movie_ClassificationId" ON "Movie"("ClassificationId");
+CREATE INDEX "IX_Movie_CountryId" ON "Movie"("CountryId");
+CREATE INDEX "IX_Movie_DirectoryId" ON "Movie"("DirectorId");
+CREATE INDEX "IX_Movie_LanguageId" ON "Movie"("LanguageId");
+CREATE INDEX "IX_Movie_StudioId" ON "Movie"("StudioId");
+CREATE INDEX "IX_Cast_MovieId" ON "Cast"("MovieId");
+CREATE INDEX "IX_Cast_ActorId" ON "Cast"("ActorId");
+CREATE INDEX "IX_Rating_MovieId" ON "Rating"("MovieId");
+CREATE INDEX "IX_Review_MovieId" ON "Review"("MovieId");
