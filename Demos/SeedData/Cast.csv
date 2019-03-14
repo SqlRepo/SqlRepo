@@ -1,0 +1,834 @@
+﻿MovieId,ActorID,CharacterName
+33,1,Ray Ferrier
+1,2,Dr. Alan Grant
+1,3,Dr. Ellie Sattler
+1,4,Dr. Ian Malcolm
+1,5,John Hammond
+1,6,Ray Arnold
+2,7,Peter Parker
+2,8,Norman Osborn
+2,9,Mary Jane Watson
+3,10,Ann Darrow
+3,11,Carl Denham
+3,12,Jack Driscoll
+3,13,Kong
+5,14,Clark Kent
+5,15,Lois Lane
+5,16,Lex Luthor
+6,17,Jack Dawson
+6,18,Rose DeWitt Bukater
+6,19,Caledon 'Cal' Hockley
+6,20,Brock Lovett
+7,21,Evan Baxter
+7,22,God
+8,23,Mariner
+8,24,Deacon
+8,11,Pilot
+9,25,Captain Rafe McCawley
+9,26,Captain Danny Walker
+9,27,Nurse Lt. Evelyn Johnson
+9,28,Petty Officer Doris Miller
+9,29,President Franklin Delano Roosevelt
+9,30,Lt. Col. James Doolittle
+9,31,Sgt. Earl Sistern
+9,32,Captain Thurman
+10,33,Sam Witwicky
+10,37,Mikaela Banes
+10,29,Defense Secretary John Keller
+10,34,Agent Simmons
+10,35,Optimus Prime
+10,36,Megatron
+11,38,Harry Potter
+11,39,Lord Voldemort
+11,40,Alastor 'Mad-Eye' Moody
+11,41,Sirius Black
+11,47,Hermione Granger
+11,48,Ron Weasley
+11,42,Albus Dumbledore
+11,43,Severus Snape
+11,44,Sybil Trelawney
+11,45,Bellatrix Lestrange
+11,46,Rubeus Hagrid
+12,49,Wealthow
+12,50,Hrothgar
+12,51,Unferth
+12,52,Beowulf
+12,40,Wiglaf
+12,53,Grendel's Mother
+7,54,Congressman Long
+13,55,Barry B. Benson
+13,56,Vanessa Bloome
+13,57,Adam Flayman
+13,54,Layton T. Montgomery
+13,58,Mooseblood
+13,59,Ray Liotta
+13,60,Lou Lo Duca
+14,61,Captain Jack Sparrow
+14,62,Captain Barbossa
+14,63,Will Turner
+14,64,Elizabeth Swann
+14,65,Davy Jones
+14,66,Governor Weatherby Swann
+14,67,'Bootstrap' Bill Turner
+15,68,Robert Neville
+15,44,Dr. Alice Krippin
+16,69,Remy
+16,70,Skinner
+16,71,Django
+16,72,Anton Ego
+17,73,Agamemnon
+17,75,Achilles
+17,40,Menelaus
+17,76,Helen
+17,77,Hector
+17,63,Paris
+18,38,Harry Potter
+18,47,Hermione Granger
+18,48,Ron Weasley
+18,46,Rubeus Hagrid
+18,42,Albus Dumbledore
+18,43,Severus Snape
+18,40,Professor Alastor 'Mad­Eye' Moody
+18,41,Sirius Black
+18,39,Lord Voldemort
+19,78,Bruce Wayne
+19,79,Alfred
+19,80,Henri Ducard
+19,81,Rachel Dawes
+19,41,Jim Gordon
+19,82,Earle
+19,83,Ra's Al Ghul
+19,22,Lucius Fox
+20,61,Willy Wonka
+20,45,Mrs. Bucket
+20,84,Mr. Salt
+20,85,Dr. Wonka
+21,61,Captain Jack Sparrow
+21,63,Will Turner
+21,64,Elizabeth Swann
+21,65,Davy Jones
+21,66,Governor Weatherby Swann
+21,67,'Bootstrap' Bill Turner
+22,86,James Bond
+22,89,M
+22,90,R
+22,87,Jinx
+22,88,Miranda Frost
+22,91,Damian Falco
+22,92,Miss Moneypenny
+23,93,Martin Riggs
+23,94,Roger Murtaugh
+23,95,Leo Getz
+23,96,Lorna Cole
+23,58,Detective Lee Butters
+23,97,Wah Sing Ku
+24,98,Harry S. Stamper
+24,99,Dan Truman
+24,25,A.J. Frost
+24,100,Grace Stamper
+24,101,Rockhound
+24,102,Oscar Choi
+24,103,Jayotis 'Bear' Kurleenbear
+24,104,Lev Andropov
+25,68,Agent Jay
+25,105,Agent Kay
+25,60,Zed
+26,7,Peter Parker
+26,9,Mary Jane Watson
+27,7,Peter Parker
+27,9,Mary Jane Watson
+27,8,Norman Osborn
+28,106,Lt. Henry Purcell
+28,107,Lt. Kara Wade
+29,30,Captain Gray Edwards
+29,108,Sgt. Ryan Whitaker
+29,101,Officer Neil Fleming
+29,109,Dr. Cid
+29,110,General Hein
+30,111,Sonny Crockett
+30,106,Ricardo Tubbs
+30,112,FBI Agent Fujima
+31,86,James Bond
+31,113,Elektra
+31,114,Renard
+31,115,Christmas Jones
+31,46,Valentin Zukovsky
+31,116,Q
+31,89,M
+31,90,R
+31,92,Miss Moneypenny
+32,117,Captain Jack Aubrey
+32,118,Dr. Stephen Maturin
+33,119,Rachel Ferrier
+33,120,Harlan Ogilvy
+34,121,Jason Bourne
+34,122,Nicky Parsons
+34,123,Deputy Director Noah Vosen
+34,124,Simon Ross
+34,125,Dr. Albert Hirsch
+35,38,Harry Potter
+35,47,Hermione Granger
+35,48,Ron Weasley
+35,41,Sirius Black
+35,43,Professor Severus Snape
+35,46,Rubeus Hagrid
+35,44,Professor Sybil Trelawney
+36,126,Persephone
+36,127,Morpheus
+36,128,Trinity
+36,129,Neo
+36,36,Agent Smith
+37,130,Dr. Robert Langdon
+37,131,Agent Sophie Neveu
+37,132,Sir Leigh Teabing
+37,133,Captain Bezu Fache
+37,118,Silas
+37,134,Andre Vernet
+38,135,Professor Albus Dumbledore
+38,46,Rubeus Hagrid
+38,38,Harry Potter
+38,136,Mr. Ollivander
+38,48,Ron Weasley
+38,47,Hermione Granger
+38,90,Nearly Headless Nick
+38,43,Professor Severus Snape
+39,137,Jack Hall
+39,138,Sam Hall
+39,70,Terry Rapson
+40,61,Captain Jack Sparrow
+40,63,Will Turner
+40,64,Elizabeth Swann
+40,66,Governor Weatherby Swann
+40,62,Captain Barbossa
+41,1,Nathan Algren
+41,83,Katsumoto
+264,140,Kaneda
+264,141,Capa
+264,142,Corazon
+19,141,Dr. Jonathan Crane
+41,140,Ujio
+41,139,Zebulon Gant
+42,143,Captain Billy Tyne
+42,144,Bobby Shatford
+42,145,Dale 'Murph' Murphy
+42,146,Linda Greenlaw
+42,147,Bob Brown
+43,1,Ethan Hunt
+43,148,Owen Davian
+43,108,Luther
+43,149,Julia
+43,150,Benji
+43,127,Theodore Brassel
+44,1,Ethan Hunt
+44,108,Luther Stickell
+44,40,John C. McCloy
+45,151,Christian Slater
+45,104,Gunnery Sergeant Hjelmstad
+45,152,Sgt. Pete 'Ox' Anderson
+46,153,Obi-Wan Kenobi
+46,154,Senator Padme Amidala
+46,155,Anakin Skywalker
+46,85,Count Dooku
+46,6,Mace Windu
+46,156,Yoda
+46,157,Chancellor Palpatine
+46,158,Jango Fett
+265,158,Jake Heke
+265,159,Beth Heke
+47,54,"James P. ""Sulley"" Sullivan"
+47,160,Mike Wazowski
+47,101,Randall Boggs
+47,161,Henry J. Waternoose
+47,156,Fungus
+48,80,Qui-Gon Jinn
+48,153,Obi-Wan Kenobi
+48,154,Queen Padme Amidala
+48,156,Yoda
+48,157,Senator Palpatine
+48,162,Darth Maul
+48,163,C-3PO
+48,164,R2-D2
+48,6,Mace Windu
+48,64,Sabé
+49,153,Obi-Wan Kenobi
+49,154,Padme
+49,155,Anakin Skywalker
+49,157,Supreme Chancellor Palpatine
+49,6,Mace Windu
+49,156,Yoda
+49,163,C-3PO
+49,164,R2-D2
+49,85,Count Dooku
+49,158,Commander Cody
+49,165,Chewbacca
+49,159,Nee Alavar
+50,126,Persephone
+50,127,Morpheus
+50,128,Trinity
+50,129,Neo
+50,36,Agent Smith
+51,86,James Bond
+51,66,Elliot Carver
+51,142,Wai Lin
+51,166,Jack Wade
+51,89,M
+51,116,Q
+51,92,Miss Moneypenny
+52,143,Danny Ocean
+52,75,Rusty Ryan
+52,167,Reuben Tishkoff
+52,121,Linus Caldwell
+52,168,Terry Benedict
+52,169,Tess Ocean
+52,170,Basher Tarr
+53,98,John McClane
+53,171,Thomas Gabriel
+53,175,Mai
+54,172,Passepartout
+54,173,Phileas Fogg
+54,177,Lord Kelvin
+54,174,Prince Hapi
+54,175,Female Agent
+54,176,Wong Fei Hung
+54,102,Wilbur Wright
+54,90,Grizzled Sergeant
+54,178,Orville Wright
+55,80,Godfrey de Ibelin
+55,63,Balian de Ibelin
+55,40,Reynald
+55,179,Tiberias
+55,180,King Baldwin
+56,75,John Smith
+56,53,Jane Smith
+56,181,Eddie
+56,149,Gwen
+57,17,Howard Hughes
+57,182,Katharine Hepburn
+57,27,Ava Gardner
+57,145,Noah Dietrich
+57,30,Juan Trippe
+57,70,Professor Fitz
+57,183,Errol Flynn
+57,184,Robert Gross
+57,8,Roland Sweet
+58,68,Muhammad Ali
+58,106,Drew 'Bundini' Brown
+58,29,Howard Cosell
+59,182,Galadriel
+59,63,Legolas Greenleaf
+59,70,Bilbo Baggins
+59,85,Saruman
+59,13,Gollum
+59,132,Gandalf the Grey
+59,185,Aragorn
+59,100,Arwen
+59,36,Elrond
+59,186,Frodo Baggins
+60,68,Del Spooner
+60,33,Farber
+60,188,Susan Calvin
+60,187,Dr. Alfred Lanning
+61,189,James Bond
+61,89,M
+62,1,Chief John Anderton
+62,190,Director Lamar Burgess
+62,111,Danny Witwer
+62,104,Dr. Solomon Eddie
+63,174,The Terminator
+63,191,Sarah Connor
+63,192,John Connor
+63,193,T-1000
+64,87,Patience Phillips
+65,38,Harry Potter
+65,48,Ron Weasley
+65,47,Hermione Granger
+65,46,Rubeus Hagrid
+65,194,Professor Gilderoy Lockhart
+65,43,Professor Snape
+65,135,Professor Albus Dumbledore
+65,90,Nearly Headless Nick
+66,195,Frank Lucas
+66,117,Detective Richie Roberts
+67,17,Danny Archer
+67,196,Solomon Vandy
+67,197,Maddy Bowen
+67,198,Colonel Coetzee
+68,117,Maximus
+68,199,Commodus
+68,200,Lucilla
+68,201,Proximo
+68,135,Marcus Aurelius
+68,196,Juba
+69,174,Harry Tasker
+69,202,Helen Tasker
+69,203,Albert Gibson
+69,20,Simon
+69,204,Spencer Trilby
+69,205,Juno Skinner
+69,206,Salim Abu Aziz
+69,207,Dana Tasker
+70,17,Amsterdam Vallon
+70,208,Bill 'The Butcher' Cutting
+70,209,Jenny Everdeane
+70,177,Boss Tweed
+70,145,Happy Jack
+70,80,'Priest' Vallon
+70,40,Walter 'Monk' McGinn
+71,26,Eversmann
+71,153,Grimes
+71,31,McKnight
+71,77,Hoot
+72,98,Korben Dallas
+72,41,Jean-Baptiste Emanuel Zorg
+72,70,Father Vito Cornelius
+72,210,Leeloo
+72,211,Ruby Rhod
+59,212,Boromir
+73,212,Boromir
+73,182,Galadriel
+73,63,Legolas Greenleaf
+73,70,Bilbo Baggins
+73,132,Gandalf the White
+73,185,Aragorn
+73,13,Gollum
+73,100,Arwen
+73,36,Elrond
+73,186,Frodo Baggins
+73,85,Saruman
+74,182,Galadriel
+74,63,Legolas Greenleaf
+74,85,Saruman
+74,132,Gandalf the White
+74,185,Aragorn
+74,13,Gollum
+74,100,Arwen
+74,213,Eomer
+73,213,Eomer
+74,36,Elrond
+74,186,Frodo Baggins
+74,212,Boromir
+75,172,Chief Inspector Lee
+75,211,Detective James Carter
+75,190,Varden Reynard
+75,140,Kenji
+76,172,Chief Inspector Lee
+76,211,Detective James Carter
+76,175,Girl in Car
+76,170,Kenny
+77,105,Agent Kay
+77,68,Agent Jay
+77,60,Zed
+77,214,Dr. Laurel Weaver
+78,17,William M. 'Billy' Costigan Jr.
+78,121,Colin
+78,215,Costello
+78,144,Dignam
+78,216,Queenan
+78,52,Mr. French
+78,30,Ellerby
+79,98,John McClane
+79,179,Simon Gruber
+79,6,Zeus Carver
+80,117,Jim Braddock
+80,56,Mae Braddock
+80,217,Joe Gould
+80,124,Mike Wilson
+81,121,Jason Bourne
+81,73,Ward Abbott
+81,122,Nicky Parsons
+81,213,Kirill
+81,149,Kim
+82,174,Jack Slater
+82,218,John Practice
+82,132,Death
+82,219,Benedict
+83,130,Chuck Noland
+84,75,Rusty Ryan
+84,221,Isabel Lahiri
+84,143,Danny Ocean
+84,169,Tess Ocean
+84,168,Terry Benedict
+84,170,Basher Tarr
+84,121,Linus Caldwell
+84,167,Reuben Tishkoff
+84,125,Gaspar LeMarque
+85,222,Michael Newman
+85,27,Donna Newman
+85,223,Morty
+85,224,Ammer
+85,225,Ted Newman
+86,226,Bruce Nolan
+86,22,God
+86,227,Grace Connelly
+86,21,Evan Baxter
+87,1,Ethan Hunt
+87,29,Jim Phelps
+87,228,Claire Phelps
+87,133,Franz Krieger
+87,108,Luther Stickell
+87,232,Max
+88,229,Captain Spurgeon 'Fish' Tanner
+88,230,Jenny Lerner
+88,186,Leo Beiderman
+88,232,Robin Lerner
+88,22,President Tom Beck
+88,187,Alan Rittenhouse
+88,231,Dr. Gus Partenza
+89,130,Michael Sullivan
+89,233,John Rooney
+89,189,Connor Rooney
+89,112,Finn McGovern
+89,183,Harlen Maguire
+89,234,Frank Nitti
+90,117,John Nash
+90,235,Parcher
+90,197,Alicia Nash
+90,236,Dr. Rosen
+90,118,Charles
+91,79,Jasper
+91,237,Theo Faron
+92,77,Avner
+92,189,Steve
+92,112,Carl
+92,62,Ephraim
+93,68,Captain Steven Hiller
+93,238,President Thomas J. Whitmore
+93,4,David Levinson
+93,239,First Lady Marilyn Whitmore
+93,240,Russell Casse
+93,184,Dr. Brackish Okun
+94,241,Wolverine
+94,242,Professor Charles Xavier
+94,132,Magneto
+94,243,Jean Grey
+94,87,Storm
+94,162,Toad
+95,242,Professor Charles Xavier
+95,241,Wolverine
+95,132,Magneto
+95,87,Storm
+95,243,Jean Grey
+95,73,William Stryker
+96,244,John Patrick Mason
+96,151,Dr. Stanley Goodspeed
+96,235,Brigadier General Francis X. Hummel
+96,245,Commander Anderson
+97,129,John Constantine
+97,246,Angela Dodson
+97,33,Chas Kramer
+97,196,Midnite
+97,104,Satan
+98,98,David Dunn
+98,6,Elijah Price
+98,49,Audrey Dunn
+99,103,Lucius Washington
+99,247,Ricky Bobby
+99,145,"Cal Naughton, Jr."
+99,248,Jean Girard
+100,249,Homer
+100,251,Bart
+100,250,Marge
+100,252,Lisa
+101,93,William Wallace
+101,73,Argyle Wallace
+101,253,King Edward I
+101,113,Princess Isabelle
+101,40,Hamish Campbell
+102,138,Anthony Swofford
+102,106,Staff Sergeant Sykes
+103,199,Lucius Hunt
+103,12,Noah Percy
+103,254,Edward Walker
+103,255,Alice Hunt
+103,40,August Nicholson
+104,256,Shrek
+104,257,Donkey
+104,258,Puss in Boots
+104,90,King
+105,256,Shrek
+105,257,Donkey
+105,258,Puss in Boots
+105,90,King
+105,209,Princess Fiona
+104,209,Princess Fiona
+106,235,Virgil 'Bud' Brigman
+106,146,Lindsey Brigman
+106,245,Lt. Hiram Coffey
+107,242,Captain Jean-Luc Picard
+107,259,Commander William T. Riker
+107,184,Lt. Commander Data
+107,260,Lt. Commander Geordi La Forge
+107,261,Lt. Commander Worf
+107,262,Dr. Beverly Crusher
+107,263,Commander Deanna Troi
+107,218,Ad'har Ru'afo
+108,264,Eddie Valiant
+108,265,Judge Doom
+108,266,Jessica Rabbit
+108,251,Dipped Shoe
+109,61,Ichabod Crane
+109,267,Katrina Van Tassel
+109,42,Baltus Van Tassel
+109,157,Doctor Lancaster
+109,223,Hessian Horseman
+109,85,Burgomaster
+110,268,Xander Cage
+110,6,Agent Augustus Gibbons
+111,98,John McClane
+111,270,Holly McClane
+111,269,Colonel Stuart
+111,193,O'Reilly
+112,271,Samantha Caine
+112,6,Mitch Henessey
+112,73,Dr. Nathan Waldman
+113,130,Jim Lovell
+113,20,Fred Haise
+113,272,Jack Swigert
+113,273,Ken Mattingly
+113,235,Gene Kranz
+114,130,Captain John H. Miller
+114,31,Sergeant Mike Horvath
+114,268,Private Adrian Caparzo
+114,121,Private James Francis Ryan
+114,217,Sergeant Hill
+115,180,The Narrator
+115,75,Tyler Durden
+115,45,Marla Singer
+116,129,Neo
+116,128,Trinity
+116,127,Morpheus
+116,36,Agent Smith
+117,174,Douglas Quaid
+64,274,Laurel Hedare
+82,274,Catherine Tramell
+117,274,Lori
+117,147,Richter
+118,275,Gabe Walker
+118,276,Eric Qualen
+118,277,Hal Tucker
+119,278,Jack Ryan
+119,8,John Clark
+120,86,James Bond
+120,212,Alec Trevelyan
+120,243,Xenia Zirgavna Onatopp
+120,166,Jack Wade
+120,89,M
+120,116,Q
+120,92,Miss Moneypenny
+121,26,Dwight 'Bucky' Bleichert
+121,279,Kay Lake
+121,280,Madeleine Linscott
+122,226,Truman Burbank
+122,235,Christof
+122,217,Control Room Director
+123,127,Captain Miller
+123,2,Dr. William Weir
+123,281,"Peters, Med Tech"
+113,281,Marilyn Lovell
+123,282,Lt. Starck
+123,283,Smith
+124,121,Jason Bourne
+124,237,The Professor
+124,73,Ward Abbott
+124,122,Nicky Parsons
+125,284,Hellboy
+125,136,Trevor 'Broom' Bruttenholm
+125,285,Liz Sherman
+126,102,Ken Hutchinson
+126,286,David Starsky
+126,289,Huggy Bear
+126,288,Captain Doby
+126,181,Reese Feldman
+126,287,Kitty
+126,290,Manetti
+126,69,Disco DJ
+127,143,Miles
+127,221,Marylin
+127,62,Donovan Donaly
+127,99,Howard D. Doyle
+73,293,Faramir
+74,293,Faramir
+128,291,King Leonidas
+128,294,Queen Gorgo
+128,292,Theron
+128,293,Dilios
+129,242,Captain Jean-Luc Picard
+129,259,Commander William T. Riker
+129,184,Lt. Commander Data
+129,260,Lt. Commander Geordi La Forge
+129,261,Lt. Commander Worf
+129,262,Dr. Beverly Crusher
+129,263,Commander Deanna Troi
+129,284,The Reman Viceroy
+146,242,Captain Jean-Luc Picard
+146,259,Commander William T. Riker
+146,184,Lt. Commander Data
+146,260,Lt. Commander Geordi La Forge
+146,261,Lt. Commander Worf
+146,262,Dr. Beverly Crusher
+146,263,Commander Deanna Troi
+146,187,Dr. Zefram Cochrane
+160,242,Captain Jean-Luc Picard
+160,259,Commander William T. Riker
+160,184,Lt. Commander Data
+160,260,Lt. Commander Geordi La Forge
+160,261,Lt. Commander Worf
+160,262,Dr. Beverly Crusher
+160,263,Commander Deanna Troi
+160,298,Captain James T. Kirk
+160,295,Dr. Tolian Soran
+160,296,"Captain Montgomery ""Scotty"" Scott"
+160,297,Commander Pavel Chekov
+225,298,Admiral James T. Kirk
+225,299,Captain Spock
+225,300,"Dr. Leonard ""Bones"" McCoy"
+225,296,"Commander Montgomery ""Scotty"" Scott"
+225,297,Commander Pavel Chekov
+225,301,Commander Hikaru Sulu
+225,302,Commander Uhura
+225,303,Khan
+162,296,"Commander Montgomery ""Scotty"" Scott"
+162,297,Lt. Pavel Chekov
+162,301,Lt. Commander Hikaru Sulu
+162,302,Lt. Commander Uhura
+162,298,Admiral James T. Kirk
+162,299,Mr Spock
+162,300,"Dr. Leonard ""Bones"" McCoy"
+201,265,Commander Kruge
+201,296,"Commander Montgomery ""Scotty"" Scott"
+201,297,Commander Pavel Chekov
+201,301,Commander Hikaru Sulu
+201,302,Commander Uhura
+201,298,Admiral James T. Kirk
+201,299,Captain Spock
+201,300,"Dr. Leonard ""Bones"" McCoy"
+174,298,Captain James T. Kirk
+174,299,Captain Spock
+174,300,"Dr. Leonard ""Bones"" McCoy"
+174,296,"Captain Montgomery ""Scotty"" Scott"
+174,297,Commander Pavel Chekov
+174,302,Commander Uhura
+174,301,Commander Hikaru Sulu
+180,298,Captain James T. Kirk
+180,299,Captain Spock
+180,300,"Dr. Leonard ""Bones"" McCoy"
+180,296,"Captain Montgomery ""Scotty"" Scott"
+180,297,Commander Pavel Chekov
+180,302,Commander Uhura
+180,301,Captain Hikaru Sulu
+180,236,General Chang
+180,261,Colonel Worf
+180,152,Excelsior Communications Officer
+191,298,Captain James T. Kirk
+191,299,Captain Spock
+191,300,"Dr. Leonard ""Bones"" McCoy"
+191,296,"Commander Montgomery ""Scotty"" Scott"
+191,301,Commander Hikaru Sulu
+191,297,Commander Pavel Chekov
+191,302,Commander Uhura
+130,307,Clark Kent
+130,305,Jor-El
+130,306,Lex Luthor
+130,308,Lois Lane
+131,195,Lt. Commander Ron Hunter
+131,306,Captain Frank Ramsey
+131,185,Lt. Peter 'WEAPS' Ince
+131,309,Lt. Bobby Dougherty
+132,195,Agent Doug Carlin
+132,310,Agent Paul Pryzwarra
+132,311,Carroll Oerstadt
+133,195,Creasy
+133,119,Pita
+133,223,Rayburn
+134,68,Robert Clayton Dean
+134,306,Brill
+134,29,Reynolds
+134,11,Fiedler
+134,31,Boss Paulie Pintero
+135,312,The Bride
+135,313,O-Ren Ishii
+135,314,Elle Driver
+135,315,Bill
+135,91,Budd
+136,255,Ellen Ripley
+136,316,Dillon
+136,219,Clemens
+136,317,David
+137,172,Chon Wang
+137,102,Roy O'Bannon
+137,313,Princess Pei Pei
+138,312,The Bride
+138,315,Bill
+138,313,O-Ren Ishii
+138,91,Budd
+138,314,Elle Driver
+138,6,Rufus
+139,318,Blade
+139,319,Abraham Whistler
+139,284,Reinhardt
+139,320,Snowman
+140,321,"John ""Doc"" Bradley"
+140,193,Colonel Chandler Johnson
+141,322,Sam 'Ace' Rothstein
+141,274,Ginger McKenna
+141,95,Nicky Santoro
+141,110,Lester Diamond
+142,23,Robin of Locksley
+142,22,Azeem
+142,146,Marian Dubois
+142,152,Will Scarlett
+142,43,Sheriff of Nottingham
+142,244,King Richard
+143,256,Shrek
+143,257,Donkey
+143,209,Princess Fiona
+143,276,Lord Farquaad
+144,172,Chon Wang
+144,102,Roy O'Bannon
+144,320,Wu Chow
+145,278,Indiana Jones
+145,244,Professor Henry Jones
+145,323,Sallah
+59,323,Gimli
+73,323,Gimli
+74,323,Gimli
+147,318,Blade
+147,319,Abraham Whistler
+147,324,Deacon Frost
+148,278,Jack Ryan
+148,212,Sean Miller
+148,6,Lt. Cmdr. Robby Jackson
+148,135,Paddy O'Neil
+148,325,Admiral James Greer
+149,278,Dr. Richard David Kimble
+149,105,Marshal Samuel Gerard
+149,326,Dr. Anne Eastman
+149,327,Deputy Marshal Cosmo Renfro
+150,241,Robert Angier
+150,78,Alfred Borden
+150,79,Cutter
+150,279,Olivia Wenscombe
+150,13,Alley
+151,208,Hawkeye
+151,328,Cora Munro
+151,329,Chinachgook
+151,330,Magua
+152,331,Jaguar Paw
+152,332,Seven
+153,102,John Beckwith
+153,181,Jeremy Grey
+153,223,Secretary William Cleary
+153,333,Claire Cleary
+153,334,Gloria Cleary
+153,335,Kathleen Cleary
+154,336,Marty McFly
+154,265,Dr. Emmett Brown
+154,337,Buford 'Mad Dog' Tannen
+155,336,Marty McFly
+155,265,Dr. Emmett Brown
+155,337,Biff Tannen
+156,338,James Bond
+156,339,Dario
+156,116,Q
+156,340,M
+156,341,Felix Leiter

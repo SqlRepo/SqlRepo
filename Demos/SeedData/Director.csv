@@ -1,0 +1,122 @@
+﻿Id,Name,DateOfBirth,Gender
+4,Steven Spielberg,1946-12-18 00:00:00.000,Male
+5,Joel Coen,1954-11-29 00:00:00.000,Male
+6,Ethan Coen,1957-09-21 00:00:00.000,Male
+7,George Lucas,1944-05-14 00:00:00.000,Male
+8,Ang Lee,1954-10-23 00:00:00.000,Male
+9,Martin Scorsese,1942-11-17 00:00:00.000,Male
+10,Clint Eastwood,1930-05-31 00:00:00.000,Male
+11,Sam Raimi,1959-10-23 00:00:00.000,Male
+12,Peter Jackson,1961-10-31 00:00:00.000,Male
+14,Bryan Singer,1965-09-17 00:00:00.000,Male
+15,James Cameron,1954-08-16 00:00:00.000,Male
+16,Tom Shadyac,1958-12-11 00:00:00.000,Male
+17,Kevin Reynolds,1952-01-17 00:00:00.000,Male
+18,Michael Bay,1965-02-17 00:00:00.000,Male
+19,David Yates,NULL,Male
+20,Robert Zemeckis,1952-05-14 00:00:00.000,Male
+21,Steve Hickner,NULL,Male
+22,Gore Verbinski,1964-03-16 00:00:00.000,Male
+23,Francis Lawrence,NULL,Male
+24,Brad Bird,1957-09-11 00:00:00.000,Male
+25,Wolfgang Peterson,1941-03-14 00:00:00.000,Male
+26,Mike Newell,1942-03-28 00:00:00.000,Male
+27,Christopher Nolan,1970-07-30 00:00:00.000,Male
+28,Tim Burton,1958-08-25 00:00:00.000,Male
+29,Lee Tamahori,1950-06-17 00:00:00.000,Male
+30,Richard Donner,1930-04-24 00:00:00.000,Male
+31,Barry Sonnenfeld,1953-04-01 00:00:00.000,Male
+32,Rob Cohen,1949-03-12 00:00:00.000,Male
+33,Hironobu Sakaguchi,1962-11-14 00:00:00.000,Male
+34,Michael Mann,1943-02-05 00:00:00.000,Male
+35,Michael Apted,1941-02-10 00:00:00.000,Male
+36,Peter Weir,1944-08-21 00:00:00.000,Male
+37,Paul Greengrass,1955-08-13 00:00:00.000,Male
+38,Alfonso Cuaron,1961-11-28 00:00:00.000,Male
+39,Andy Wachowski,1967-12-29 00:00:00.000,Male
+40,Ron Howard,1954-03-01 00:00:00.000,Male
+41,Chris Columbus,1958-09-10 00:00:00.000,Male
+42,Roland Emmerich,1955-11-10 00:00:00.000,Male
+43,Edward Zwick,1952-10-08 00:00:00.000,Male
+44,J. J. Abrams,1966-06-27 00:00:00.000,Male
+45,John Woo,1946-09-23 00:00:00.000,Male
+46,Pete Docter,1968-08-10 00:00:00.000,Male
+47,Roger Spottiswoode,1945-01-05 00:00:00.000,Male
+48,Steven Soderbergh,1963-01-14 00:00:00.000,Male
+49,Len Wiseman,1973-03-04 00:00:00.000,Male
+50,Frank Coraci,1966-02-03 00:00:00.000,Male
+51,Ridley Scott,1937-11-30 00:00:00.000,Male
+52,Doug Liman,1965-07-24 00:00:00.000,Male
+53,Alex Proyas,1963-09-23 00:00:00.000,Male
+54,Martin Campbell,1940-10-24 00:00:00.000,Male
+55,Jean-Christophe Comar,1957-07-04 00:00:00.000,Male
+56,Luc Besson,1959-03-18 00:00:00.000,Male
+57,Brett Ratner,1969-03-28 00:00:00.000,Male
+58,John McTiernan,1951-01-08 00:00:00.000,Male
+59,Brian De Palma,1940-09-11 00:00:00.000,Male
+60,Mimi Leder,1952-01-26 00:00:00.000,Female
+61,Sam Mendes,1965-08-01 00:00:00.000,Male
+62,M. Night Shyamalan,1970-08-06 00:00:00.000,Male
+63,Adam McKay,NULL,Male
+64,David Silverman,1957-03-15 00:00:00.000,Male
+65,Mel Gibson,1956-01-03 00:00:00.000,Male
+66,Chris Miller,NULL,Male
+67,Andrew Adamson,1966-12-01 00:00:00.000,Male
+68,Jonathon Frakes,1952-08-19 00:00:00.000,Male
+69,Renny Harlin,1959-03-15 00:00:00.000,Male
+70,David Fincher,1962-08-28 00:00:00.000,Male
+71,Guillermo del Toro,1964-10-09 00:00:00.000,Male
+72,Paul Verhoeven,1938-07-18 00:00:00.000,Male
+73,Phillip Noyce,1950-04-29 00:00:00.000,Male
+74,Paul Anderson,1965-03-04 00:00:00.000,Male
+75,Todd Phillips,1970-12-20 00:00:00.000,Male
+76,Zack Snyder,1966-03-01 00:00:00.000,Male
+77,Stuart Baird,1947-11-30 00:00:00.000,Male
+78,Tony Scott,1944-06-21 00:00:00.000,Male
+79,Quentin Tarantino,1963-03-27 00:00:00.000,Male
+80,Tom Dey,NULL,Male
+81,David Dobkin,NULL,Male
+82,Stephen Norrington,NULL,Male
+83,Andrew Davis,1946-11-21 00:00:00.000,Male
+84,John Glen,1932-05-15 00:00:00.000,Male
+85,Frank Miller,1957-01-27 00:00:00.000,Male
+86,Joss Whedon,1964-06-23 00:00:00.000,Male
+87,David Carson,NULL,Male
+88,Irvin Kershner,1923-04-29 00:00:00.000,Male
+89,Robert Wise,1914-09-10 00:00:00.000,Male
+90,Richard Marquand,1938-04-22 00:00:00.000,Male
+91,David Cronenberg,1943-03-15 00:00:00.000,Male
+92,Lewis Gilbert,1920-03-06 00:00:00.000,Male
+93,Andrew Dominik,NULL,Male
+94,Ivan Reitman,1946-10-27 00:00:00.000,Male
+95,William Shatner,1931-03-22 00:00:00.000,Male
+96,Nicholas Meyer,1945-12-24 00:00:00.000,Male
+97,Paul Michael Glaser,1943-03-25 00:00:00.000,Male
+98,Kevin Costner,1955-01-18 00:00:00.000,Male
+99,Leonard Nimoy,1931-03-26 00:00:00.000,Male
+100,John Guillermin,1925-11-11 00:00:00.000,Male
+101,Richard Attenborough,1923-08-29 00:00:00.000,Male
+102,Kurt Wimmer,NULL,Male
+103,Robert Rodriguez,1968-06-20 00:00:00.000,Male
+104,Larry Charles,1956-02-20 00:00:00.000,Male
+105,Yimou Zhang,1951-11-14 00:00:00.000,Male
+106,Edgar Wright,1974-04-18 00:00:00.000,Male
+107,Ang Lee,1954-10-23 00:00:00.000,Male
+108,Danny Boyle,1956-10-20 00:00:00.000,Male
+109,Oliver Hirschbiegel,1957-12-29 00:00:00.000,Male
+110,Val Guest,1911-12-11 00:00:00.000,Male
+111,Jean-Pierre Jeunet,1953-09-03 00:00:00.000,Male
+112,Terence Young,1915-06-20 00:00:00.000,Male
+113,Peter R. Hunt,1925-03-11 00:00:00.000,Male
+114,Stanley Tong,NULL,Male
+115,Guy Hamilton,1922-09-16 00:00:00.000,Male
+116,George Clooney,1961-05-06 00:00:00.000,Male
+117,Michael Anderson,1920-01-30 00:00:00.000,Male
+118,Sammo Hung,1952-01-07 00:00:00.000,Male
+119,Timur Bekmambetov,1961-06-25 00:00:00.000,Male
+120,Florian Henckel von Donnersmarck,1973-05-02 00:00:00.000,Male
+121,Merian C. Cooper,1893-10-24 00:00:00.000,Male
+122,Akira Kurosawa,1910-10-23 00:00:00.000,Male
+123,Morgan Spurlock,1970-11-07 00:00:00.000,Male
+124,Oliver Owl,1970-01-01 00:00:00.000,Male
+125,Wendy Wise,1971-02-01 00:00:00.000,Female

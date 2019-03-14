@@ -17,7 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.SqlServer.Tests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D7381234-9483-400D-8EC8-D08CB6341B58}"
 	ProjectSection(SolutionItems) = preProject
-		appveyor.yml = appveyor.yml
 		BumpVersion.ps1 = BumpVersion.ps1
 		PatchProjectVersions.ps1 = PatchProjectVersions.ps1
 		Version.txt = Version.txt
@@ -46,6 +45,25 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.SqlServer.Ninject", "Demos\GettingStarted\GettingStarted.SqlServer.Ninject\GettingStarted.SqlServer.Ninject.csproj", "{B349E7B1-8352-45D3-AC22-C3A699C862F3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GettingStarted.SqlServer.Autofac", "Demos\GettingStarted\GettingStarted.SqlServer.Autofac\GettingStarted.SqlServer.Autofac.csproj", "{63E3EB90-9783-49B6-A762-5EA2776E0570}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNetCore", "AspNetCore", "{30C7AD71-FA9C-431C-871A-F16EEB86510E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlRepo.Demos.Sqlite.AspNetCore.Mvc", "Demos\AspNetCore\SqlRepo.Demos.Sqlite.AspNetCore.Mvc\SqlRepo.Demos.Sqlite.AspNetCore.Mvc.csproj", "{F99BC616-4373-4B36-A0D0-3A34F7A610DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlRepo.Demos.Model", "Demos\SqlRepo.Demos.Model\SqlRepo.Demos.Model.csproj", "{7F5DADD2-3A41-4091-98A9-762F75EC961C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SeedData", "SeedData", "{89C7D4C5-5101-4AB5-98F2-CDBA09D9F34E}"
+	ProjectSection(SolutionItems) = preProject
+		Demos\SeedData\Actor.csv = Demos\SeedData\Actor.csv
+		Demos\SeedData\Cast.csv = Demos\SeedData\Cast.csv
+		Demos\SeedData\Classification.csv = Demos\SeedData\Classification.csv
+		Demos\SeedData\Country.csv = Demos\SeedData\Country.csv
+		Demos\SeedData\Director.csv = Demos\SeedData\Director.csv
+		Demos\SeedData\Genre.csv = Demos\SeedData\Genre.csv
+		Demos\SeedData\Language.csv = Demos\SeedData\Language.csv
+		Demos\SeedData\Movie.csv = Demos\SeedData\Movie.csv
+		Demos\SeedData\Studio.csv = Demos\SeedData\Studio.csv
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +135,14 @@ Global
 		{63E3EB90-9783-49B6-A762-5EA2776E0570}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63E3EB90-9783-49B6-A762-5EA2776E0570}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63E3EB90-9783-49B6-A762-5EA2776E0570}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F99BC616-4373-4B36-A0D0-3A34F7A610DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F99BC616-4373-4B36-A0D0-3A34F7A610DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F99BC616-4373-4B36-A0D0-3A34F7A610DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F99BC616-4373-4B36-A0D0-3A34F7A610DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F5DADD2-3A41-4091-98A9-762F75EC961C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F5DADD2-3A41-4091-98A9-762F75EC961C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F5DADD2-3A41-4091-98A9-762F75EC961C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F5DADD2-3A41-4091-98A9-762F75EC961C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +154,10 @@ Global
 		{8CDC27A2-81CC-4814-8E46-B13B4551E95E} = {D58D61C5-3D97-45CF-A3B0-3968E3407EFF}
 		{B349E7B1-8352-45D3-AC22-C3A699C862F3} = {D58D61C5-3D97-45CF-A3B0-3968E3407EFF}
 		{63E3EB90-9783-49B6-A762-5EA2776E0570} = {D58D61C5-3D97-45CF-A3B0-3968E3407EFF}
+		{30C7AD71-FA9C-431C-871A-F16EEB86510E} = {342408F0-6D7A-44D2-A002-D1730A7DBB81}
+		{F99BC616-4373-4B36-A0D0-3A34F7A610DF} = {30C7AD71-FA9C-431C-871A-F16EEB86510E}
+		{7F5DADD2-3A41-4091-98A9-762F75EC961C} = {342408F0-6D7A-44D2-A002-D1730A7DBB81}
+		{89C7D4C5-5101-4AB5-98F2-CDBA09D9F34E} = {342408F0-6D7A-44D2-A002-D1730A7DBB81}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {788D8B76-6423-427D-8CA2-FD6C6E977803}
