@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace SqlRepo.SqlServer.Abstractions
+namespace SqlRepo.Abstractions
 {
     public interface IEntityMapper
     {

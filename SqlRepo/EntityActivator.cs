@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace SqlRepo.SqlServer
+namespace SqlRepo
 {
-    public delegate T EntityActivator<T>();
+    public delegate T EntityActivator<out T>();
 
     public static class EntityActivator
     {
