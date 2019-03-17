@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using SqlRepo.Abstractions;
-using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.ServiceCollection
 {
@@ -9,6 +8,8 @@ namespace SqlRepo.SqlServer.ServiceCollection
     {
         public static IServiceCollection AddSqlRepo(this IServiceCollection serviceCollection)
         {
+            serviceCollection.AddSingleton<IEntityActivatorFactory, EntityActivatorFactory>();
+            serviceCollection.AddSingleton<IEntityMapperDefinitionProvider, EntityMapperDefinitionProvider>();
             serviceCollection.AddTransient<IRepositoryFactory, RepositoryFactory>();
             serviceCollection.AddTransient<IStatementFactoryProvider, StatementFactoryProvider>();
             serviceCollection.AddTransient<IEntityMapper, DataReaderEntityMapper>();

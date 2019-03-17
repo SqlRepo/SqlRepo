@@ -14,7 +14,7 @@ namespace SqlRepo.SqlServer.IntegrationTests.Examples
         public void SetUp()
         {
             this.RepositoryFactory = new RepositoryFactory(new StatementFactoryProvider(
-                new DataReaderEntityMapper(),
+                new DataReaderEntityMapper(new EntityMapperDefinitionProvider(new EntityActivatorFactory())),
                 new WritablePropertyMatcher(),
                 new AppConfigFirstConnectionProvider(),
                 new SqlLogger(new List<ISqlLogWriter>

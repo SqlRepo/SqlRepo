@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using SqlRepo.Abstractions;
 
 namespace SqlRepo
 {
-    public class EntityMapperDefinition<TEntity>
+    public class EntityMapperDefinition<TEntity>: IEntityMapperDefinition
         where TEntity: class, new()
     {
         public EntityMapperDefinition()

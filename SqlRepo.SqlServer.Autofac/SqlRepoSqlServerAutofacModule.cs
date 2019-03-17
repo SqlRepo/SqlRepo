@@ -1,7 +1,6 @@
 ﻿using System;
 using Autofac;
 using SqlRepo.Abstractions;
-using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.Autofac
 {
@@ -9,6 +8,12 @@ namespace SqlRepo.SqlServer.Autofac
     {
         protected override void Load(ContainerBuilder containerBuilder)
         {
+            containerBuilder.RegisterType<EntityActivatorFactory>()
+                            .As<IEntityActivatorFactory>()
+                            .SingleInstance();
+            containerBuilder.RegisterType<EntityMapperDefinitionProvider>()
+                            .As<IEntityMapperDefinitionProvider>()
+                            .SingleInstance();
             containerBuilder.RegisterType<RepositoryFactory>()
                             .As<IRepositoryFactory>();
             containerBuilder.RegisterType<StatementFactoryProvider>()
