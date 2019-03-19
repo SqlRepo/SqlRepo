@@ -20,7 +20,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
     <ProjectReference Include="..\SqlRepo\SqlRepo.csproj" />
   </ItemGroup>
 

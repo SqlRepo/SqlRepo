@@ -5,27 +5,32 @@ namespace SqlRepo.Testing
 {
     public static class ExpressionAssertionExtensions
     {
-        private static readonly ExpressionHelper helper = new ExpressionHelper();
-
         public static bool HasMemberName<TEntity, TMember>(this Expression<Func<TEntity, TMember>> expression,
             string expected)
         {
-            return helper.GetMemberName(expression) == expected;
+            return expression.GetMemberName() == expected;
+        }
+
+        public static bool HasOperator<TEntity, TMember>(this Expression<Func<TEntity, TMember>> expression,
+            string @operator)
+        {
+            return expression.GetOperator() == @operator;
         }
 
         public static bool HasValue<TEntity, TMember>(this Expression<Func<TEntity, TMember>> expression,
             object expected)
         {
-            return helper.GetExpressionValue(expression) == expected;
+            return expression.GetExpressionValue() == expected;
         }
-        
-        public static bool IsComparisonWith<TEntity, TMember>(this Expression<Func<TEntity, TMember>> expression,
-            string member, string @operator, string @value)
+
+        public static bool IsComparisonWith<TEntity, TMember>(
+            this Expression<Func<TEntity, TMember>> expression,
+            string member,
+            string @operator,
+            string @value)
         {
-            var memberName = helper.GetMemberName(expression);
-            var actualOperator = helper.GetOperator(expression);
-            var expressionValue = helper.GetExpressionValue(expression);
-            return memberName == member && actualOperator == @operator && expressionValue.ToString() == @value;
+            return expression.HasMemberName(member) && expression.HasOperator(@operator)
+                                                    && expression.HasValue(@value);
         }
     }
 }

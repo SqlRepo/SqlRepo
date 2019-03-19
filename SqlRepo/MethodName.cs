@@ -1,6 +1,6 @@
 using System;
 
-namespace SqlRepo.SqlServer
+namespace SqlRepo
 {
     public static class MethodName
     {
