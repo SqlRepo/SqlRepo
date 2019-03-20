@@ -26,12 +26,6 @@ namespace SqlRepo.Tests
         }
 
         [Test]
-        public void ReturnNullIfNoProfileForType()
-        {
-            this.target.Get<Person>().Should().BeNull();
-        }
-
-        [Test]
         public void ReturnProfileForType()
         {
             var profile = new EntityMappingProfile<Person>();
@@ -66,6 +60,32 @@ namespace SqlRepo.Tests
                          .BeAssignableTo<LocationEntityMappingProfile>(
                              "Location profile was not of expected type");
 
+        }
+
+        [Test]
+        public void ReturnDefaultProfileIfNoneAvailableForType()
+        {
+            var actual = this.target.Get<Person>();
+
+            actual.Should()
+                  .NotBeNull("Actual profile was not provided");
+
+            actual.Should().BeOfType<DefaultEntityMappingProfile>("Actual was not of expected type");
+        }
+
+
+        [Test]
+        public void CacheDefaultProfiles()
+        {
+            var expected = this.target.Get<Person>();
+
+            var actual = this.target.Get<Person>();
+
+            actual.Should()
+                  .NotBeNull("Actual profile was not provided");
+
+            actual.Should()
+                  .Be(expected, "Actual was not cached profile");
         }
 
         private IEntityMappingProfileProvider target;

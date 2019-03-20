@@ -10,7 +10,7 @@ namespace SqlRepo.Abstractions
 
         void AddFromAssembly(Assembly assembly);
 
-        IEntityMappingProfile<T> Get<T>()
+        IEntityMappingProfile Get<T>()
             where T: class, new();
 
         IEntityMappingProfile Get(Type type);

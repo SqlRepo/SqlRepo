@@ -30,16 +30,22 @@ namespace SqlRepo
             }
         }
 
-        public IEntityMappingProfile<T> Get<T>()
+        public IEntityMappingProfile Get<T>()
             where T: class, new()
         {
-            return this.Get(typeof(T)) as IEntityMappingProfile<T>;
+            return this.Get(typeof(T));
         }
 
         public IEntityMappingProfile Get(Type type)
         {
-            this.profiles.TryGetValue(type, out var profile);
-            return profile;
+            if(this.profiles.TryGetValue(type, out var profile))
+            {
+                return profile;
+            }
+
+            var defaultProfile = new DefaultEntityMappingProfile(type);
+            this.profiles.Add(type, defaultProfile);
+            return defaultProfile;
         }
     }
 }
