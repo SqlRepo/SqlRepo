@@ -13,10 +13,12 @@ namespace SqlRepo
             {
                 new BooleanPropertySetter(),
                 new BytePropertySetter(),
+                new CharPropertySetter(),
                 new DateTimePropertySetter(),
                 new DecimalPropertySetter(),
                 new DoublePropertySetter(),
                 new FloatPropertySetter(),
+                new GuidPropertySetter(),
                 new IntPropertySetter(),
                 new LongPropertySetter(),
                 new ShortPropertySetter(),

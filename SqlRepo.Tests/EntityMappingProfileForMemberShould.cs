@@ -25,14 +25,14 @@ namespace SqlRepo.Tests
         [Test]
         public void InvokeDelegateToConfigureBuilder()
         {
-            IEntityMemberMapperBuilderConfig<Person, int> config = null;
+            IEntityMemberMapperBuilderConfig config = null;
 
             this.target.ForMember(t => t.Id, c => config = c);
 
             config.Should()
                    .NotBeNull("Builder config was not set as expected");
             config.Should()
-                   .BeOfType<EntityMemberMapperBuilder<Person, int>>("Builder config was not of correct types");
+                   .BeOfType<EntityMemberMapperBuilder>("Builder config was not of expected type");
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace SqlRepo.Tests
             actual.Should()
                   .NotBeNull("Actual mapper was not found");
             actual.Should()
-                  .BeOfType<EntityMemberMapper<Person>>("Actual mapper was not of expected type");
+                  .BeOfType<EntityMemberMapper>("Actual mapper was not of expected type");
         }
 
         [Test]

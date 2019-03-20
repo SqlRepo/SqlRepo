@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
 
 namespace SqlRepo
@@ -21,6 +22,11 @@ namespace SqlRepo
                     throw new ArgumentException(
                         "Input MemberInfo must be of type EventInfo, FieldInfo, MethodInfo, or PropertyInfo");
             }
+        }
+
+        public static bool IsEnumerable(this MemberInfo member)
+        {
+            return typeof(IEnumerable).IsAssignableFrom(member.GetUnderlyingType());
         }
     }
 }

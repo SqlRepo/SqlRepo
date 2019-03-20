@@ -4,17 +4,16 @@ using SqlRepo.Abstractions;
 
 namespace SqlRepo
 {
-    public class EntityMemberMapperBuilder<T, TMember> : IEntityMemberMapperBuilder<T, TMember>
-        where T: class, new()
+    public class EntityMemberMapperBuilder : IEntityMemberMapperBuilder
     {
-        private readonly EntityMemberMapper<T> mapper;
+        private readonly EntityMemberMapper mapper;
 
         public EntityMemberMapperBuilder(MemberInfo memberInfo)
         {
-            this.mapper = new EntityMemberMapper<T>(memberInfo);
+            this.mapper = new EntityMemberMapper(memberInfo);
         }
 
-        public IEntityMemberMapper<T> Build()
+        public IEntityMemberMapper Build()
         {
             return this.mapper;
         }

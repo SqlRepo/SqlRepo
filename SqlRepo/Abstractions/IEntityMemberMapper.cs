@@ -4,13 +4,12 @@ using System.Reflection;
 
 namespace SqlRepo.Abstractions
 {
-    public interface IEntityMemberMapper<T>
-        where T: class, new()
+    public interface IEntityMemberMapper
     {
         int ColumnIndex { get; }
         string ColumnName { get; }
         EntityMemberMappingStrategy MappingStrategy { get; }
         MemberInfo MemberInfo { get; }
-        void Map(T entity, IDataRecord dataRecord);
+        void Map(object entity, IDataRecord dataRecord);
     }
 }

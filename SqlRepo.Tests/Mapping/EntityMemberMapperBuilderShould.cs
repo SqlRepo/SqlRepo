@@ -16,7 +16,7 @@ namespace SqlRepo.Tests
         public void SetUp()
         {
             this.memberInfo = typeof(Person).GetMember(ColumnName)[0];
-            this.target = new EntityMemberMapperBuilder<Person, int>(this.memberInfo);
+            this.target = new EntityMemberMapperBuilder(this.memberInfo);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace SqlRepo.Tests
             actual.Should()
                   .NotBeNull("Actual was null");
             actual.Should()
-                  .BeOfType<EntityMemberMapper<Person>>("Actual was not of correct type");
+                  .BeOfType<EntityMemberMapper>("Actual was not of correct type");
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace SqlRepo.Tests
 
         }
 
-        private IEntityMemberMapperBuilder<Person, int> target;
+        private IEntityMemberMapperBuilder target;
         private MemberInfo memberInfo;
     }
 }

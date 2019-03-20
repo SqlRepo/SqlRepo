@@ -191,10 +191,10 @@ namespace SqlRepo.Tests
 
         private MappingTestEntity entity;
 
-        private EntityMemberMapperBuilder<MappingTestEntity, DateTimeOffset> AssumeBuilderIsInitialised(string name)
+        private EntityMemberMapperBuilder AssumeBuilderIsInitialised(string name)
         {
             var memberInfo = typeof(MappingTestEntity).GetMember(name)[0];
-            var builder = new EntityMemberMapperBuilder<MappingTestEntity, DateTimeOffset>(memberInfo);
+            var builder = new EntityMemberMapperBuilder(memberInfo);
             return builder;
         }
 

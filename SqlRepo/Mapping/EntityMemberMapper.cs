@@ -5,8 +5,7 @@ using SqlRepo.Abstractions;
 
 namespace SqlRepo
 {
-    public class EntityMemberMapper<T> : IEntityMemberMapper<T>
-        where T: class, new()
+    public class EntityMemberMapper : IEntityMemberMapper
     {
         public EntityMemberMapper(MemberInfo memberInfo)
         {
@@ -18,7 +17,7 @@ namespace SqlRepo
         public string ColumnName { get; private set; }
         public EntityMemberMappingStrategy MappingStrategy { get; private set; }
 
-        public void Map(T entity, IDataRecord dataRecord)
+        public void Map(object entity, IDataRecord dataRecord)
         {
             var propertySetter = PropertySetterProvider.Get(this.MemberInfo.GetUnderlyingType());
             if(this.MappingStrategy == EntityMemberMappingStrategy.ColumnName)
