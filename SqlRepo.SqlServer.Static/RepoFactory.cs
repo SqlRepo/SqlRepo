@@ -9,7 +9,7 @@ namespace SqlRepo.SqlServer.Static
         private static readonly WritablePropertyMatcher WritablePropertyMatcher =
             new WritablePropertyMatcher();
         private static readonly DataReaderEntityMapper DataReaderEntityMapper =
-            new DataReaderEntityMapper(new EntityMapperDefinitionProvider(new EntityActivatorFactory()));
+            new DataReaderEntityMapper(new EntityMappingProfileProvider());
         private static IRepositoryFactory repositoryFactory;
         private static ISqlLogger sqlLogger;
         private static IConnectionProvider connectionProvider;

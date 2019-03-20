@@ -8,11 +8,8 @@ namespace SqlRepo.SqlServer.Ninject
     {
         public override void Load()
         {
-            this.Bind<IEntityActivatorFactory>()
-                .To<EntityActivatorFactory>()
-                .InSingletonScope();
-            this.Bind<IEntityMapperDefinitionProvider>()
-                .To<EntityMapperDefinitionProvider>()
+            this.Bind<IEntityMappingProfileProvider>()
+                .To<EntityMappingProfileProvider>()
                 .InSingletonScope();
             this.Bind<IRepositoryFactory>()
                 .To<RepositoryFactory>();

@@ -8,8 +8,7 @@ namespace SqlRepo.SqlServer.ServiceCollection
     {
         public static IServiceCollection AddSqlRepo(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IEntityActivatorFactory, EntityActivatorFactory>();
-            serviceCollection.AddSingleton<IEntityMapperDefinitionProvider, EntityMapperDefinitionProvider>();
+            serviceCollection.AddSingleton<IEntityMappingProfileProvider, EntityMappingProfileProvider>();
             serviceCollection.AddTransient<IRepositoryFactory, RepositoryFactory>();
             serviceCollection.AddTransient<IStatementFactoryProvider, StatementFactoryProvider>();
             serviceCollection.AddTransient<IEntityMapper, DataReaderEntityMapper>();

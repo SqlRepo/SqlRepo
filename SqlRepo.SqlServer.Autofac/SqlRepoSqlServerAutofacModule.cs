@@ -8,11 +8,8 @@ namespace SqlRepo.SqlServer.Autofac
     {
         protected override void Load(ContainerBuilder containerBuilder)
         {
-            containerBuilder.RegisterType<EntityActivatorFactory>()
-                            .As<IEntityActivatorFactory>()
-                            .SingleInstance();
-            containerBuilder.RegisterType<EntityMapperDefinitionProvider>()
-                            .As<IEntityMapperDefinitionProvider>()
+            containerBuilder.RegisterType<EntityMappingProfileProvider>()
+                            .As<IEntityMappingProfileProvider>()
                             .SingleInstance();
             containerBuilder.RegisterType<RepositoryFactory>()
                             .As<IRepositoryFactory>();

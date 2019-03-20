@@ -17,8 +17,8 @@ namespace SqlRepo.Tests
         public void Setup()
         {
             this.AssumeDataReaderIsInitialised();
-            this.AssumeEntityMapperDefinitionProviderIsInitialised();
-            this.dataReaderEntityMapper = new DataReaderEntityMapper(this.entityMapperDefinitionProvider);
+            this.AssumeEntityMappingProfileProviderIsInitialised();
+            this.dataReaderEntityMapper = new DataReaderEntityMapper(this.entityMappingProfileProvider);
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace SqlRepo.Tests
         {
             this.AssumeTargetIsExecuted();
 
-            this.entityMapperDefinitionProvider.Received().Get<TestEntity>();
+            this.entityMappingProfileProvider.Received().Get<TestEntity>();
         }
 
         [Test]
@@ -48,8 +48,7 @@ namespace SqlRepo.Tests
 
         private IDataReader dataReader;
         private DataReaderEntityMapper dataReaderEntityMapper;
-        private IEntityMapperDefinitionProvider entityMapperDefinitionProvider;
-        private EntityMapperDefinition<TestEntity> entityMapperDefinition;
+        private IEntityMappingProfileProvider entityMappingProfileProvider;
 
         private void AssumeDataReaderIsInitialised()
         {
@@ -63,13 +62,11 @@ namespace SqlRepo.Tests
                 .Returns(true, false);
         }
 
-        private void AssumeEntityMapperDefinitionProviderIsInitialised()
+        private void AssumeEntityMappingProfileProviderIsInitialised()
         {
-            var realProvider = new EntityMapperDefinitionProvider(new EntityActivatorFactory());
-            this.entityMapperDefinitionProvider = Substitute.For<IEntityMapperDefinitionProvider>();
-            this.entityMapperDefinition = realProvider.Get<TestEntity>();
-            this.entityMapperDefinitionProvider.Get<TestEntity>()
-                .Returns(this.entityMapperDefinition);
+            this.entityMappingProfileProvider = Substitute.For<IEntityMappingProfileProvider>();
+            this.entityMappingProfileProvider.Get<TestEntity>()
+                .Returns(new DefaultEntityMappingProfile(typeof(TestEntity)));
         }
 
         private List<TestEntity> AssumeTargetIsExecuted()
