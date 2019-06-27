@@ -16,7 +16,12 @@ namespace SqlRepo.Abstractions
     {
         IEntityMappingProfile<T> ForEnumerableMember<TEnumerable, TItem>(
             Expression<Func<T, IEnumerable<TItem>>> selector,
-            IEntityMappingProfile mappingProfile)
+            IEntityMappingProfile<TItem> mappingProfile)
+            where TEnumerable: class, IEnumerable<TItem>, new() where TItem: class, new();
+
+        IEntityMappingProfile<T> ForEnumerableMember<TEnumerable, TItem>(
+            Expression<Func<T, IEnumerable<TItem>>> selector,
+            Action<IEntityMappingProfile<TItem>> config)
             where TEnumerable: class, IEnumerable<TItem>, new() where TItem: class, new();
 
         IEntityMappingProfile<T> ForMember<TMember>(Expression<Func<T, TMember>> selector,

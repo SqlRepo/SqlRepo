@@ -6,6 +6,6 @@ namespace SqlRepo.Abstractions
     {
         int ColumnIndex { get; }
         string ColumnName { get; }
-        EntityMemberMappingStrategy MappingStrategy { get; }
+        EntityValueMemberMappingStrategy MappingStrategy { get; }
     }
 }

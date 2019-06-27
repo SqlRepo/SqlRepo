@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using SqlRepo.Abstractions;
@@ -11,23 +10,37 @@ namespace SqlRepo
     public class EntityMappingProfile<T> : IEntityMappingProfile<T>
         where T: class, new()
     {
-        private readonly IDictionary<MemberInfo, IEntityValueMemberMapper> memberMappers;
+        private readonly IDictionary<MemberInfo, IEntityMemberMapper> memberMappers;
         private readonly IDictionary<MemberInfo, IEntityMappingProfile> memberMappingProfiles;
 
         public EntityMappingProfile()
         {
             this.TargetType = typeof(T);
-            this.memberMappers = new Dictionary<MemberInfo, IEntityValueMemberMapper>();
+            this.memberMappers = new Dictionary<MemberInfo, IEntityMemberMapper>();
             this.memberMappingProfiles = new Dictionary<MemberInfo, IEntityMappingProfile>();
         }
 
         public Type TargetType { get; }
 
         public IEntityMappingProfile<T> ForEnumerableMember<TEnumerable, TItem>(Expression<Func<T, IEnumerable<TItem>>> selector,
-            IEntityMappingProfile mappingProfile)
+            IEntityMappingProfile<TItem> mappingProfile)
             where TEnumerable: class, IEnumerable<TItem>, new() where TItem: class, new()
         {
-            return null;
+            var memberInfo = selector.GetMemberExpression()
+                                     .Member;
+            var mapper = new EntityEnumerableMemberMapper<TEnumerable, TItem>(memberInfo, mappingProfile);
+            this.memberMappers.Add(memberInfo, mapper);
+
+            return this;
+        }
+
+        public IEntityMappingProfile<T> ForEnumerableMember<TEnumerable, TItem>(Expression<Func<T, IEnumerable<TItem>>> selector, Action<IEntityMappingProfile<TItem>> config)
+            where TEnumerable: class, IEnumerable<TItem>, new() where TItem: class, new()
+        {
+            var entityMappingProfile = new EntityMappingProfile<TItem>();
+            config(entityMappingProfile);
+
+            return this.ForEnumerableMember<TEnumerable, TItem>(selector, entityMappingProfile);
         }
 
         public IEntityMappingProfile<T> ForMember<TMember>(Expression<Func<T, TMember>> selector,

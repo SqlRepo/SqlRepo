@@ -48,7 +48,7 @@ namespace SqlRepo.Tests
 
             actual
                 .MappingStrategy.Should()
-                .Be(EntityMemberMappingStrategy.ColumnName, "Actual strategy was not set as expected");
+                .Be(EntityValueMemberMappingStrategy.ColumnName, "Actual strategy was not set as expected");
 
             actual.ColumnName.Should()
                   .Be(ColumnName, "Actual column name was not set correctly");
@@ -63,7 +63,7 @@ namespace SqlRepo.Tests
 
             actual
                 .MappingStrategy.Should()
-                .Be(EntityMemberMappingStrategy.ColumnIndex, "Actual strategy was not set as expected");
+                .Be(EntityValueMemberMappingStrategy.ColumnIndex, "Actual strategy was not set as expected");
 
             actual.ColumnIndex.Should()
                   .Be(0, "Actual column index was not set as expected");

@@ -16,12 +16,12 @@ namespace SqlRepo
         public MemberInfo MemberInfo { get; }
         public int ColumnIndex { get; private set; }
         public string ColumnName { get; private set; }
-        public EntityMemberMappingStrategy MappingStrategy { get; private set; }
+        public EntityValueMemberMappingStrategy MappingStrategy { get; private set; }
 
         public void Map(object entity, IDataRecord dataRecord)
         {
             var propertySetter = ValueMemberSetterProvider.Get(this.MemberInfo.GetUnderlyingType());
-            if(this.MappingStrategy == EntityMemberMappingStrategy.ColumnName)
+            if(this.MappingStrategy == EntityValueMemberMappingStrategy.ColumnName)
             {
                 propertySetter.SetFromColumnName(this.MemberInfo, entity, dataRecord, this.ColumnName);
             }
@@ -41,7 +41,7 @@ namespace SqlRepo
             this.ColumnName = columnName;
         }
 
-        internal void SetMappingStrategy(EntityMemberMappingStrategy mappingStrategy)
+        internal void SetMappingStrategy(EntityValueMemberMappingStrategy mappingStrategy)
         {
             this.MappingStrategy = mappingStrategy;
         }

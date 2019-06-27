@@ -2,7 +2,7 @@
 
 namespace SqlRepo
 {
-    public enum EntityMemberMappingStrategy
+    public enum EntityValueMemberMappingStrategy
     {
         ColumnName = 0,
         ColumnIndex

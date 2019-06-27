@@ -20,13 +20,13 @@ namespace SqlRepo
 
         public void MapFromColumnName(string columnName)
         {
-            this.mapper.SetMappingStrategy(EntityMemberMappingStrategy.ColumnName);
+            this.mapper.SetMappingStrategy(EntityValueMemberMappingStrategy.ColumnName);
             this.mapper.SetColumnName(columnName);
         }
 
         public void MapFromIndex(int columnIndex)
         {
-            this.mapper.SetMappingStrategy(EntityMemberMappingStrategy.ColumnIndex);
+            this.mapper.SetMappingStrategy(EntityValueMemberMappingStrategy.ColumnIndex);
             this.mapper.SetColumnIndex(columnIndex);
         }
     }
