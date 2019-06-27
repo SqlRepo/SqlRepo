@@ -7,7 +7,8 @@ using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer
 {
-    public class ExecuteQueryProcedureStatement<TEntity> : ExecuteProcedureStatement<IEnumerable<TEntity>>, IExecuteQueryProcedureStatement<TEntity>
+    public class ExecuteQueryProcedureStatement<TEntity> : ExecuteProcedureStatement<IEnumerable<TEntity>>,
+        IExecuteQueryProcedureStatement<TEntity>
         where TEntity: class, new()
     {
         private readonly IEntityMapper entityMapper;
@@ -54,6 +55,13 @@ namespace SqlRepo.SqlServer
             }
 
             ;
+        }
+
+        public IExecuteQueryProcedureStatement<TEntity> UsingMappingProfile(
+            IEntityMappingProfile mappingProfile)
+        {
+            this.entityMapper.UseMappingProfile(mappingProfile);
+            return this;
         }
     }
 }

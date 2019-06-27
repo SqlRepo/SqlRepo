@@ -45,5 +45,11 @@ namespace SqlRepo.SqlServer
                 throw new MissingSqlException();
             }
         }
+
+        public IExecuteQuerySqlStatement<TEntity> UsingMappingProfile(IEntityMappingProfile mappingProfile)
+        {
+            this.entityMapper.UseMappingProfile(mappingProfile);
+            return this;
+        }
     }
 }

@@ -18,6 +18,9 @@ namespace SqlRepo.SqlServer.Ninject
                 .To<WritablePropertyMatcher>();
             this.Bind<ISqlLogger>()
                 .To<SqlLogger>();
+            this.Bind<IEntityMappingProfileFactory>()
+                .To<EntityMappingProfileFactory>()
+                .InSingletonScope();
         }
     }
 }
