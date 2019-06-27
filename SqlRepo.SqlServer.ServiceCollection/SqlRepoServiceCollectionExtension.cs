@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using SqlRepo.Abstractions;
-using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.ServiceCollection
 {

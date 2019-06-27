@@ -1,7 +1,6 @@
 ﻿using System;
 using Autofac;
 using SqlRepo.Abstractions;
-using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.Autofac
 {

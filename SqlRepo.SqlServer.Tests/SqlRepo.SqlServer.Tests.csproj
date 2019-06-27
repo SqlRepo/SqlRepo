@@ -6,17 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SqlRepo.SqlServer.Tests.v3.ncrunchproject" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SqlRepo.Testing\SqlRepo.Testing.csproj" />
     <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.8.0" />
-    <PackageReference Include="FluentAssertions" Version="5.4.1" />
-    <PackageReference Include="NSubstitute" Version="3.1.0" />
-    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
+    <PackageReference Include="FluentAssertions" Version="5.7.0" />
+    <PackageReference Include="NSubstitute" Version="4.2.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="dotnet-test-nunit" Version="3.4.0-beta-3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
   </ItemGroup>
 
 </Project>
