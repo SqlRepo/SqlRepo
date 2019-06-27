@@ -22,25 +22,54 @@ namespace SqlRepo
 
         public Type TargetType { get; }
 
-        public IEntityMappingProfile<T> ForEnumerableMember<TEnumerable, TItem>(Expression<Func<T, IEnumerable<TItem>>> selector,
+        public IEntityMappingProfile<T> ForArrayMember<TItem>(
+            Expression<Func<T, TItem[]>> selector,
             IEntityMappingProfile<TItem> mappingProfile)
-            where TEnumerable: class, IEnumerable<TItem>, new() where TItem: class, new()
+            where TItem: class, new()
         {
             var memberInfo = selector.GetMemberExpression()
                                      .Member;
-            var mapper = new EntityEnumerableMemberMapper<TEnumerable, TItem>(memberInfo, mappingProfile);
+            var mapper =
+                new EntityArrayMemberMapper<TItem>(memberInfo, mappingProfile);
             this.memberMappers.Add(memberInfo, mapper);
 
             return this;
         }
 
-        public IEntityMappingProfile<T> ForEnumerableMember<TEnumerable, TItem>(Expression<Func<T, IEnumerable<TItem>>> selector, Action<IEntityMappingProfile<TItem>> config)
+        public IEntityMappingProfile<T> ForArrayMember<TItem>(Expression<Func<T, TItem[]>> selector,
+            Action<IEntityMappingProfile<TItem>> config)
+            where TItem: class, new()
+        {
+
+            var entityMappingProfile = new EntityMappingProfile<TItem>();
+            config(entityMappingProfile);
+            
+            return this.ForArrayMember(selector, entityMappingProfile);
+        }
+
+        public IEntityMappingProfile<T> ForGenericCollectionMember<TEnumerable, TItem>(
+            Expression<Func<T, IEnumerable<TItem>>> selector,
+            IEntityMappingProfile<TItem> mappingProfile)
+            where TEnumerable: class, IEnumerable<TItem>, new() where TItem: class, new()
+        {
+            var memberInfo = selector.GetMemberExpression()
+                                     .Member;
+            var mapper =
+                new EntityGenericEnumerableMemberMapper<TEnumerable, TItem>(memberInfo, mappingProfile);
+            this.memberMappers.Add(memberInfo, mapper);
+
+            return this;
+        }
+
+        public IEntityMappingProfile<T> ForGenericCollectionMember<TEnumerable, TItem>(
+            Expression<Func<T, IEnumerable<TItem>>> selector,
+            Action<IEntityMappingProfile<TItem>> config)
             where TEnumerable: class, IEnumerable<TItem>, new() where TItem: class, new()
         {
             var entityMappingProfile = new EntityMappingProfile<TItem>();
             config(entityMappingProfile);
 
-            return this.ForEnumerableMember<TEnumerable, TItem>(selector, entityMappingProfile);
+            return this.ForGenericCollectionMember<TEnumerable, TItem>(selector, entityMappingProfile);
         }
 
         public IEntityMappingProfile<T> ForMember<TMember>(Expression<Func<T, TMember>> selector,

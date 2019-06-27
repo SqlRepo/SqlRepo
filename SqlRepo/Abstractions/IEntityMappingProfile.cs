@@ -14,15 +14,23 @@ namespace SqlRepo.Abstractions
     public interface IEntityMappingProfile<T> : IEntityMappingProfile
         where T: class, new()
     {
-        IEntityMappingProfile<T> ForEnumerableMember<TEnumerable, TItem>(
+        IEntityMappingProfile<T> ForArrayMember<TItem>(Expression<Func<T, TItem[]>> selector,
+            IEntityMappingProfile<TItem> mappingProfile)
+            where TItem: class, new();
+
+        IEntityMappingProfile<T> ForArrayMember<TItem>(Expression<Func<T, TItem[]>> selector,
+            Action<IEntityMappingProfile<TItem>> config)
+            where TItem: class, new();
+
+        IEntityMappingProfile<T> ForGenericCollectionMember<TCollection, TItem>(
             Expression<Func<T, IEnumerable<TItem>>> selector,
             IEntityMappingProfile<TItem> mappingProfile)
-            where TEnumerable: class, IEnumerable<TItem>, new() where TItem: class, new();
+            where TCollection: class, IEnumerable<TItem>, new() where TItem: class, new();
 
-        IEntityMappingProfile<T> ForEnumerableMember<TEnumerable, TItem>(
+        IEntityMappingProfile<T> ForGenericCollectionMember<TCollection, TItem>(
             Expression<Func<T, IEnumerable<TItem>>> selector,
             Action<IEntityMappingProfile<TItem>> config)
-            where TEnumerable: class, IEnumerable<TItem>, new() where TItem: class, new();
+            where TCollection: class, IEnumerable<TItem>, new() where TItem: class, new();
 
         IEntityMappingProfile<T> ForMember<TMember>(Expression<Func<T, TMember>> selector,
             Action<IEntityValueMemberMapperBuilderConfig> config);

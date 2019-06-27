@@ -6,6 +6,7 @@ namespace SqlRepo.Tests.TestObjects
 {
     public class MappingTestEntity : TestEntity
     {
+        public InnerEntity[] ArrayField;
         public bool BooleanField;
         public byte ByteField;
         public char CharField;
@@ -13,6 +14,7 @@ namespace SqlRepo.Tests.TestObjects
         public DateTimeOffset DateTimeOffsetField;
         public decimal DecimalField;
         public double DoubleField;
+        public IEnumerable<InnerEntity> EnumerableField;
         public float FloatField;
         public Guid GuidField;
         public int IntField;
@@ -30,11 +32,12 @@ namespace SqlRepo.Tests.TestObjects
         public long? NullableLongField;
         public short? NullableShortField;
         public InnerEntity ObjectField;
-        public IEnumerable<InnerEntity> EnumerableField;
         public short ShortField;
         public string StringField;
+        public InnerEntity[] ArrayProperty { get; set; }
         public bool BooleanProperty { get; set; }
         public char CharProperty { get; set; }
+        public IEnumerable<InnerEntity> EnumerableProperty { get; set; }
         public float FloatProperty { get; set; }
         public long LongProperty { get; set; }
         public bool? NullableBooleanProperty { get; set; }
@@ -48,6 +51,5 @@ namespace SqlRepo.Tests.TestObjects
         public long? NullableLongProperty { get; set; }
         public short? NullableShortProperty { get; set; }
         public InnerEntity ObjectProperty { get; set; }
-        public IEnumerable<InnerEntity> EnumerableProperty { get; set; }
     }
 }

@@ -6,13 +6,13 @@ using SqlRepo.Abstractions;
 
 namespace SqlRepo
 {
-    public class EntityEnumerableMemberMapper<TEnumerable, TItem> : IEntityMemberMapper
-    where TItem: class, new()
-    where TEnumerable: class, IEnumerable<TItem>, new()
+    public class EntityGenericEnumerableMemberMapper<TEnumerable, TItem> : IEntityMemberMapper
+        where TItem: class, new() where TEnumerable: class, IEnumerable<TItem>, new()
     {
         private readonly IEntityMappingProfile<TItem> itemMappingProfile;
 
-        public EntityEnumerableMemberMapper(MemberInfo memberInfo, IEntityMappingProfile<TItem> itemMappingProfile)
+        public EntityGenericEnumerableMemberMapper(MemberInfo memberInfo,
+            IEntityMappingProfile<TItem> itemMappingProfile)
         {
             this.itemMappingProfile = itemMappingProfile;
             this.MemberInfo = memberInfo;
@@ -34,7 +34,7 @@ namespace SqlRepo
             var addMethod = typeof(TEnumerable).GetMethod("Add");
             if(addMethod != null)
             {
-                addMethod.Invoke(currentValue, new []{itemInstance});
+                addMethod.Invoke(currentValue, new[] {itemInstance});
             }
         }
     }

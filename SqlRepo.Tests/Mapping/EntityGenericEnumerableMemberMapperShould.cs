@@ -13,7 +13,7 @@ using SqlRepo.Tests.TestObjects;
 namespace SqlRepo.Tests
 {
     [TestFixture]
-    public class EntityEnumerableMemberMapperShould
+    public class EntityGenericEnumerableMemberMapperShould
     {
         [SetUp]
         public void SetUp()
@@ -131,7 +131,7 @@ namespace SqlRepo.Tests
             this.AssumeColumnNameMappingProfileIsInitialised();
 
             var mapper =
-                new EntityEnumerableMemberMapper<Collection<InnerEntity>, InnerEntity>(this.memberInfo,
+                new EntityGenericEnumerableMemberMapper<Collection<InnerEntity>, InnerEntity>(this.memberInfo,
                     this.itemMappingProfile);
             mapper.Map(this.entity, this.dataRecord1);
             mapper.Map(this.entity, this.dataRecord2);
@@ -215,7 +215,7 @@ namespace SqlRepo.Tests
             this.AssumeColumnNameMappingProfileIsInitialised();
 
             var mapper =
-                new EntityEnumerableMemberMapper<Collection<InnerEntity>, InnerEntity>(this.memberInfo,
+                new EntityGenericEnumerableMemberMapper<Collection<InnerEntity>, InnerEntity>(this.memberInfo,
                     this.itemMappingProfile);
             mapper.Map(this.entity, this.dataRecord1);
             mapper.Map(this.entity, this.dataRecord2);
@@ -262,7 +262,7 @@ namespace SqlRepo.Tests
         private IDataRecord dataRecord2;
         private MappingTestEntity entity;
         private IEntityMappingProfile<InnerEntity> itemMappingProfile;
-        private EntityEnumerableMemberMapper<List<InnerEntity>, InnerEntity> listMapper;
+        private EntityGenericEnumerableMemberMapper<List<InnerEntity>, InnerEntity> listMapper;
         private MemberInfo memberInfo;
 
         private void AssumeColumnNameMappingProfileIsInitialised()
@@ -314,7 +314,7 @@ namespace SqlRepo.Tests
         private void AssumeListMemberMapperIsInitialised()
         {
             this.listMapper =
-                new EntityEnumerableMemberMapper<List<InnerEntity>, InnerEntity>(this.memberInfo,
+                new EntityGenericEnumerableMemberMapper<List<InnerEntity>, InnerEntity>(this.memberInfo,
                     this.itemMappingProfile);
         }
     }
