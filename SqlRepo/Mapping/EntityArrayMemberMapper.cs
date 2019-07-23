@@ -26,16 +26,33 @@ namespace SqlRepo
             if(!(this.MemberInfo.GetValue(entity) is TItem[] currentValue))
             {
                 currentValue = new[] {itemInstance};
+                this.MemberInfo.SetValue(entity, currentValue);
             }
             else
             {
-                var newItemIndex = currentValue.Length;
-                var newLength = newItemIndex + 1;
-                Array.Resize(ref currentValue, newLength);
-                currentValue[newItemIndex] = itemInstance;
+                if(!this.ArrayContainsItem(currentValue, itemInstance))
+                {
+                    var newItemIndex = currentValue.Length;
+                    var newLength = newItemIndex + 1;
+                    Array.Resize(ref currentValue, newLength);
+                    currentValue[newItemIndex] = itemInstance;
+                    this.MemberInfo.SetValue(entity, currentValue);
+                }
             }
 
-            this.MemberInfo.SetValue(entity, currentValue);
+        }
+
+        private bool ArrayContainsItem(TItem[] array, TItem item)
+        {
+            foreach(var entity in array)
+            {
+                if(this.itemMappingProfile.EntitiesMatch(item, entity))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

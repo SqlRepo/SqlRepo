@@ -34,18 +34,18 @@ namespace SqlRepo
         }
 
         public Type TargetType { get; }
-
-        public IEntityValueMemberMapper GetMapper(MemberInfo memberInfo)
-        {
-            return null;
-        }
-
+        
         public void Map(object entity, IDataRecord dataRecord)
         {
             foreach(var mapper in this.mappers.Values)
             {
                 mapper.Map(entity, dataRecord);
             }
+        }
+
+        public bool DataRecordMatchesEntity(object entity, IDataRecord dataRecord)
+        {
+            return false;
         }
     }
 }

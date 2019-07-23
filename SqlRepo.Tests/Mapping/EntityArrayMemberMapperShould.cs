@@ -185,7 +185,7 @@ namespace SqlRepo.Tests
         private void AssumeColumnNameMappingProfileIsInitialised()
         {
             this.itemMappingProfile = new EntityMappingProfile<InnerEntity>();
-            this.itemMappingProfile.ForMember(e => e.Id, c => c.MapFromColumnName(InnerEntityIdColumnName))
+            this.itemMappingProfile.ForMember(e => e.Id, c => c.MapFromColumnName(InnerEntityIdColumnName, true))
                 .ForMember(e => e.TestEntityId, c => c.MapFromColumnName(InnerEntityTestEntityIdColumnName))
                 .ForMember(e => e.StringProperty,
                     c => c.MapFromColumnName(InnerEntityStringPropertyColumnName))

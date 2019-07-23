@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using SqlRepo.Abstractions;
@@ -10,17 +11,29 @@ namespace SqlRepo
     public class EntityMappingProfile<T> : IEntityMappingProfile<T>
         where T: class, new()
     {
+        private readonly IList<IEntityValueMemberMapper> keyMemberMappers;
         private readonly IDictionary<MemberInfo, IEntityMemberMapper> memberMappers;
         private readonly IDictionary<MemberInfo, IEntityMappingProfile> memberMappingProfiles;
 
         public EntityMappingProfile()
         {
             this.TargetType = typeof(T);
+            this.keyMemberMappers = new List<IEntityValueMemberMapper>();
             this.memberMappers = new Dictionary<MemberInfo, IEntityMemberMapper>();
             this.memberMappingProfiles = new Dictionary<MemberInfo, IEntityMappingProfile>();
         }
 
         public Type TargetType { get; }
+
+        public bool DataRecordMatchesEntity(object entity, IDataRecord dataRecord)
+        {
+            return this.keyMemberMappers.All(m => m.ValueMatches(entity, dataRecord));
+        }
+
+        public bool EntitiesMatch(object entity1, object entity2)
+        {
+            return this.keyMemberMappers.All(m => m.ValuesMatch(entity1, entity2));
+        }
 
         public IEntityMappingProfile<T> ForArrayMember<TItem>(
             Expression<Func<T, TItem[]>> selector,
@@ -55,7 +68,7 @@ namespace SqlRepo
             var memberInfo = selector.GetMemberExpression()
                                      .Member;
             var mapper =
-                new EntityGenericEnumerableMemberMapper<TEnumerable, TItem>(memberInfo, mappingProfile);
+                new EntityGenericCollectionMemberMapper<TEnumerable, TItem>(memberInfo, mappingProfile);
             this.memberMappers.Add(memberInfo, mapper);
 
             return this;
@@ -81,7 +94,12 @@ namespace SqlRepo
             var entityMemberMapperBuilder = new EntityValueMemberMapperBuilder(memberInfo);
             config(entityMemberMapperBuilder);
 
-            this.memberMappers.Add(memberInfo, entityMemberMapperBuilder.Build());
+            var entityValueMemberMapper = entityMemberMapperBuilder.Build();
+            if(entityValueMemberMapper.IsKey)
+            {
+                this.keyMemberMappers.Add(entityValueMemberMapper);
+            }
+            this.memberMappers.Add(memberInfo, entityValueMemberMapper);
 
             return this;
         }
@@ -110,6 +128,11 @@ namespace SqlRepo
 
         public void Map(object entity, IDataRecord dataRecord)
         {
+            if(!this.keyMemberMappers.Any())
+            {
+                throw new InvalidOperationException("Missing key member mapping, did you forget to set at least one member as the entity key");
+            }
+
             foreach(var mapper in this.memberMappers.Values)
             {
                 mapper.Map(entity, dataRecord);

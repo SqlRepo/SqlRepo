@@ -18,16 +18,18 @@ namespace SqlRepo
             return this.mapper;
         }
 
-        public void MapFromColumnName(string columnName)
+        public void MapFromColumnName(string columnName, bool isKeyColumn = false)
         {
             this.mapper.SetMappingStrategy(EntityValueMemberMappingStrategy.ColumnName);
             this.mapper.SetColumnName(columnName);
+            this.mapper.SetIsKey(isKeyColumn);
         }
 
-        public void MapFromIndex(int columnIndex)
+        public void MapFromIndex(int columnIndex, bool isKeyColumn = false)
         {
             this.mapper.SetMappingStrategy(EntityValueMemberMappingStrategy.ColumnIndex);
             this.mapper.SetColumnIndex(columnIndex);
+            this.mapper.SetIsKey(isKeyColumn);
         }
     }
 }

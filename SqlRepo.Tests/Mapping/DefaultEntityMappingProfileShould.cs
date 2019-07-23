@@ -38,6 +38,14 @@ namespace SqlRepo.Tests
 
         }
 
+        [Test]
+        public void AlwaysIndicateDataRecordAndEntityDoNotMatch
+            ()
+        {
+            var result = this.target.DataRecordMatchesEntity(this.entity, this.dataRecord);
+            result.Should().BeFalse();
+        }
+
         private IDataRecord dataRecord;
         private TestEntity entity;
         private IEntityMappingProfile target;

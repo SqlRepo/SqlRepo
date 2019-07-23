@@ -4,7 +4,7 @@ namespace SqlRepo.Abstractions
 {
     public interface IEntityValueMemberMapperBuilderConfig
     {
-        void MapFromColumnName(string columnName);
-        void MapFromIndex(int columnIndex);
+        void MapFromColumnName(string columnName, bool isKeyColumn = false);
+        void MapFromIndex(int columnIndex, bool isKeyColumn = false);
     }
 }

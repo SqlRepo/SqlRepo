@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 
 namespace SqlRepo.Abstractions
 {
@@ -6,6 +7,9 @@ namespace SqlRepo.Abstractions
     {
         int ColumnIndex { get; }
         string ColumnName { get; }
+        bool IsKey { get; }
         EntityValueMemberMappingStrategy MappingStrategy { get; }
+        bool ValueMatches(object entity, IDataRecord dataRecord);
+        bool ValuesMatch(object entity1, object entity2);
     }
 }

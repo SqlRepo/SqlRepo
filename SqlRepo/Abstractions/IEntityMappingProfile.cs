@@ -9,11 +9,14 @@ namespace SqlRepo.Abstractions
     {
         Type TargetType { get; }
         void Map(object entity, IDataRecord dataRecord);
+        bool DataRecordMatchesEntity(object entity, IDataRecord dataRecord);
     }
 
     public interface IEntityMappingProfile<T> : IEntityMappingProfile
         where T: class, new()
     {
+        bool EntitiesMatch(object entity1, object entity2);
+
         IEntityMappingProfile<T> ForArrayMember<TItem>(Expression<Func<T, TItem[]>> selector,
             IEntityMappingProfile<TItem> mappingProfile)
             where TItem: class, new();

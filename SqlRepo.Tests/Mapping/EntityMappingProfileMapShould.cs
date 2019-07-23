@@ -24,6 +24,9 @@ namespace SqlRepo.Tests
         private const string AddressTownColumnName = "Address_Town";
         private const string AddressRegionColumnName = "Address_Region";
         private const string AddressPostCodeColumnName = "Address_PostCode";
+        private const string LocationLatitudeColumnName = "Location_Latitude";
+        private const string LocationLongitudeColumnName = "Location_Longitude";
+        private const string LocationTownColumnName = "Location_Town";
 
         [SetUp]
         public void SetUp()
@@ -34,8 +37,6 @@ namespace SqlRepo.Tests
         [Test]
         public void MapLocationCorrectlyFromProfile()
         {
-            var locationColumnNames = new[] {"Location_Latitude", "Location_Longitude", "Location_Town"};
-
             var dataRecord = DataRecordMockBuilder.CreateNew()
                                                   .WithIntColumn(IdColumnName, 0, 1)
                                                   .WithStringColumn(NameColumnName, 1, "name")
@@ -43,19 +44,19 @@ namespace SqlRepo.Tests
                                                   .WithDateTimeColumn(dateOfBirthColumnName,
                                                       3,
                                                       new DateTime(1956, 02, 10))
-                                                  .WithDoubleColumn(locationColumnNames[0], 4, 0.5)
-                                                  .WithDoubleColumn(locationColumnNames[1], 5, 1.2)
-                                                  .WithStringColumn(locationColumnNames[2], 5, "town")
+                                                  .WithDoubleColumn(LocationLatitudeColumnName, 4, 0.5)
+                                                  .WithDoubleColumn(LocationLongitudeColumnName, 5, 1.2)
+                                                  .WithStringColumn(LocationTownColumnName, 5, "town")
                                                   .Build();
             var person = new Person();
 
             var locationMappingProfile = new EntityMappingProfile<Location>();
             locationMappingProfile
-                .ForMember(e => e.Latitude, c => c.MapFromColumnName(locationColumnNames[0]))
-                .ForMember(e => e.Longitude, c => c.MapFromColumnName(locationColumnNames[1]))
-                .ForMember(e => e.Town, c => c.MapFromColumnName(locationColumnNames[2]));
+                .ForMember(e => e.Latitude, c => c.MapFromColumnName(LocationLatitudeColumnName, true))
+                .ForMember(e => e.Longitude, c => c.MapFromColumnName(LocationLongitudeColumnName, true))
+                .ForMember(e => e.Town, c => c.MapFromColumnName(LocationTownColumnName));
 
-            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName))
+            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName, true))
                 .ForMember(e => e.Name, c => c.MapFromColumnName(NameColumnName))
                 .ForMember(e => e.Gender, c => c.MapFromColumnName(GenderColumnName))
                 .ForMember(e => e.DateOfBirth, c => c.MapFromColumnName(dateOfBirthColumnName))
@@ -84,7 +85,7 @@ namespace SqlRepo.Tests
         [Test]
         public void MapLocationCorrectlyFromProfileConfig()
         {
-            var locationColumnNames = new[] {"Location_Latitude", "Location_Longitude", "Location_Town"};
+            var locationColumnNames = new[] {LocationLatitudeColumnName, LocationLongitudeColumnName, LocationTownColumnName};
 
             var dataRecord = DataRecordMockBuilder.CreateNew()
                                                   .WithIntColumn(IdColumnName, 0, 1)
@@ -93,20 +94,20 @@ namespace SqlRepo.Tests
                                                   .WithDateTimeColumn(dateOfBirthColumnName,
                                                       3,
                                                       new DateTime(1956, 02, 10))
-                                                  .WithDoubleColumn(locationColumnNames[0], 4, 0.5)
-                                                  .WithDoubleColumn(locationColumnNames[1], 5, 1.2)
-                                                  .WithStringColumn(locationColumnNames[2], 5, "town")
+                                                  .WithDoubleColumn(LocationLatitudeColumnName, 4, 0.5)
+                                                  .WithDoubleColumn(LocationLongitudeColumnName, 5, 1.2)
+                                                  .WithStringColumn(LocationTownColumnName, 5, "town")
                                                   .Build();
             var person = new Person();
 
-            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName))
+            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName, true))
                 .ForMember(e => e.Name, c => c.MapFromColumnName(NameColumnName))
                 .ForMember(e => e.Gender, c => c.MapFromColumnName(GenderColumnName))
                 .ForMember(e => e.DateOfBirth, c => c.MapFromColumnName(dateOfBirthColumnName))
                 .ForMember(e => e.Location,
-                    (p) => p.ForMember(e => e.Latitude, c => c.MapFromColumnName(locationColumnNames[0]))
-                            .ForMember(e => e.Longitude, c => c.MapFromColumnName(locationColumnNames[1]))
-                            .ForMember(e => e.Town, c => c.MapFromColumnName(locationColumnNames[2])))
+                    (p) => p.ForMember(e => e.Latitude, c => c.MapFromColumnName(LocationLatitudeColumnName, true))
+                            .ForMember(e => e.Longitude, c => c.MapFromColumnName(LocationLongitudeColumnName, true))
+                            .ForMember(e => e.Town, c => c.MapFromColumnName(LocationTownColumnName)))
                 .Map(person, dataRecord);
 
             person.Id.Should()
@@ -148,12 +149,12 @@ namespace SqlRepo.Tests
             var person = new Person();
 
             var childMappingProfile = new EntityMappingProfile<Person>();
-            childMappingProfile.ForMember(e => e.Id, c => c.MapFromColumnName(ChildIdColumnName))
+            childMappingProfile.ForMember(e => e.Id, c => c.MapFromColumnName(ChildIdColumnName, true))
                                .ForMember(e => e.Name, c => c.MapFromColumnName(ChildNameColumnName))
                                .ForMember(e => e.Gender, c => c.MapFromColumnName(ChildGenderColumnName))
                                .ForMember(e => e.DateOfBirth, c => c.MapFromColumnName(ChildDateOfBirthColumnName));
 
-            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName))
+            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName, true))
                 .ForMember(e => e.Name, c => c.MapFromColumnName(NameColumnName))
                 .ForMember(e => e.Gender, c => c.MapFromColumnName(GenderColumnName))
                 .ForMember(e => e.DateOfBirth, c => c.MapFromColumnName(dateOfBirthColumnName))
@@ -192,12 +193,12 @@ namespace SqlRepo.Tests
                                                   .Build();
             var person = new Person();
 
-            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName))
+            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName, true))
                 .ForMember(e => e.Name, c => c.MapFromColumnName(NameColumnName))
                 .ForMember(e => e.Gender, c => c.MapFromColumnName(GenderColumnName))
                 .ForMember(e => e.DateOfBirth, c => c.MapFromColumnName(dateOfBirthColumnName))
                 .ForGenericCollectionMember<List<Person>, Person>(e => e.Children,
-                    cc => cc.ForMember(e => e.Id, c => c.MapFromColumnName(ChildIdColumnName))
+                    cc => cc.ForMember(e => e.Id, c => c.MapFromColumnName(ChildIdColumnName, true))
                             .ForMember(e => e.Name, c => c.MapFromColumnName(ChildNameColumnName))
                             .ForMember(e => e.Gender, c => c.MapFromColumnName(ChildGenderColumnName))
                             .ForMember(e => e.DateOfBirth, c => c.MapFromColumnName(ChildDateOfBirthColumnName)))
@@ -241,20 +242,20 @@ namespace SqlRepo.Tests
             var person = new Person();
 
             var childMappingProfile = new EntityMappingProfile<Person>();
-            childMappingProfile.ForMember(e => e.Id, c => c.MapFromColumnName(ChildIdColumnName))
+            childMappingProfile.ForMember(e => e.Id, c => c.MapFromColumnName(ChildIdColumnName, true))
                                .ForMember(e => e.Name, c => c.MapFromColumnName(ChildNameColumnName))
                                .ForMember(e => e.Gender, c => c.MapFromColumnName(ChildGenderColumnName))
                                .ForMember(e => e.DateOfBirth, c => c.MapFromColumnName(ChildDateOfBirthColumnName));
 
             var addressMappingProfile = new EntityMappingProfile<Address>();
-            addressMappingProfile.ForMember(e => e.Line1, c => c.MapFromColumnName(AddressLine1ColumnName))
+            addressMappingProfile.ForMember(e => e.Line1, c => c.MapFromColumnName(AddressLine1ColumnName, true))
                                  .ForMember(e => e.Line2, c => c.MapFromColumnName(AddressLine2ColumnName))
                                  .ForMember(e => e.Town, c => c.MapFromColumnName(AddressTownColumnName))
                                  .ForMember(e => e.Region,
                                      c => c.MapFromColumnName(AddressRegionColumnName))
                                  .ForMember(e => e.PostCode, c => c.MapFromColumnName(AddressPostCodeColumnName));
 
-            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName))
+            this.target.ForMember(e => e.Id, c => c.MapFromColumnName(IdColumnName, true))
                 .ForMember(e => e.Name, c => c.MapFromColumnName(NameColumnName))
                 .ForMember(e => e.Gender, c => c.MapFromColumnName(GenderColumnName))
                 .ForMember(e => e.DateOfBirth, c => c.MapFromColumnName(dateOfBirthColumnName))

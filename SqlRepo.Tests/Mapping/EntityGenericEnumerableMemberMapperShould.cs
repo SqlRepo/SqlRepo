@@ -131,7 +131,7 @@ namespace SqlRepo.Tests
             this.AssumeColumnNameMappingProfileIsInitialised();
 
             var mapper =
-                new EntityGenericEnumerableMemberMapper<Collection<InnerEntity>, InnerEntity>(this.memberInfo,
+                new EntityGenericCollectionMemberMapper<Collection<InnerEntity>, InnerEntity>(this.memberInfo,
                     this.itemMappingProfile);
             mapper.Map(this.entity, this.dataRecord1);
             mapper.Map(this.entity, this.dataRecord2);
@@ -215,7 +215,7 @@ namespace SqlRepo.Tests
             this.AssumeColumnNameMappingProfileIsInitialised();
 
             var mapper =
-                new EntityGenericEnumerableMemberMapper<Collection<InnerEntity>, InnerEntity>(this.memberInfo,
+                new EntityGenericCollectionMemberMapper<Collection<InnerEntity>, InnerEntity>(this.memberInfo,
                     this.itemMappingProfile);
             mapper.Map(this.entity, this.dataRecord1);
             mapper.Map(this.entity, this.dataRecord2);
@@ -262,13 +262,13 @@ namespace SqlRepo.Tests
         private IDataRecord dataRecord2;
         private MappingTestEntity entity;
         private IEntityMappingProfile<InnerEntity> itemMappingProfile;
-        private EntityGenericEnumerableMemberMapper<List<InnerEntity>, InnerEntity> listMapper;
+        private EntityGenericCollectionMemberMapper<List<InnerEntity>, InnerEntity> listMapper;
         private MemberInfo memberInfo;
 
         private void AssumeColumnNameMappingProfileIsInitialised()
         {
             this.itemMappingProfile = new EntityMappingProfile<InnerEntity>();
-            this.itemMappingProfile.ForMember(e => e.Id, c => c.MapFromColumnName(InnerEntityIdColumnName))
+            this.itemMappingProfile.ForMember(e => e.Id, c => c.MapFromColumnName(InnerEntityIdColumnName, true))
                 .ForMember(e => e.TestEntityId, c => c.MapFromColumnName(InnerEntityTestEntityIdColumnName))
                 .ForMember(e => e.StringProperty,
                     c => c.MapFromColumnName(InnerEntityStringPropertyColumnName))
@@ -314,7 +314,7 @@ namespace SqlRepo.Tests
         private void AssumeListMemberMapperIsInitialised()
         {
             this.listMapper =
-                new EntityGenericEnumerableMemberMapper<List<InnerEntity>, InnerEntity>(this.memberInfo,
+                new EntityGenericCollectionMemberMapper<List<InnerEntity>, InnerEntity>(this.memberInfo,
                     this.itemMappingProfile);
         }
     }

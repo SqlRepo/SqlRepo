@@ -18,12 +18,15 @@ namespace SqlRepo
             }
 
             var list = new List<TEntity>();
-
+            TEntity entity = null;
             while(reader.Read())
             {
-                var entity = new TEntity();
+                if(entity == null || !this.mappingProfile.DataRecordMatchesEntity(entity, reader))
+                {
+                    entity = new TEntity();
+                    list.Add(entity);
+                }
                 this.mappingProfile.Map(entity, reader);
-                list.Add(entity);
             }
 
             return list;
