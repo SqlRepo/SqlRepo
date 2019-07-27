@@ -1,7 +1,7 @@
 [![Build Status](https://dev.azure.com/mikehanson/SqlRepoBuildAndRelease/_apis/build/status/SqlRepo-CI?branchName=master)](https://dev.azure.com/mikehanson/SqlRepoBuildAndRelease/_build/latest?definitionId=5&branchName=master)
 
 # SqlRepo
-We are please to announce the release of 3.0.0 of SqlRepo, our implementation of the Repository Pattern that allows you to build and execute CRUD SQL statements using Lambda Expressions and strong typing.  This release includes significant performance improvements and some bug fixes as well as one breaking change.
+We are please to announce the release of 3.0.0 of SqlRepo, our implementation of the Repository Pattern that allows you to build and execute CRUD SQL statements using Lambda Expressions and strong typing.
 
 In this release we have completely re-written the entity mapping feature and extended it to provide full control of how data sets are mapped to entities using EntityMappingProfiles. See [Entity Mapping](https://github.com/SqlRepo/SqlRepo/wiki/Entity-Mapping) for more information.
 
