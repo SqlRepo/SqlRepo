@@ -17,7 +17,13 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="4.8.1" />
+    <None Remove="SqlRepo.SqlServer.Autofac.net452.v3.ncrunchproject" />
+    <None Remove="SqlRepo.SqlServer.Autofac.netstandard1.3.v3.ncrunchproject" />
+    <None Remove="SqlRepo.SqlServer.Autofac.v3.ncrunchproject" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.9.2" />
   </ItemGroup>
 
   <ItemGroup>

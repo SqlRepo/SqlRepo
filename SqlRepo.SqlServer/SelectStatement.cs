@@ -621,6 +621,12 @@ namespace SqlRepo.SqlServer
             return this;
         }
 
+        public ISelectStatement<TEntity> UsingMappingProfile(IEntityMappingProfile mappingProfile)
+        {
+            this.EntityMapper.UseMappingProfile(mappingProfile);
+            return this;
+        }
+
         public ISelectStatement<TEntity> Where<T>(Expression<Func<T, bool>> selector, string @alias = null)
         {
             this.ThrowIfTableNotSpecified<T>(@alias);

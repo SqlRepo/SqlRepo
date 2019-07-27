@@ -1,7 +1,6 @@
 ﻿using System;
 using Autofac;
 using SqlRepo.Abstractions;
-using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.Autofac
 {
@@ -19,6 +18,9 @@ namespace SqlRepo.SqlServer.Autofac
                             .As<IWritablePropertyMatcher>();
             containerBuilder.RegisterType<SqlLogger>()
                             .As<ISqlLogger>();
+            containerBuilder.RegisterType<EntityMappingProfileFactory>()
+                            .As<IEntityMappingProfileFactory>()
+                            .SingleInstance();
         }
     }
 }

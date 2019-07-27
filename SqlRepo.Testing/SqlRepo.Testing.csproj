@@ -18,9 +18,11 @@
       sql, repository pattern, builder, sql server
     </PackageTags>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="SqlRepo.Testing.v3.ncrunchproject" />
+  </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SqlRepo.SqlServer\SqlRepo.SqlServer.csproj" />
     <ProjectReference Include="..\SqlRepo\SqlRepo.csproj" />
   </ItemGroup>
 

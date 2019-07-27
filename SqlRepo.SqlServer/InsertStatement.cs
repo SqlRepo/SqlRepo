@@ -52,6 +52,12 @@ namespace SqlRepo.SqlServer
             return this;
         }
 
+        public IInsertStatement<TEntity> UsingMappingProfile(IEntityMappingProfile mappingProfile)
+        {
+            this.EntityMapper.UseMappingProfile(mappingProfile);
+            return this;
+        }
+
         public override TEntity Go()
         {
             using(var reader = this.StatementExecutor.ExecuteReader(this.Sql()))

@@ -8,7 +8,8 @@ namespace SqlRepo.SqlServer.Static
     {
         private static readonly WritablePropertyMatcher WritablePropertyMatcher =
             new WritablePropertyMatcher();
-        private static readonly DataReaderEntityMapper DataReaderEntityMapper = new DataReaderEntityMapper();
+        private static readonly DataReaderEntityMapper DataReaderEntityMapper =
+            new DataReaderEntityMapper();
         private static IRepositoryFactory repositoryFactory;
         private static ISqlLogger sqlLogger;
         private static IConnectionProvider connectionProvider;
@@ -53,7 +54,7 @@ namespace SqlRepo.SqlServer.Static
 
             if(sqlLogger == null)
             {
-                sqlLogger = new SqlLogger(new []  {new NoOpSqlLogger()});
+                sqlLogger = new SqlLogger(new[] {new NoOpSqlLogger()});
             }
 
             var statementFactoryProvider = new StatementFactoryProvider(DataReaderEntityMapper,

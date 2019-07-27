@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Threading.Tasks;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
@@ -14,8 +15,8 @@ namespace SqlRepo.SqlServer.Tests
         [SetUp]
         public void SetUp()
         {
-            AssumeSqlLoggerIsInitialised();
-            AssumeConnectionProviderIsInitialised();
+            this.AssumeSqlLoggerIsInitialised();
+            this.AssumeConnectionProviderIsInitialised();
             this.target = new StatementExecutor(this.logger, this.connectionProvider);
         }
 
@@ -28,57 +29,11 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void SupportChangingConnectionProvider()
+        public async Task LogQueryWhenExecuteNonQueryAsync()
         {
-            var connectionProviderOverride = Substitute.For<ISqlConnectionProvider>();
-            this.target.UseConnectionProvider(connectionProviderOverride);
-            this.target.ExecuteNonQuery("sql");
-            this.connectionProvider.DidNotReceive().Provide<ISqlConnection>();
-            connectionProviderOverride.Received().Provide<ISqlConnection>();
-        }
-
-        [Test]
-        public void UseTheConnectionProviderToGetConnectionWhenExecuteExecuteNonQuery()
-        {
-            this.target.ExecuteNonQuery(Arg.Any<string>());
-            this.connectionProvider.Received()
-                .Provide<ISqlConnection>();
-        }
-
-        [Test]
-        public void UseTheConnectionAdaptorToCreateCommandWhenExecuteExecuteNonQuery()
-        {
-            this.target.ExecuteNonQuery("test");
-            this.AssertConnectionAdaptor();
-            this.AssertCommand("test");
-            this.command.Received()
-                .ExecuteNonQuery();
-        }
-
-        [Test]
-        public void LogQueryWhenExecuteNonQueryAsync()
-        {
-            this.target.ExecuteNonQueryAsync("sql");
+            await this.target.ExecuteNonQueryAsync("sql");
             this.logger.Received()
                 .Log($"Executing SQL:{Environment.NewLine}sql");
-        }
-
-        [Test]
-        public void UseTheConnectionProviderToGetConnectionWhenExecuteNonQueryAsync()
-        {
-            this.target.ExecuteNonQueryAsync(Arg.Any<string>());
-            this.connectionProvider.Received()
-                .Provide<ISqlConnection>();
-        }
-
-        [Test]
-        public void UseTheConnectionAdaptorToCreateCommandWhenExecuteNonQueryAsync()
-        {
-            this.target.ExecuteNonQueryAsync("test");
-            this.AssertConnectionAdaptorAsync();
-            this.AssertCommand("test");
-            this.command.Received()
-                .ExecuteNonQueryAsync();
         }
 
         [Test]
@@ -90,47 +45,11 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void UseTheConnectionProviderToGetConnectionWhenExecuteReader()
+        public async Task LogQueryWhenExecuteReaderAsync()
         {
-            this.target.ExecuteReader(Arg.Any<string>());
-            this.connectionProvider.Received()
-                .Provide<ISqlConnection>();
-        }
-
-        [Test]
-        public void UseTheConnectionAdaptorToCreateCommandWhenExecuteReader()
-        {
-            this.target.ExecuteReader("test");
-            this.AssertConnectionAdaptor();
-            this.AssertCommand("test");
-            this.command.Received()
-                .ExecuteReader(CommandBehavior.CloseConnection);
-        }
-
-        [Test]
-        public void LogQueryWhenExecuteReaderAsync()
-        {
-            this.target.ExecuteReaderAsync("sql");
+            await this.target.ExecuteReaderAsync("sql");
             this.logger.Received()
                 .Log($"Executing SQL:{Environment.NewLine}sql");
-        }
-
-        [Test]
-        public void UseTheConnectionProviderToGetConnectionWhenExecuteReaderAsync()
-        {
-            this.target.ExecuteReaderAsync(Arg.Any<string>());
-            this.connectionProvider.Received()
-                .Provide<ISqlConnection>();
-        }
-
-        [Test]
-        public void UseTheConnectionAdaptorToCreateCommandWhenExecuteReaderAsync()
-        {
-            this.target.ExecuteReaderAsync("test");
-            this.AssertConnectionAdaptorAsync();
-            this.AssertCommand("test");
-            this.command.Received()
-                .ExecuteReaderAsync(CommandBehavior.CloseConnection);
         }
 
         [Test]
@@ -142,11 +61,207 @@ namespace SqlRepo.SqlServer.Tests
         }
 
         [Test]
-        public void UseTheConnectionProviderToGetConnectionWhenExecuteStoredProcedure()
+        public async Task LogQueryWhenExecuteStoredProcedureAsync()
         {
-            this.target.ExecuteStoredProcedure(Arg.Any<string>());
+            await this.target.ExecuteStoredProcedureAsync("sql");
+            this.logger.Received()
+                .Log($"Executing SP: sql");
+        }
+
+        [Test]
+        public void SupportChangingConnectionProvider()
+        {
+            var connectionProviderOverride = Substitute.For<ISqlConnectionProvider>();
+            this.target.UseConnectionProvider(connectionProviderOverride);
+            this.target.ExecuteNonQuery("sql");
+            this.connectionProvider.DidNotReceive()
+                .Provide<ISqlConnection>();
+            connectionProviderOverride.Received()
+                                      .Provide<ISqlConnection>();
+        }
+
+        [Test]
+        public void UseTheCommandAdapterToCreateCommandWhenExecuteStoredProcedure()
+        {
+            var paramDef = new ParameterDefinition[]
+                           {
+                               new ParameterDefinition
+                               {
+                                   Name = "name1",
+                                   Value = "value1"
+                               },
+                               new ParameterDefinition
+                               {
+                                   Name = "name2",
+                                   Value = "value2"
+                               }
+                           };
+            this.target.ExecuteStoredProcedure("test", paramDef);
+            this.command.Parameters.Received()
+                .AddWithValue("name1", "value1");
+            this.command.Parameters.Received()
+                .AddWithValue("name2", "value2");
+            this.AssertConnectionAdapterReceivedCalls();
+            this.AssertCommandWasPreparedForStoredProcedure("test");
+            this.command.Received()
+                .ExecuteReader(CommandBehavior.CloseConnection);
+        }
+
+        [Test]
+        public async Task UseTheCommandAdapterToCreateCommandWhenExecuteStoredProcedureAsync()
+        {
+            var paramDef = new[]
+                           {
+                               new ParameterDefinition
+                               {
+                                   Name = "name1",
+                                   Value = "value1"
+                               },
+                               new ParameterDefinition
+                               {
+                                   Name = "name2",
+                                   Value = "value2"
+                               }
+                           };
+            await this.target.ExecuteStoredProcedureAsync("test", paramDef);
+            this.command.Parameters.Received()
+                .AddWithValue("name1", "value1");
+            this.command.Parameters.Received()
+                .AddWithValue("name2", "value2");
+            await this.AssertConnectionAdapterReceivedAsyncCalls();
+            this.AssertCommandWasPreparedForStoredProcedure("test");
+            await this.command.Received()
+                      .ExecuteReaderAsync(CommandBehavior.CloseConnection);
+        }
+
+        [Test]
+        public void UseTheConnectionAdapterToCreateCommandWhenExecuteExecuteNonQuery()
+        {
+            this.target.ExecuteNonQuery("test");
+            this.AssertConnectionAdapterReceivedCalls();
+            this.AssertCommand("test");
+            this.command.Received()
+                .ExecuteNonQuery();
+        }
+
+        [Test]
+        public async Task UseTheConnectionAdapterToCreateCommandWhenExecuteNonQueryAsync()
+        {
+            await this.target.ExecuteNonQueryAsync("test");
+            await this.AssertConnectionAdapterReceivedAsyncCalls();
+            this.AssertCommand("test");
+            await this.command.Received()
+                      .ExecuteNonQueryAsync();
+        }
+
+        [Test]
+        public void UseTheConnectionAdapterToCreateCommandWhenExecuteReader()
+        {
+            this.target.ExecuteReader("test");
+            this.AssertConnectionAdapterReceivedCalls();
+            this.AssertCommand("test");
+            this.command.Received()
+                .ExecuteReader(CommandBehavior.CloseConnection);
+        }
+
+        [Test]
+        public async Task UseTheConnectionAdapterToCreateCommandWhenExecuteReaderAsync()
+        {
+            await this.target.ExecuteReaderAsync("test");
+            await this.AssertConnectionAdapterReceivedAsyncCalls();
+            this.AssertCommand("test");
+            await this.command.Received()
+                      .ExecuteReaderAsync(CommandBehavior.CloseConnection);
+        }
+
+        [Test]
+        public void UseTheConnectionProviderToGetConnectionWhenExecuteNonQuery()
+        {
+            this.target.ExecuteNonQuery("test");
             this.connectionProvider.Received()
                 .Provide<ISqlConnection>();
+        }
+
+        [Test]
+        public async Task UseTheConnectionProviderToGetConnectionWhenExecuteNonQueryAsync()
+        {
+            await this.target.ExecuteNonQueryAsync("test");
+            this.connectionProvider.Received()
+                .Provide<ISqlConnection>();
+        }
+
+        [Test]
+        public void UseTheConnectionProviderToGetConnectionWhenExecuteReader()
+        {
+            this.target.ExecuteReader("test");
+            this.connectionProvider.Received()
+                .Provide<ISqlConnection>();
+        }
+
+        [Test]
+        public async Task UseTheConnectionProviderToGetConnectionWhenExecuteReaderAsync()
+        {
+            await this.target.ExecuteReaderAsync("test");
+            this.connectionProvider.Received()
+                .Provide<ISqlConnection>();
+        }
+
+        [Test]
+        public void UseTheConnectionProviderToGetConnectionWhenExecuteStoredProcedure()
+        {
+            this.target.ExecuteStoredProcedure("test");
+            this.connectionProvider.Received()
+                .Provide<ISqlConnection>();
+        }
+
+        [Test]
+        public async Task UseTheConnectionProviderToGetConnectionWhenExecuteStoredProcedureAsync()
+        {
+            await this.target.ExecuteStoredProcedureAsync("test");
+            this.connectionProvider.Received()
+                .Provide<ISqlConnection>();
+        }
+
+        private ISqlCommand command;
+        private ISqlConnection connection;
+        private ISqlConnectionProvider connectionProvider;
+        private ISqlLogger logger;
+        private IStatementExecutor target;
+
+        private void AssertCommand(string sql)
+        {
+            this.command.CommandType.Should()
+                .BeEquivalentTo(CommandType.Text);
+            this.command.CommandTimeout.Should()
+                .Be(300000);
+            this.command.CommandText.Should()
+                .Be(sql);
+        }
+
+        private void AssertConnectionAdapterReceivedCalls()
+        {
+            this.connection.Received()
+                .Open();
+            this.connection.Received()
+                .CreateCommand();
+        }
+
+        private async Task AssertConnectionAdapterReceivedAsyncCalls()
+        {
+            await this.connection.Received()
+                .OpenAsync();
+            this.connection.Received()
+                .CreateCommand();
+        }
+
+        private void AssertCommandWasPreparedForStoredProcedure(string sql)
+        {
+            this.command.CommandType.Should()
+                .BeEquivalentTo(CommandType.StoredProcedure);
+            this.command.CommandTimeout.Should()
+                .Be(300000);
+            this.command.CommandText.Should()
+                .Be(sql);
         }
 
         private void AssumeConnectionProviderIsInitialised()
@@ -164,128 +279,6 @@ namespace SqlRepo.SqlServer.Tests
         private void AssumeSqlLoggerIsInitialised()
         {
             this.logger = Substitute.For<ISqlLogger>();
-        }
-
-        [Test]
-        public void UseTheCommandAdaptorToCreateCommandWhenExecuteStoredProcedure()
-        {
-            var paramDef = new ParameterDefinition[]
-                           {
-                               new ParameterDefinition
-                               {
-                                   Name = "name1",
-                                   Value = "value1"
-                               },
-                               new ParameterDefinition
-                               {
-                                   Name = "name2",
-                                   Value = "value2"
-                               }
-                           };
-            this.target.ExecuteStoredProcedure("test", paramDef);
-            this.command.Parameters.Received().AddWithValue("name1", "value1");
-            this.command.Parameters.Received().AddWithValue("name2", "value2");
-            this.AssertConnectionAdaptor();
-            this.AssertStoredProcedure("test");
-            this.command.Received()
-                .ExecuteReader(CommandBehavior.CloseConnection);
-        }
-
-        [Test]
-        public void LogQueryWhenExecuteStoredProcedureAsync()
-        {
-            this.target.ExecuteStoredProcedureAsync("sql");
-            this.logger.Received()
-                .Log($"Executing SP: sql");
-        }
-
-        [Test]
-        public void UseTheConnectionProviderToGetConnectionWhenExecuteStoredProcedureAsync()
-        {
-            this.target.ExecuteStoredProcedureAsync(Arg.Any<string>());
-            this.connectionProvider.Received()
-                .Provide<ISqlConnection>();
-        }
-
-        [Test]
-        public void UseTheCommandAdaptorToCreateCommandWhenExecuteStoredProcedureAsync()
-        {
-            var paramDef = new[]
-                           {
-                               new ParameterDefinition
-                               {
-                                   Name = "name1",
-                                   Value = "value1"
-                               },
-                               new ParameterDefinition
-                               {
-                                   Name = "name2",
-                                   Value = "value2"
-                               }
-                           };
-            this.target.ExecuteStoredProcedureAsync("test", paramDef);
-            this.command.Parameters.Received()
-                .AddWithValue("name1", "value1");
-            this.command.Parameters.Received()
-                .AddWithValue("name2", "value2");
-            this.AssertConnectionAdaptorAsync();
-            this.AssertStoredProcedure("test");
-            this.command.Received()
-                .ExecuteReaderAsync(CommandBehavior.CloseConnection);
-        }
-
-
-
-
-
-
-
-
-
-
-        private ISqlCommand command;
-        private ISqlConnection connection;
-
-        private ISqlConnectionProvider connectionProvider;
-        private ISqlLogger logger;
-
-        private IStatementExecutor target;
-
-        private void AssertConnectionAdaptor()
-        {
-            this.connection.Received()
-                .Open();
-            this.connection.Received()
-                .CreateCommand();
-           
-        }
-
-        private void AssertCommand(string sql)
-        {
-            this.command.CommandType.Should().BeEquivalentTo(CommandType.Text);
-            this.command.CommandTimeout.Should()
-                .Be(300000);
-            this.command.CommandText.Should()
-                .Be(sql);
-        }
-        
-
-
-        private void AssertStoredProcedure(string sql)
-        {
-            this.command.CommandType.Should().BeEquivalentTo(CommandType.StoredProcedure);
-            this.command.CommandTimeout.Should()
-                .Be(300000);
-            this.command.CommandText.Should()
-                .Be(sql);
-        }
-
-        private void AssertConnectionAdaptorAsync()
-        {
-            this.connection.Received()
-                .OpenAsync();
-            this.connection.Received()
-                .CreateCommand();
         }
     }
 }

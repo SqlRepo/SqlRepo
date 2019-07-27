@@ -21,5 +21,12 @@ sql, repository, builder</PackageTags>
     <Exec Command="del   /S /Q  &quot;$(ProjectDir)&quot;*.nupkg" />
   </Target>
 
+  <ItemGroup>
+    <None Remove="SqlRepo.csproj.DotSettings" />
+    <None Remove="SqlRepo.net452.v3.ncrunchproject" />
+    <None Remove="SqlRepo.netstandard1.3.v3.ncrunchproject" />
+    <None Remove="SqlRepo.v3.ncrunchproject" />
+  </ItemGroup>
+
 </Project>
 
