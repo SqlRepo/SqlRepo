@@ -17,6 +17,10 @@
   </Target>
 
   <ItemGroup>
+    <None Remove="SqlRepo.SqlServer.NInject.v3.ncrunchproject" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Ninject" Version="3.3.4" />
   </ItemGroup>
 

@@ -1,11 +1,10 @@
 ﻿using System;
 using Ninject.Modules;
 using SqlRepo.Abstractions;
-using SqlRepo.SqlServer.Abstractions;
 
 namespace SqlRepo.SqlServer.Ninject
 {
-    public class SqlRepoSqlServerNinjectModule: NinjectModule
+    public class SqlRepoSqlServerNinjectModule : NinjectModule
     {
         public override void Load()
         {
@@ -19,6 +18,9 @@ namespace SqlRepo.SqlServer.Ninject
                 .To<WritablePropertyMatcher>();
             this.Bind<ISqlLogger>()
                 .To<SqlLogger>();
+            this.Bind<IEntityMappingProfileFactory>()
+                .To<EntityMappingProfileFactory>()
+                .InSingletonScope();
         }
     }
 }

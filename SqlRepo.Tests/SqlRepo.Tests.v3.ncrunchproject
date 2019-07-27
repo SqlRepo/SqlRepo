@@ -2,6 +2,7 @@
   <Settings>
     <HiddenComponentWarnings>
       <Value>NUnitTestsWithSameName</Value>
+      <Value>LongTestTimesWithoutParallelExecution</Value>
     </HiddenComponentWarnings>
     <PreviouslyBuiltSuccessfully>True</PreviouslyBuiltSuccessfully>
   </Settings>
